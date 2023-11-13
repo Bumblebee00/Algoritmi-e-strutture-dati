@@ -1,0 +1,99 @@
+Complexity analysis, also known as algorithmic complexity or computational complexity, is the study of how the performance of an algorithm or a program scales with input size. It helps us understand how efficient an algorithm is in terms of time and space requirements. In this detailed explanation, we'll explore complexity analysis with examples.
+There are two main aspects of complexity analysis:
+- Time Complexity: This measures the amount of time an algorithm takes to run in relation to the input size. It is often expressed using "Big O" notation, which provides an upper bound on the growth rate of an algorithm's runtime.
+- Space Complexity: This measures the amount of memory space an algorithm uses in relation to the input size. Like time complexity, space complexity is also expressed using "Big O" notation.
+
+
+=====Time Complexity:
+Time complexity is often classified into several categories based on how the runtime scales with input size. Here are common notations used in time complexity analysis:
+
+O(1): Constant Time
+O(log n): Logarithmic Time
+O(n): Linear Time
+O(n log n): Linearithmic Time
+O(n^2): Quadratic Time
+O(2^n): Exponential Time
+
+------Example 1: Constant Time (O(1))---------
+#include <stdio.h>
+
+void printFirstElement(int arr[]) {
+    printf("%d\n", arr[0]);
+}
+// Regardless of the array size, this function takes constant time.
+-----------------end code -------------------
+
+------Example 2: Linear Time (O(n))---------
+#include <stdio.h>
+
+int findMax(int arr[], int n) {
+    int max_val = arr[0];
+    for (int i = 1; i < n; i++) {
+        if (arr[i] > max_val) {
+            max_val = arr[i];
+        }
+    }
+    return max_val;
+}
+// In the worst case, where the largest element is at the end of the array, this function's runtime scales linearly with the input size.
+-----------------end code -------------------
+
+------Example 3: Quadratic Time (O(n^2))---------
+#include <stdio.h>
+
+void bubbleSort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                // Swap arr[j] and arr[j + 1]
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+// Bubble sort has a quadratic time complexity because it involves nested loops.
+-----------------end code -------------------
+
+
+=====Space Complexity:
+Space complexity evaluates how much memory an algorithm consumes in relation to the input size. Similar to time complexity, space complexity is expressed using Big O notation.
+
+------- Constant Space (O(1))---------
+#include <stdio.h>
+
+int sumOfTwoNumbers(int a, int b) {
+    int result = a + b;
+    return result;
+}
+// This function uses a constant amount of memory, regardless of the input values.
+-----------------end code -----------------
+
+------- Linear Space (O(n))---------
+#include <stdio.h>
+
+void createSequence(int n) {
+    int sequence[n];
+    for (int i = 0; i < n; i++) {
+        sequence[i] = i;
+    }
+}
+// The space required by this function scales linearly with the input size 'n'.
+-----------------end code -----------------
+
+------- Quadratic Space (O(n^2))---------
+#include <stdio.h>
+
+void createMatrix(int n) {
+    int matrix[n][n];
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            matrix[i][j] = 0;
+        }
+    }
+}
+// The space required by this function scales quadratically with the input size 'n'.
+-----------------end code -----------------
+
+In complexity analysis, the goal is to identify the most significant factors affecting an algorithm's efficiency. Algorithms with lower time and space complexities are generally more efficient, especially for large input sizes. However, it's essential to consider trade-offs between time and space complexity and select algorithms that best suit the specific problem and available resources.

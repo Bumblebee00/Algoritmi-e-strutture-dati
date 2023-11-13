@@ -1,0 +1,39 @@
+Possibili soluzioni a un problema:
+ iterativa “nativa”
+ ricorsiva:
+     se tail-recursive trasformabile direttamente in iterativa senza uso di stack
+     se non tail-recursive trasformabile in iterativa con uso di stack. In generale soluzione meno efficienti di quelle iterative “native”.
+
+Esempio: numeri di fibonacci soluzione iterativa
+    unsigned long fib(int n) {
+        unsigned long f1p=0, f2p=0, f=1;
+        int i;
+        if(n == 0 || n == 1)
+           return n;
+
+        for(i=0; i<n; i++) {
+            f1p = f2p;
+            f2p = f;
+            f = f1p+f2p;
+        }
+        return f;
+    }
+
+Esempio: ricerca dicotomica soluzione ricorsiva
+    int BinSearch(int v[], int N, int k) {
+    int m, found= 0, l=0, r=N-1;
+
+    while(l <= r && found == 0){
+        m = (l+r)/2;
+        if(v[m] == k)
+        found = 1;
+        if(v[m] < k)
+        l = m+1;
+        else
+        r = m-1;
+    }
+    if (found == 0)
+        return -1;
+    return m;
+    }
+

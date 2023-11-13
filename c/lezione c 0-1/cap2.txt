@@ -1,0 +1,155 @@
+REGOLA: Il nome della variabile che identifica il vettore corrisponde formalmente al puntatore al primo elemento del vettore stesso: <nome vettore> <=stessa cosa di=> &<nome vettore>[0]
+
+Esempio:
+    int v[] = {1,2,3,4,5};
+    // queste due sono equivalenti
+    printf("%d\n", v[0]);
+    printf("%d\n", *v);
+
+    // queste due sono equivalenti
+    printf("%d\n", v[2]);
+    printf("%d\n", *(v+2));
+
+Esempio2:
+    int dati[100], *p;
+    p = &dati[0]; // p punta al primo elemento dell'array dati
+    // potrebbe anche essere p = dati;
+
+    // modo 1
+    for (i=0;i<100;i++)
+        scanf("%d", p+i);
+    /* modo 2
+    for (i=0;i<100;i++, p++)
+        scanf("%d", p);
+    */
+
+===Limite alla dualità: il nome del vettore è costante, quindi esso stesso non si può modificare, mentre il puntatore può essere modificato.
+
+===Sottovettori:
+a volte può essere utile usare questa dualità per definire dei sottovettorini di un vettore più grande.
+    int l = 26;
+    int dati[100], *v, i;
+    
+    v = &dati[l];
+    n = r – l + 1;
+    
+    for (i=0; i<n; i++)
+        scanf("%d", v+i);
+
+===Matrici
+
+vett[i] equivale a *(vett+i)
+
+per le matrici è un po più complicato, perchè vengono salvate riga per riga.
+
+int mat[NC][NR];
+mat[i][j] equivalea *(mat+NC*i+j)
+
+===Esempi reali di usare questa dualità
+Se una funzinoe vuole un vettore, tu puoi pasare un puntatore al primo elemento del vettore, e la funzione non si accorge della differenza. Se la funzinoe vuole un puntatore, tu puoi passare un vettore.
+
+int strcmp(const char s1[], const char s2[]);
+int strcmp(const char *s1, const char *s2);
+
+int main(int argc, char *argv[])
+int main(int argc, char **argv)
+// ci sono due asterischi perchè argv è un vettore di puntatori a char
+
+===Stringhe
+In C le stringhe non sono un tipo. sono vettori di char, con un carattere speciale alla fine, che è il carattere di terminazione della stringa. Questo carattere è '\0' (il carattere nullo).
+
+===Vettori di puntatori
+Può serivire a fare le matrici, o vettori di struct.
+Una matrice può essere scritta come vettore di puntatori a righe (altri vettori)
+    #define NR 4
+    #define NC 5
+    
+    // metodo 1
+    float M[NR][NC];
+
+    // metodo 2
+    float R0[NC],R1[NC],R2[NC],R3[NC];
+    float *VP[NR] = {R0,R1,R2,R3};
+
+questo permette più flessibilità, per esempio ogni riga di lunghezza diversa (per esempio una matrice con i nomi dei giorni della settimana). Con entrambi i metodi si può utilizzare la notazione matriciale.
+
+char giorni[7][10]={"lunedì","martedì",
+                    "mercoledì","giovedì",
+                    "venerdì","sabato","domenica"};
+
+char *giorni[7]={"lunedì","martedì",
+                "mercoledì","giovedì",
+                "venerdì","sabato","domenica"};
+
+=== Puntatore a Struct
+Si usano le regole già definite. Si noti che un puntatore può: o puntare a una struttura intera o puntare a un campo di struttura o essere un campo di una struttura.
+
+    struct studente{
+    char cognome[MAX], nome[MAX];
+    int matricola;
+    float media;
+    };
+    ...
+    struct studente *p;
+
+oppure:
+
+    struct esame{
+        char nome[MAX];
+        int voto_scritto;
+        int voto_orale;
+    }
+
+    struct studente_alternativo{
+        char cognome[MAX], nome[MAX];
+        int matricola;
+        // questo è un puntatore a uno struct di tipo esame
+        struct esame *e;
+    }
+
+per accedere a questi valori cè un altra notazione oltre a quella già vista:
+Anzichè
+    (*p).matricola
+    (*(*p).esame).voto_scritto
+si può usare
+    p->matricola
+    p->esame->voto_scritto
+
+===Struct Ricorsivo
+Si dice ricorsiva una struct che include tra i suoi campi uno o più puntatori a strutture dello stesso tipo. Servono per realizzare liste, alberi, grafi
+    struct studente {
+        char cognome[MAX], nome[MAX];
+        int matricola;
+        struct studente *amico;
+    };
+Nota: qua si usa struct studente prima di aver definito la struct studente. Ciò si può fare solo con i puntatori, perchè la dimensione (dei puntatori) è nota (4 byte per i 32 bit, 8 byte per i 64 bit). si può definire il puntatore addirittura ancora prima di definire la struct.
+
+    typedef struct studente *p_studente;
+    struct studente {
+        char cognome[MAX], nome[MAX];
+        int matricola;
+        p_studente amico;
+    };
+
+===Vettori di puntatori a struct
+    
+    typedef struct studente {
+    char cognome[MAXS];
+    char nome[MAXS];
+    int matr;
+    float media;
+    } stud_t;
+
+    stud_t elenco[MAXN];
+
+    stud_t *elencoRif[MAXN];
+    for (i=0; i<MAXN; i++)
+        elencoRif[i] = &elenco[i];
+
+===Puntatore a funzione
+data una funzione
+    void selectionSort(int *vet, int n);
+è possibile
+    void (*sortF)(int *v, int n);
+    sortF = selectionSort;
+    (*sortF)(v, n);

@@ -1,0 +1,16 @@
+{
+    "files.associations": {
+        "string.h": "c",
+        "stdlib.h": "c",
+        "stdio.h": "c",
+        "lab01.3.h": "c",
+        "main.h": "c",
+        "quick-sort.h": "c",
+        "print-help.h": "c",
+        "__locale": "c",
+        "merge-sort.h": "c",
+        "search.h": "c",
+        "lists.h": "c",
+        "liste.h": "c"
+    }
+}

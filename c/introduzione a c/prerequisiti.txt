@@ -1,0 +1,12 @@
+Vista la natura incrementale di questo insegnamento rispetto a quelli del I anno “Informatica” e “Tecniche di Programmazione”, vi sono prerequisiti stringenti in termini di conoscenze e di abilità di programmazione in C, in particolare: 
+===Conoscenze
+-architettura elementare dei sistemi di elaborazione (modello di Von Neumann) 
+-algebra Booleana e funzioni logiche
+-analisi della complessità
+-sintassi, tipi di dato e costrutti base del linguaggio C 
+-tipo di dato puntatore
+-algoritmi di ordinamento quadratici e lineari
+===Abilità:
+-capacità di sviluppare semplici programmi in C, utilizzando costrutti condizionali e iterativi, dati scalari
+-aggregati, I/O standard, file testo e funzioni 
+-capacità di soluzione di problemi (algoritmici) elementari.  ll problem solving, in quanto attività con caratteristiche “progettuali e creative”, si distingue da “compiti prevalentemente esecutivi e limitati all’utilizzo di stumenti e/o tecniche apprese. Vanno quindi considerati quali prerequisiti per un efficace approccio al problem solving le abilità di ragionamento induttivo e deduttivo, di logica e di concettualizzazione di modelli astratti dei problemi.  

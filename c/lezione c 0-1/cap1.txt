@@ -1,0 +1,92 @@
+=== Allineamento
+Big Endian: scritto normale
+Small Endian: scritto al contrario (ma raggruppato per byte)
+
+es: il numero 0x12345678
+in big endian viene rappresentato come 0x12 | 0x34 | 0x56 | 0x78
+in small endian viene rappresentato come 0x78 | 0x56 | 0x34 | 0x12
+
+=== Puntatori
+il puntaotre è un altro modo (oltre al nome) di indicare una variablie. è un numero. lo si deve immaginare come una freccia colorata che punta ad una casella di memoria. La freccia è la parte importante, e il colore indica come è codificata la variabile puntata.
+il puntatore, oltre a puntare a un dato, è esso stesso un dato, è esso stesso contenuto in una variabile, perciò lo si potrà modificare (a differenza del nome della variabile)
+
+Operatore di riferimento: serve per ottenere il puntatore ad una variabile.
+&variabile
+
+Operatore di dereferenziazione: serve per ottenere il valore puntato da un puntatore
+*puntatore
+
+Esempio:
+    // la variabile x si trova in memoria all'indirizzo 0x1234
+    int x = 5;
+    // per definire un puntatore gli si deve dare il tipo della variabile a cui punta, e bisognia mettere un asterisco davanti al nome
+    int *puntatore = &x;
+    // il puntatore si trova in memoria all'indirizzo 0x5678, e continene il valore 0x1234
+    // per ottenere il valore puntato da un puntatore si usa l'operatore di dereferenziazione
+    printf("Valore ottenuto tramite puntatore: %d", *puntatore);// printerà 5
+
+    // questa è l'operazione di dereferenziazione, perciò modifica x
+    *puntatore++;
+
+
+Importante: l'asterisco che si mette nella dichiarazione, non è lo stesso asterisco che si mette nell'operatore di dereferenziazione. L'asterisco nella dichiarazione serve per dire che la variabile è un puntatore, mentre l'asterisco nell'operatore di dereferenziazione serve per dire che si vuole ottenere il valore puntato dal puntatore.
+
+Esempio2:
+    int x;
+    int *p = &x;
+è equivalente a:
+    int x, *p = &x;
+
+Se un puntatore non punta ancora a niente, si può inizializzare a NULL ( definito in stdio.h )
+    char *s = NULL;
+Se un puntatore non si sa a che tipo di dato punta, si può inizializzare a void *
+    int *px;
+    void *generic;
+    // code...
+    px = (int *)generic; // ok
+
+=== Aritmetica dei puntatori
+si possono fare addizioni e sottrazioni. essendo il puntatore specifico di un dato, se io faccio
+    int *p;
+    p++;
+vuol dire che il puntatore ora punta al prossimo intero, cioè il suo valore numerico è incrementato di 4 (perchè un intero occupa 4 byte). Se invece faccio
+    char *p;
+    p++;
+vuol dire che il puntatore ora punta al prossimo carattere, cioè il suo valore numerico è incrementato di 1 (perchè un carattere occupa 1 byte).
+
+p += i in c, vuol dire p += i * sizeof(*p) nella realtà
+
+    int x[100], *p = &x[50], *q, *r;
+    ...
+    q = p+1; // equivale a q=&x[51]
+    r = p-1; // equivale a r=&x[49]
+    q++;     // ora q punta a x[52]
+
+=== Passaggio di parametri
+Nei linguaggi di programmazione più moderni, nelle funzioni si posssono passare le variabili by reference e by value. In C invece si può passare solo by value, ma si può passare il valore di un puntatore per fare una cosa simile al passaggio by reference: il passagio by pointer.
+
+Esempio: swap tra due interi:
+modo ERRATO:
+    void swap(int a, int b){
+        int tmp = a;
+        a = b;
+        b = tmp;
+    }
+    int main(){
+        int a = 5;
+        int b = 10;
+
+        swap(a, b);
+    }
+modo CORRETTO:
+    void swap(int *p_a, int *p_b){
+        int tmp = *p_a;
+        *p_a = *p_b;
+        *p_b = tmp;
+    }
+    int main(){
+        int a = 5;
+        int b = 10;
+
+        swap(&a, &b);
+    }

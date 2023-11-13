@@ -1,0 +1,4 @@
+Questione generali sugli ordinamenti:
+importanza ordinamenti
+limite inferiore alla complessità di ordinamenti basati sul confronto
+le caratteristiceh delgio ordinamenti in base a stabilità o essere in loco
