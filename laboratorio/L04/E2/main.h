@@ -1,7 +1,7 @@
 #define MAX 50
 
 typedef struct {
-    char codice[5];
+    char codice[MAX];
     char nome[MAX];
     char cognome[MAX];
     char dataNascita[MAX];
