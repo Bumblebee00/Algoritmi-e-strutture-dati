@@ -1,4 +1,4 @@
-[13/11/2023] In questa lezione facciamo un piccolo ripasso sul quicksort (nel file QuickSort.md) e poi parliamo di applicazioni/esmpi di algoritmi di ricerca e ordinamento.
+[13/11/2023] In questa lezione parliamo di applicazioni/esmpi di algoritmi di ricerca e ordinamento.
 
 # Esempi di algoritmi di ricerca e ordinamento
 

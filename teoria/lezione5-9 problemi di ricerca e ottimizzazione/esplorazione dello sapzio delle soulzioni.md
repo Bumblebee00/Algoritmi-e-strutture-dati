@@ -1,4 +1,29 @@
-[26/10/23]
+[26/10/23] Questo file corrisponde alle lezioni 5-7.
+
+- [Esplorazione dello spazio di soluzioni](#esplorazione-dello-spazio-di-soluzioni)
+  - [Rappresentazione delle soluzioni](#rappresentazione-delle-soluzioni)
+    - [Principio di addizione](#principio-di-addizione)
+    - [Principio di moltiplicazione](#principio-di-moltiplicazione)
+  - [Elementi di calcolo combiantorio](#elementi-di-calcolo-combiantorio)
+    - [Disposizioni semplici](#disposizioni-semplici)
+    - [Disposizioni con ripetizioni](#disposizioni-con-ripetizioni)
+    - [Permutazioni semplici](#permutazioni-semplici)
+    - [Permutazioni con ripetizioni](#permutazioni-con-ripetizioni)
+    - [Combinazioni semplici](#combinazioni-semplici)
+    - [Combinazioni con ripetizioni](#combinazioni-con-ripetizioni)
+    - [Insime delle parti (Powerset)](#insime-delle-parti-powerset)
+      - [Soluzione Dividi et Impera DA COMPLETARE!!!](#soluzione-dividi-et-impera-da-completare)
+      - [Soluzione Disposizioni ripetute](#soluzione-disposizioni-ripetute)
+      - [Soluzione combianzioni semplici](#soluzione-combianzioni-semplici)
+    - [Partizioni di un insieme](#partizioni-di-un-insieme)
+      - [Soluzione ricorsiva](#soluzione-ricorsiva)
+      - [Soluzione iterativa](#soluzione-iterativa)
+- [Esplorazione esaustiva dello spazio delle soluzioni](#esplorazione-esaustiva-dello-spazio-delle-soluzioni)
+  - [Struttura dati per la soluzione](#struttura-dati-per-la-soluzione)
+    - [Tipologie di strutture dati per oggetti interi](#tipologie-di-strutture-dati-per-oggetti-interi)
+  - [Come realizzare il principio di moltiplicazione](#come-realizzare-il-principio-di-moltiplicazione)
+    - [Principi base dell'esploarazione](#principi-base-dellesploarazione)
+
 Per adesso abbiamo usato la ricorsione solo per risolvere semplici problemi matematici, con un procedimento matematico che porta, senza scelte e con un numero finito di passi, alla soluzione (fattoriale, determinante di una matrice, numeri di Fibonacci, di Catalan, di Bell). Ora affronteremo problemi di ricerca e ottimizzazione.
 ### Problemi di ricerca
 Abbiamo un insieme di possibilità (che si chiamano soluzioni), tra queste andiamo a individuare quelle valide.
@@ -255,11 +280,10 @@ Nota: struttura dati globale non vuol dire per forza che usiamo una variabile gl
 #### Tipologie di strutture dati per oggetti interi
 - Se ho oggetti non interi uso tabelle di simboli per ricondursi ad interi. Per esmpio se ho stringhe, posso associare ogni stringa a un intero
 - Se ho un insieme o insiemi di oggetti di partenza uso vettori. un vettore se ho un insieme, più (raggruppati in vettore di vettori) se ho più insiemi.
-Molto probabilmente avrò degli indici e dei vincoli. Vincoli statici (uguali in ogni ricorsione) o dinamici (cambiano a ogni ricorsione. per esempio quando scelgo palline da un sacco, ho il vincolo di non scegliere di nuovo la pallina gia scelta)
+Molto probabilmente avrò degli indici e dei vincoli. Vincoli statici (uguali in ogni ricorsione) o dinamici (cambiano a ogni ricorsione. per esempio quando scelgo palline da un sacco, ho il vincolo di non scegliere di nuovo la pallina gia scelta).
 
 ## Come realizzare il principio di moltiplicazione
-Devo creare l'albero. Ho bisognio di un vettore che per ogni scelta mi dica il numero di scelte possibili.
-Per esempio se posso scegliere tra due primi, tre secondi e due antipasti, il vettore sarà [2,3,2]. Albero di grado 3 (massimo numero nel vettore) e altezza 3 (lunghezza del vettore), 12 percorsi radice-foglie.
+Devo creare l'albero. Ho bisognio di un vettore che per ogni scelta mi dica il numero di scelte possibili. Per esempio se posso scegliere tra due primi, tre secondi e due antipasti, il vettore sarà [2,3,2]. Albero di grado 3 (massimo numero nel vettore) e altezza 3 (lunghezza del vettore), 12 percorsi radice-foglie.
 
 ### Principi base dell'esploarazione
 - Si prendono n decisioni in sequenza, ciascuna tra diverse scelte , il cui numero è fisso dato il livello di decisione, ma variabile di livello in livello.

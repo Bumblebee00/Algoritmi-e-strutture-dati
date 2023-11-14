@@ -1,3 +1,9 @@
+In questa lezione parliamo di applicazioni/esmpi di algoritmi di ricerca e ordinamento. abbiamo trattato di
+- [Permutazioni ripeute](#permutazioni-ripetute)
+- [Combinazioni semplici](#combinazioni-semplici)
+- [Algoritmo di Er (1987)](#algoritmo-di-er-1987)
+
+
 # Permutazioni ripetute
 n è la cardianlità del multiiinsieme (conta le ripetizioni)
 memorizziamo in un vettore **dist_val** gli elementi distinti del multinsieme, presi solo una volta, e in un intero **n_dist** il numero di elementi distinti (di solito si fa ordinando il multinsieme e poi scartando gli elementi uguali ad altri vicini)
@@ -72,7 +78,7 @@ int coeff_multin(int pos, char dist_val[], char sol[], int mark[], int n, int n_
 }
 ```
 
-# Combianzioni semplici
+# Combinazioni semplici
 Esempio: combinazione di k tra n valori. Dato un insieme di n interi, generare tutte le combinazioni semplici di k di questi valori.
 val = {1, 9, 5, 4}
 

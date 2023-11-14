@@ -1,4 +1,4 @@
-[7/11/23] - Lezione 8
+[7/11/23] - Lezione 8 ???
 # Puzzle di Einstein
 La casa verde è immediatamente a destra della casa avorio
 Le Kool sono fumate nella casa gialla
