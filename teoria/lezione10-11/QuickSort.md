@@ -1,1 +1,0 @@
-go see `Merge sort e Quick sort.md`
