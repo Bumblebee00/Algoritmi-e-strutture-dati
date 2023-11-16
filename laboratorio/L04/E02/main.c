@@ -54,8 +54,15 @@ void azione(int d, link *head){
         printf("Inserisci il codice: ");
         scanf("%s", str);
         result = deleteByCode(*head, str);
-        if (result != NULL){ printItem(result->val); }
+        if (result != NULL){ printItem(result->val); free(result); }
         else { printf("Element not found\n"); }
+        break;
+
+    case 4:
+        printf("Inserisci le due date (formato gg/mm/yyyy) (separate da spazi) (in ordine cronologico opposto): ");
+        char str2[MAX];
+        scanf("%s %s", str, str2);
+        deleteByDateInterval(*head, str, str2);
         break;
 
     case 6:
