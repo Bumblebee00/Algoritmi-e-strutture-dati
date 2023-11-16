@@ -55,6 +55,7 @@ Prendi un vettore, se non è ordinato dividi et impera. (vedi esempio a pagina 9
 - condizione di terminazione: con 1 (l=r) o 0 (l>r) elementi il vettore è ordinato
 - merge sort su sottovettore SX
 - merge sort su sottovettore DX
+
 Ricombinazione:
 - unisci i due sottovettori ordinati in un vettore ordinato. Esempio [1,3] untio a [2,5] diventa [1,2,3,5]
 
