@@ -44,10 +44,13 @@ link deleteByCode(link head, char *code){
     // else { prev->next = x->next; }
     // return x;
     // version 2
+    // this should never appen. just in case
     if (head == NULL) { return NULL; }
     if (strcmp(head->val.codice, code)==0) {
+        // if the list has lenght one, return the first element (it will be freed)
+        if (head->next == NULL){ return head; }
         // we have to use these two temporaney variables, because the main keeps the pointer to the same head
-        link headCopy = insertHead(NULL, head->val);
+        link headCopy = insertOrderedBirthday(NULL, head->val);
         link second = head->next;
         head->val = second->val;
         head->next = second->next;
@@ -66,30 +69,41 @@ link deleteByCode(link head, char *code){
     return NULL;
 }
 
-// TODO: find the error
+// data1 è dopo data2
 link deleteByDateInterval(link head, char *date1, char *date2){
+    link deleted = NULL;
+    int headHasToGo = 0;
+    // if also head is included
+    if (isBefore(date1, head->val.dataNascita)){
+        // if list has lenght one, return the firs element (it will be freed)
+        if (head->next == NULL){
+            return head;
+        }
+        headHasToGo = 1;
+    }
     link previous=head;
     // loop up until previous->next should be deleted
     while(isBefore(date1, previous->next->val.dataNascita)){ previous = previous->next;}
-    link toDelete = previous->next;
-    // head, ..., previous, toDelete, ...
-    while(previous->next != NULL && isBefore(date2, previous->next->val.dataNascita)){
+    // this is a list containing the deleted elements. non mi piace tanto sta soluzione
+    // head, ..., previous, toDelete, ..., last el, NULL
+    while(previous->next!=NULL && isBefore(date2, previous->next->val.dataNascita)){
+        deleted = insertHead(deleted, previous->next->val);
         link tmp = previous->next;
-        previous->next=tmp->next;
-        // print element
+        previous->next = tmp->next;
         free(tmp);
-        previous = previous->next;
     }
-    return NULL;
+
+    return deleted;
 }
 
-void freeList(link head){
+link freeList(link head){
     link temp;
     while (head != NULL){
         temp = head;
         head = head->next;
         free(temp);
     }
+    return head;
 }
 
 /*

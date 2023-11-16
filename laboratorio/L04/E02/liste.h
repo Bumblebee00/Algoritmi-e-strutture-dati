@@ -20,5 +20,5 @@ link deleteByCode(link head, char *code);
 // date1 is after date2
 link deleteByDateInterval(link head, char *date1, char *date2);
 
-void freeList(link head);
+link freeList(link head);
 int isBefore(char *a, char *b);
