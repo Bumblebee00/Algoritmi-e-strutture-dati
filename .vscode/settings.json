@@ -11,6 +11,10 @@
         "merge-sort.h": "c",
         "search.h": "c",
         "lists.h": "c",
-        "liste.h": "c"
+        "liste.h": "c",
+        "chrono": "c",
+        "limits": "c",
+        "ratio": "c",
+        "algorithm": "c"
     }
 }

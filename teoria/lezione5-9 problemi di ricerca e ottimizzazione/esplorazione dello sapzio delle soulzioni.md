@@ -1,23 +1,24 @@
 [26/10/23] Questo file corrisponde alle lezioni 5-7.
 
 - [Esplorazione dello spazio di soluzioni](#esplorazione-dello-spazio-di-soluzioni)
-  - [Rappresentazione delle soluzioni](#rappresentazione-delle-soluzioni)
-    - [Principio di addizione](#principio-di-addizione)
-    - [Principio di moltiplicazione](#principio-di-moltiplicazione)
-  - [Elementi di calcolo combiantorio](#elementi-di-calcolo-combiantorio)
-    - [Disposizioni semplici](#disposizioni-semplici)
-    - [Disposizioni con ripetizioni](#disposizioni-con-ripetizioni)
-    - [Permutazioni semplici](#permutazioni-semplici)
-    - [Permutazioni con ripetizioni](#permutazioni-con-ripetizioni)
-    - [Combinazioni semplici](#combinazioni-semplici)
-    - [Combinazioni con ripetizioni](#combinazioni-con-ripetizioni)
-    - [Insime delle parti (Powerset)](#insime-delle-parti-powerset)
-      - [Soluzione Dividi et Impera DA COMPLETARE!!!](#soluzione-dividi-et-impera-da-completare)
-      - [Soluzione Disposizioni ripetute](#soluzione-disposizioni-ripetute)
-      - [Soluzione combianzioni semplici](#soluzione-combianzioni-semplici)
-    - [Partizioni di un insieme](#partizioni-di-un-insieme)
-      - [Soluzione ricorsiva](#soluzione-ricorsiva)
-      - [Soluzione iterativa](#soluzione-iterativa)
+- [Rappresentazione delle soluzioni](#rappresentazione-delle-soluzioni)
+  - [Principio di addizione](#principio-di-addizione)
+  - [Principio di moltiplicazione](#principio-di-moltiplicazione)
+- [Elementi di calcolo combiantorio](#elementi-di-calcolo-combiantorio)
+  - [Disposizioni semplici](#disposizioni-semplici)
+  - [Disposizioni con ripetizioni](#disposizioni-con-ripetizioni)
+  - [Permutazioni semplici](#permutazioni-semplici)
+  - [Permutazioni con ripetizioni](#permutazioni-con-ripetizioni)
+    - [Codice](#codice)
+  - [Combinazioni semplici](#combinazioni-semplici)
+  - [Combinazioni con ripetizioni](#combinazioni-con-ripetizioni)
+  - [Insime delle parti (Powerset)](#insime-delle-parti-powerset)
+    - [Codice Dividi et Impera DA COMPLETARE!!!](#codice-dividi-et-impera-da-completare)
+    - [Codice Disposizioni ripetute](#codice-disposizioni-ripetute)
+    - [Codice combianzioni semplici](#codice-combianzioni-semplici)
+  - [Partizioni di un insieme](#partizioni-di-un-insieme)
+    - [Soluzione ricorsiva](#soluzione-ricorsiva)
+    - [Soluzione iterativa](#soluzione-iterativa)
 - [Esplorazione esaustiva dello spazio delle soluzioni](#esplorazione-esaustiva-dello-spazio-delle-soluzioni)
   - [Struttura dati per la soluzione](#struttura-dati-per-la-soluzione)
     - [Tipologie di strutture dati per oggetti interi](#tipologie-di-strutture-dati-per-oggetti-interi)
@@ -25,7 +26,7 @@
     - [Principi base dell'esploarazione](#principi-base-dellesploarazione)
 
 Per adesso abbiamo usato la ricorsione solo per risolvere semplici problemi matematici, con un procedimento matematico che porta, senza scelte e con un numero finito di passi, alla soluzione (fattoriale, determinante di una matrice, numeri di Fibonacci, di Catalan, di Bell). Ora affronteremo problemi di ricerca e ottimizzazione.
-### Problemi di ricerca
+## Problemi di ricerca
 Abbiamo un insieme di possibilità (che si chiamano soluzioni), tra queste andiamo a individuare quelle valide.
 S = insieme soluzioni possiblii
 V = insieme soluzioni valide
@@ -39,7 +40,7 @@ Esempio:
 - sudoku: 9x9 caselle, 9 numeri da 1 a 9. Ogni riga, colonna e quadrato 3x3 deve contenere tutti i numeri da 1 a 9. Il numero di soluzioni possibili è 9^81, ma il numero di soluzioni valide è molto minore di 9^81.
 - cammini semplice (cioè senza passare più volte per lo stesso nodo)  in un grafo
 
-### Problemi di ottimizzazione
+## Problemi di ottimizzazione
 in questo caso S = V, quindi non ci sono soluzioni non valide. L'obiettivo è trovare la soluzione migliore tra tutte le soluzioni valide. La soluzione migliore è quella che massimizza o minimizza una funzione obiettivo/costo.
 Qua bisognia enumerarle tutte per forza.
 
@@ -83,7 +84,7 @@ Noi ci occuperemo di algoritmi di ricerca:
 - ricorsivo
 
 
-## Rappresentazione delle soluzioni
+# Rappresentazione delle soluzioni
 Rappresentiamo lo spazio delle soluzioni come un **albero di ricerca**. le nostre soluzioni sono di dimensione n. a ogni nodo, ci sono k ramificazioni (al massimo) verso i figli. la radice è la soluzinoe iniziale vuota, i nodi intermedi sono etichettati con le soluzioni parziali, le foglie sono le soluzioni.
 
 Esempio:
@@ -92,7 +93,7 @@ La soluzione è un pasto da 3 portate.
 
 per modellare lo spazio delle soluzioni è molto utile il calcolo combinatorio, in particolare il principio di addizione e di moltiplicazione.
 
-### Principio di addizione
+## Principio di addizione
 Se ho due insiemi disgiunti A e B, il numero di elementi di A U B è la somma del numero di elementi di A e B.
 Formulazione alternativa: se un oggetto può essere scelto in p0 modi da un gruppo S0 e in p1 modi da un gruppo S1, allora può essere scelto in p0+p1 modi da S0 U S1.
 
@@ -102,7 +103,7 @@ informatica = {i0, i1, i2, i3}
 matematica = {m0, m1, m2, m3, m4, m5}
 dato che sono insiemi disgiunti, vale il principio di addizione, il numero di modi è 4+5=9
 
-### Principio di moltiplicazione
+## Principio di moltiplicazione
 dati n insiemi S0, S1, ..., Sn-1, ciascuno di cardinalità p0, p1, ..., pn-1, il numero di n-uple (x0, ..., xn) [con x0 ∈ S0, ..., xn-1 ∈ Sn-1] è p0 * p1 * ... * pn-1
 
 Esempio:
@@ -113,13 +114,13 @@ Secondi = {s0, s1}
 Dolci = {d0, d1, d2, d3}
 numero di scelte possibili = 2 * 3 * 2 * 4 = 48
 
-## Elementi di calcolo combiantorio
+# Elementi di calcolo combiantorio
 Si possono raggruppare k oggetti presi da un gruppo S di n elementi tenendo presente:
 - l’unicità degli elementi: gli elementi del gruppo S sono tutti distinti, quindi S è un insieme? O è un multiinsieme (multiset)?
 - l’ordinamento: 2 configurazioni sono le stesse a meno di un riordinamento?
 - le ripetizioni: uno stesso oggetto del gruppo può o meno essere riusato più volte all'interno di uno stesso raggruppamento?
 
-### Disposizioni semplici
+## Disposizioni semplici
 S è un insieme di n elementi. Quante sono le disposizioni semplici di k elementi presi da S? non ci sono ripetizioni e l’ordine conta (k non può essere maggiore di n)
 Ds(n,k) = n! / (n-k)! = n * (n-1) * ... * (n-k+1)
 
@@ -130,7 +131,7 @@ n = 10
 k = 3
 D(10,3) = 10! / (10-3)! = 10! / 7! = 10 * 9 * 8 = 720
 
-### Disposizioni con ripetizioni
+## Disposizioni con ripetizioni
 S è un insieme di n elementi. Quante sono le disposizioni con ripetizioni di k elementi presi da S? ci sono ripetizioni e l’ordine conta (k può essere maggiore di n)
 Dr(n,k) = n^k
 
@@ -148,7 +149,7 @@ k = 4
 Dr(2,4) = 2^4 = 16
 Soluzione = {0000, 0001, 0010, 0011, 0100, 0101, 0110, 0111, 1000, 1001, 1010, 1011, 1100, 1101, 1110, 1111}
 
-### Permutazioni semplici
+## Permutazioni semplici
 S è un insieme di n elementi. Quante sono le permutazioni possibili? non ci sono ripetizioni e l’ordine conta.
 P(n) = n!
 
@@ -158,11 +159,12 @@ S = {c, a, s, a}
 n = 4
 P(4) = 4! = 24
 
-### Permutazioni con ripetizioni
+## Permutazioni con ripetizioni
 S è un insieme di n elementi, di cui a elementi sono uguali tra loro, b elementi sono uguali tra loro, c elementi sono uguali tra loro, ecc. Quante sono le permutazioni possibili? non ci sono ripetizioni e l’ordine conta.
 P(n,a,b,c,...) = n! / (a! * b! * c! * ...)
 
-Esempio:
+Esempio:\
+(vedi `03anagrammi_distinti.c`)
 Quanti e quali sono gli anagrammi della parola “mamma”? (3 elementi "m" sono uguali tra loro, 2 elementi "a" sono uguali tra loro)
 S = {m, a, m, m, a}
 n = 5
@@ -170,7 +172,46 @@ a = 3
 b = 2
 P(5,3,2) = 5! / (3! * 2!) = 10
 
-### Combinazioni semplici
+### Codice
+```c
+... funzioneChiamante(){
+
+    dist_val = malloc(n*sizeof(int));
+    sol = malloc(n*sizeof(int));
+
+    perm_r( ... dist_val, sol, ...);
+}
+/*
+(nell'esempio dell'anagramma mamma)
+pos è l'indice della ricorsione a cui siamo arrivati (da 0 a 4)
+dist_val contiene i valori distinti da usare ([m,a])
+sol è il vettore soluzione che viene riempito (alla fine di un ramo sarà [m,a,m,a,m])
+mark contiene il numero di volte che ogni elemento distinto può ancora essere usato (inizia da [3,2])
+n è la dimensione del vettore soluzione (5)
+n_dist è la dimensione del vettore dist_val (2)
+cnt è il contatore di soluzioni (inutile)
+*/
+int perm_r(int pos, int *dist_val, int *sol,int *mark, int n, int n_dist, int cnt) {
+    int i;
+    if (pos >= n) { // condizione di terminazione
+        for (i=0; i<n; i++)
+            printf("%d ", sol[i]);
+            printf("\n");
+            return cnt+1;
+        }
+    for (i=0; i<n_dist; i++) {
+        if (mark[i] > 0) {
+            mark[i]--;// marca l'elemento come usato
+            sol[pos] = dist_val[i];
+            cnt=perm_r(pos+1,dist_val,sol,mark,n, n_dist,cnt);
+            mark[i]++;// smarca l'elemento
+        }
+    }
+    return cnt;
+}
+```
+
+## Combinazioni semplici
 S è un insieme di n elementi. Quante sono le combinazioni semplici di k elementi presi da S? non ci sono ripetizioni e l’ordine non conta.
 Cs(n,k) = n! / (k! * (n-k)!)
 
@@ -183,18 +224,18 @@ n = 5
 k = 3
 Cs(5,3) = 5! / (3! * 2!) = 10
 
-### Combinazioni con ripetizioni
+## Combinazioni con ripetizioni
 ???
 
-### Insime delle parti (Powerset)
+## Insime delle parti (Powerset)
 Dato un insieme S, l’insieme delle parti di S è l’insieme di tutti i sottoinsiemi di S.
 
 Esempio:
 S = {a, b, c, d}
 P(S) = {{}, {a}, {b}, {c}, {d}, {a,b}, {a,c}, {a,d}, {b,c}, {b,d}, {c,d}, {a,b,c}, {a,b,d}, {a,c,d}, {b,c,d}, {a,b,c,d}}
 
-#### Soluzione Dividi et Impera DA COMPLETARE!!!
-#### Soluzione Disposizioni ripetute
+### Codice Dividi et Impera DA COMPLETARE!!!
+### Codice Disposizioni ripetute
 Ogni sottoinsieme è rappresentato dal vettore della soluzione sol di n elementi:
 - l’insieme delle scelte possibili per ogni posizione del vettore è {0, 1}, quindi k = 2. Il ciclo for è sostituito da 2 assegnazioni esplicite
 - `sol[pos]` = 0 se l’oggetto pos-esimo non appartiene al sottoinsieme
@@ -220,7 +261,7 @@ int powerset(int pos,int *val,int *sol,int n,int cnt) {
 }
 ```
 
-#### Soluzione combianzioni semplici
+### Codice combianzioni semplici
 Si realizza l'insieme delle parti come unione di insieme vuoto e insieme delle parti degli insiemi con j = 1, 2, 3, ...., n elementi.
   `Powerset(S)= {} U Cs(n,1) U Cs(n,2) U ... U Cs(n,n)`
 Trattandosi di insiemi l’ordine non conta. Un wrapper si occupa dell’unione dell’insieme vuoto (non generato dalle combinazioni) e dell’iterare la chiamata alla funzione ricorsiva delle combinazioni.
@@ -251,7 +292,7 @@ int powerset_r(int* val, int n, int *sol, int j, int pos,int start){ int cnt = 0
 }
 ```
 
-### Partizioni di un insieme
+## Partizioni di un insieme
 Dato un insieme S, una partizione di S è un insieme di sottoinsiemi di S, tali che:
 - l’unione di tutti i sottoinsiemi è S
 - l’intersezione di due sottoinsiemi è vuota
@@ -272,12 +313,12 @@ Abbiamo due tipi di approcci:
 - ogni ricorsione sceglie un elemento della soluzione. Terminazione: la soluzione ha raggiunto la dimensione richiesta oppure non ci sono più scelte
 - la ricorsione esamina uno degli elementi dell’insieme di partenza per decidere se e dove andrà aggiunto alla soluzione. (???)
 
-### Strutture dati per la soluzione
+## Strutture dati per la soluzione
 [24/10/23]
 distinguiamo in globali, cioè visibili a ogni chiamata ricoorsiva (dati del problema (matrice, mappa, grafo), vincoli, scelte disponibili, soluzione), e locali, cioè locali a ciascuna delle istanze della ricorsione(indici di livello di chiamata ricorsiva, copie locali di strutture dati, indici o puntatori a parti di strutture dati globali).
 Nota: struttura dati globale non vuol dire per forza che usiamo una variabile globale in c. usare una variabile globale è sconsigliato ma non vietato quando le funzioni ricorsive operano su pochi e ben noti dati. è vantaggioso in quanto pochi parametri sono passati alle funzioni ricorsive.
 
-#### Tipologie di strutture dati per oggetti interi
+### Tipologie di strutture dati per oggetti interi
 - Se ho oggetti non interi uso tabelle di simboli per ricondursi ad interi. Per esmpio se ho stringhe, posso associare ogni stringa a un intero
 - Se ho un insieme o insiemi di oggetti di partenza uso vettori. un vettore se ho un insieme, più (raggruppati in vettore di vettori) se ho più insiemi.
 Molto probabilmente avrò degli indici e dei vincoli. Vincoli statici (uguali in ogni ricorsione) o dinamici (cambiano a ogni ricorsione. per esempio quando scelgo palline da un sacco, ho il vincolo di non scegliere di nuovo la pallina gia scelta).
@@ -285,7 +326,7 @@ Molto probabilmente avrò degli indici e dei vincoli. Vincoli statici (uguali in
 ## Come realizzare il principio di moltiplicazione
 Devo creare l'albero. Ho bisognio di un vettore che per ogni scelta mi dica il numero di scelte possibili. Per esempio se posso scegliere tra due primi, tre secondi e due antipasti, il vettore sarà [2,3,2]. Albero di grado 3 (massimo numero nel vettore) e altezza 3 (lunghezza del vettore), 12 percorsi radice-foglie.
 
-### Principi base dell'esploarazione
+## Principi base dell'esploarazione
 - Si prendono n decisioni in sequenza, ciascuna tra diverse scelte , il cui numero è fisso dato il livello di decisione, ma variabile di livello in livello.
 - le scelte sono in corrispondenza biunivoca con un sottoinsieme degli interi (non necessariamente contigui).
 - le scelte possibili sono memorizzate in un vettore `val`  di dimensione n di strutture `Livello`. Ogni struttura Livello continere un intero `num_scelte` che rappresenta il numero di scelte possibili per quel livello, e un vettore `scelte` di dimensione `num_scelte` che contiene le scelte possibili per quel livello.
