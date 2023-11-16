@@ -19,7 +19,7 @@ int thisOrderIsPossible(int a, int b){
 }
 
 void findMaxCollana(int *mark);
-void findCollanaR(int pos, int *sol, int *mark, int* max, int *maxCollana);
+int findCollanaR(int pos, int *sol, int *mark, int* maxPossible, int* max, int *maxCollana);
 
 int main(){
     int n, z, r, t, s;
@@ -40,7 +40,7 @@ void findMaxCollana(int *mark){
     int *maxCollana = malloc(sizeof(int)*maxLenghtPossible); // forse stiamo sovrallocando ma vabbe
     int *sol = malloc(sizeof(int)*maxLenghtPossible);
 
-    findCollanaR(0, sol, mark, &maxLenghtFound, maxCollana);
+    findCollanaR(0, sol, mark, &maxLenghtPossible, &maxLenghtFound, maxCollana);
 
     printf(" z + r + t + s = %2d. Lunghezza massima: %2d\n", maxLenghtPossible, maxLenghtFound);
 
@@ -60,10 +60,13 @@ void findMaxCollana(int *mark){
 pos è l'indice della ricorsione a cui siamo arrivati
 sol è la collana che abbiamo composto finora. il numero 0 sta per zaffiro, 1 per rubino, eccetra
 mark è un vettore di n_pietre interi, che contirne il numero di pietre ancora disponibili per trovare la collana
+maxPossible is z+r+t+s
 max è la lughezza massima trovata della collana finora (passato by reference)
 maxCollana è la collana più lunga trovata (stesso type di sol)
+
+the return value is 0 or 1 (= max possible solution has been found)
 */
-void findCollanaR(int pos, int *sol, int *mark, int* max, int *maxCollana){
+int findCollanaR(int pos, int *sol, int *mark, int* maxPossible, int* max, int *maxCollana){
     int addedAtLeasOne = 0;
     for (enum Pietra p=ZAFFIRO; p<=SMERALDO; p++){
         enum Pietra pietraPrecedente;
@@ -75,7 +78,7 @@ void findCollanaR(int pos, int *sol, int *mark, int* max, int *maxCollana){
             if (mark[p] > 0){
                 sol[pos] = p;
                 mark[p]--;
-                findCollanaR(pos+1, sol, mark, max, maxCollana);
+                if (findCollanaR(pos+1, sol, mark, maxPossible, max, maxCollana)) { return 1; }
                 mark[p]++;
                 addedAtLeasOne = 1;
             }
@@ -87,6 +90,8 @@ void findCollanaR(int pos, int *sol, int *mark, int* max, int *maxCollana){
         if (pos > *max){
             *max = pos;
             for (int i=0; i<pos; i++){ maxCollana[i] = sol[i]; }
+            if (*max == *maxPossible){ return 1; }
         }
     }
+    return 0;
 }
