@@ -2,8 +2,9 @@
 #include<stdlib.h>
 #include "liste.h"
 
-// takes the list (pointer to node = link) by reference (rather thab by value) (pointer to link)
+// takes the list by reference (so pointer to link, that is pointer to pointer to node). This is because we want to modify the head of the list
 void azione(int, link*);
+// utility functions
 void printMenu();
 void printItem(Item);
 
@@ -32,9 +33,7 @@ void azione(int d, link *head){
         scanf("%s", str);
         FILE *fp = fopen(str, "r");
         if (fp==NULL){ printf("File not found"); return; }
-        while (fscanf(fp, "%s %s %s %s %s %s %d", tmp.codice, tmp.nome, tmp.cognome, tmp.dataNascita, tmp.via, tmp.citta, &tmp.cap) != EOF){
-            *head = insertOrderedBirthday(*head, tmp);
-        }
+        while (fscanf(fp, "%s %s %s %s %s %s %d", tmp.codice, tmp.nome, tmp.cognome, tmp.dataNascita, tmp.via, tmp.citta, &tmp.cap) != EOF){ *head = insertOrderedBirthday(*head, tmp); }
         fclose(fp);
         printf("Read file %s succesfully\n", str);
         break;
@@ -46,9 +45,10 @@ void azione(int d, link *head){
         else { printf("Element not found\n"); }
         break;
     
+    // case 3 (delete a node by code) has to free the memory of the node that is deleted
     case 3:
         scanf("%s", str);
-        result = deleteByCode(*head, str);
+        result = deleteByCode(head, str);
         if (result != NULL){
             printItem(result->val);
             if (result == *head && (*head)->next == NULL){ *head = freeList(*head); }
@@ -58,12 +58,13 @@ void azione(int d, link *head){
         else { printf("Element not found\n"); }
         break;
 
+    // case 4 (delete nodes by date interval) has to free the memory of the nodes that are deleted
     case 4:
         scanf("%s %s", str, tmp.dataNascita);
-        link deleted = deleteByDateInterval(*head, str, tmp.dataNascita);
+        link deleted = deleteByDateInterval(head, str, tmp.dataNascita);
         printf("I deleted:\n");
         for (link i = deleted; i != NULL; i=i->next){ printItem(i->val); };
-        *head = freeList(deleted);
+        freeList(deleted);
         break;
 
     case 5:

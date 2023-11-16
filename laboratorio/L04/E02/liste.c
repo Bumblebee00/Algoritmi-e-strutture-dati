@@ -34,31 +34,17 @@ link searchByCode(link head, char *code){
     return NULL;
 }
 
-link deleteByCode(link head, char *code){
-    // version 1
-    // if (head == NULL) { return NULL; }
-    // link x, prev;
-    // for (x=head, prev=NULL; x!=NULL; prev=x, x=x->next) { if (strcmp(x->val.codice, code)==0) { break; } }
-    // if (x==NULL) { return NULL; }
-    // if (prev==NULL) { head = x->next; }
-    // else { prev->next = x->next; }
-    // return x;
-    // version 2
+link deleteByCode(link *head, char *code){
     // this should never appen. just in case
-    if (head == NULL) { return NULL; }
-    if (strcmp(head->val.codice, code)==0) {
-        // if the list has lenght one, return the first element (it will be freed)
-        if (head->next == NULL){ return head; }
-        // we have to use these two temporaney variables, because the main keeps the pointer to the same head
-        link headCopy = insertOrderedBirthday(NULL, head->val);
-        link second = head->next;
-        head->val = second->val;
-        head->next = second->next;
-        free(second);
-        return headCopy;
+    if (*head == NULL) { return NULL; }
+    if (strcmp((*head)->val.codice, code)==0) {
+        // head transforms into the element after head (it could be NULL)
+        link headcp = *head;
+        *head = (*head)->next;
+        return headcp;
     }
     // head, ..., previous, toDelete, ..., NULL
-    link previous = head;
+    link previous = *head;
     for (;previous->next != NULL; previous=previous->next) {
         if (strcmp(previous->next->val.codice, code)==0){
             link toDelete = previous->next;
@@ -70,30 +56,49 @@ link deleteByCode(link head, char *code){
 }
 
 // data1 è dopo data2
-link deleteByDateInterval(link head, char *date1, char *date2){
-    link deleted = NULL;
-    int headHasToGo = 0;
-    // if also head is included
-    if (isBefore(date1, head->val.dataNascita)){
+link deleteByDateInterval(link *head, char *date1, char *date2){
+    link lastToKeep, firstToDelete, lastToDelete;
+    int deleteHead = 0;
+    lastToKeep = *head;
+    // if also head should be deleted
+    if (isBefore((*head)->val.dataNascita, date1)){
         // if list has lenght one, return the firs element (it will be freed)
-        if (head->next == NULL){
-            return head;
+        if ((*head)->next == NULL){
+            link headcp = *head;
+            *head = NULL;
+            return headcp;
         }
-        headHasToGo = 1;
+        deleteHead = 1;
+        firstToDelete = *head;
+    } else {
+        // head, ..., lastToKeep, firstToDelete, ... lastToDelete, ..., lastElement, NULL
+        // loop up until you find the true lastToKeep (is not head)
+        while(lastToKeep->next!=NULL && isBefore(date1, lastToKeep->next->val.dataNascita)){ lastToKeep = lastToKeep->next;}
+        // no element to delete
+        if (lastToKeep->next == NULL){ return NULL; }
+        firstToDelete = lastToKeep->next;
     }
-    link previous=head;
-    // loop up until previous->next should be deleted
-    while(isBefore(date1, previous->next->val.dataNascita)){ previous = previous->next;}
-    // this is a list containing the deleted elements. non mi piace tanto sta soluzione
-    // head, ..., previous, toDelete, ..., last el, NULL
-    while(previous->next!=NULL && isBefore(date2, previous->next->val.dataNascita)){
-        deleted = insertHead(deleted, previous->next->val);
-        link tmp = previous->next;
-        previous->next = tmp->next;
-        free(tmp);
-    }
+    // loop until you find the true lastToDelete
+    lastToDelete = firstToDelete;
+    while(lastToDelete->next!=NULL && isBefore(date2, lastToDelete->next->val.dataNascita)){ lastToDelete = lastToDelete->next;}
 
-    return deleted;
+    if (deleteHead) {
+        // if to delete all the list, 
+        if (lastToDelete->next == NULL){
+            link headcp = *head;
+            *head = NULL;
+            return headcp;
+        }
+        // head transforms into the element after lastToDelete
+        *head = lastToDelete->next;
+        lastToDelete->next = NULL;
+    } else {
+        // head, ..., previous, ..., lastElement, NULL
+        lastToKeep->next = lastToDelete->next;
+        // firstToDelete, ... lastToDelete, NULL
+        lastToDelete->next = NULL;
+    }
+    return firstToDelete;
 }
 
 link freeList(link head){

@@ -15,10 +15,12 @@ link insertOrderedBirthday(link head, Item val);
 link searchByCode(link head, char *code);
 // delete the first node with the given code (and return it)
 // the main has to dealocate the returned node
-link deleteByCode(link head, char *code);
+// the list is passed by reference, so it can modify the head if the head should be removed
+link deleteByCode(link *head, char *code);
 // the first node in the date interval is removed from the list, and returned
+// the list is passed by reference, so it can modify the head if the head should be removed
 // date1 is after date2
-link deleteByDateInterval(link head, char *date1, char *date2);
+link deleteByDateInterval(link *head, char *date1, char *date2);
 
 link freeList(link head);
 int isBefore(char *a, char *b);
