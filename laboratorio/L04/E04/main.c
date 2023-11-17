@@ -49,8 +49,7 @@ void findMaxCollana(int *mark, int *val_pietre, int max_rip){
 
     findCollanaR(0, sol, mark, markInv, val_pietre, maxLenghtPossible, &maxValFound, maxCollana, max_rip, &maxLenghtFound, 0);
 
-    printf(" valore massimo possibile = %2d. Valore massimo trovato = %4d (usando %2d gemme). ", maxValPoss, maxValFound, maxLenghtFound);
-
+    printf(" Valore massimo trovato = %4d (usando %2d gemme). ", maxValFound, maxLenghtFound);
     printf("Collana massima: ");
     for (int i=0; i<maxLenghtFound; i++){
         enum Pietra p = maxCollana[i];
@@ -85,24 +84,36 @@ int findCollanaR(int pos, int *sol, int *mark, int *markInv, int *val_pietre, in
         // calcola tutti i criteri di pruning
         int criterioPrecedente, criterioRipetizioniConsec, criterioZminoreS, criterioMark;
         // - prendi una pietra che possa stare davanti all'ultima pietra della collana
-        if (pos != 0){
-            pietraPrecedente = sol[pos-1];
-            criterioPrecedente = thisOrderIsPossible(pietraPrecedente, p);
-            
-            // - nessuna tipologia di pietra si può ripetere più di max_rip volte consecutive
-            if (p==pietraPrecedente){
-                newNVC++;
-                if (newNVC > max_rip) {
-                    criterioRipetizioniConsec = 0;
-                } else{ criterioRipetizioniConsec = 1; }
-            }
-            else { criterioRipetizioniConsec = 1; newNVC = 1; }
-        } else {
-            // the first stone can always be there
-            criterioPrecedente = 1;
-            criterioRipetizioniConsec = 1;
-            newNVC = 1;
+                    // if (pos != 0){
+                    //     pietraPrecedente = sol[pos-1];
+                    //     criterioPrecedente = thisOrderIsPossible(pietraPrecedente, p);
+                        
+                    //     // - nessuna tipologia di pietra si può ripetere più di max_rip volte consecutive
+                    //     if (p==pietraPrecedente){
+                    //         newNVC++;
+                    //         if (newNVC > max_rip) {
+                    //             criterioRipetizioniConsec = 0;
+                    //         } else{ criterioRipetizioniConsec = 1; }
+                    //     }
+                    //     else { criterioRipetizioniConsec = 1; newNVC = 1; }
+                    // } else {
+                    //     // the first stone can always be there
+                    //     criterioPrecedente = 1;
+                    //     criterioRipetizioniConsec = 1;
+                    //     newNVC = 1;
+                    // }
+        // in caso p sia la prima pietra, può sempre stare lì, quindi prendi una pietra che può di sicuro può precedere p
+        if (pos==0){ pietraPrecedente = regole[p][0]; }
+        else { pietraPrecedente = sol[pos-1]; }
+        criterioPrecedente = thisOrderIsPossible(pietraPrecedente, p);
+        // - nessuna tipologia di pietra si può ripetere più di max_rip volte consecutive
+        if (p==pietraPrecedente){
+            newNVC++;
+            if (newNVC > max_rip) {
+                criterioRipetizioniConsec = 0;
+            } else{ criterioRipetizioniConsec = 1; }
         }
+        else { criterioRipetizioniConsec = 1; newNVC = 1; }
         // - ci devono essere abbastanza pietre rimaste
         criterioMark = mark[p] > 0;
         // - il numero di zaffiri non può superare il numero di smeraldi
