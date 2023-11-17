@@ -81,54 +81,30 @@ int findCollanaR(int pos, int *sol, int *mark, int *markInv, int *val_pietre, in
     for (enum Pietra p=ZAFFIRO; p<=SMERALDO; p++){
         enum Pietra pietraPrecedente;
         int newNVC = nVolteConsec;
-        // calcola tutti i criteri di pruning
-        int criterioPrecedente, criterioRipetizioniConsec, criterioZminoreS, criterioMark;
-        // - prendi una pietra che possa stare davanti all'ultima pietra della collana
-                    // if (pos != 0){
-                    //     pietraPrecedente = sol[pos-1];
-                    //     criterioPrecedente = thisOrderIsPossible(pietraPrecedente, p);
-                        
-                    //     // - nessuna tipologia di pietra si può ripetere più di max_rip volte consecutive
-                    //     if (p==pietraPrecedente){
-                    //         newNVC++;
-                    //         if (newNVC > max_rip) {
-                    //             criterioRipetizioniConsec = 0;
-                    //         } else{ criterioRipetizioniConsec = 1; }
-                    //     }
-                    //     else { criterioRipetizioniConsec = 1; newNVC = 1; }
-                    // } else {
-                    //     // the first stone can always be there
-                    //     criterioPrecedente = 1;
-                    //     criterioRipetizioniConsec = 1;
-                    //     newNVC = 1;
-                    // }
-        // in caso p sia la prima pietra, può sempre stare lì, quindi prendi una pietra che può di sicuro può precedere p
+        // calcola tutti i criteri di pruning (sono 4):
+        // - in caso p sia la prima pietra, può sempre stare lì, quindi prendi una pietra che può di sicuro può precedere p
         if (pos==0){ pietraPrecedente = regole[p][0]; }
         else { pietraPrecedente = sol[pos-1]; }
-        criterioPrecedente = thisOrderIsPossible(pietraPrecedente, p);
+        if (!thisOrderIsPossible(pietraPrecedente, p)){ continue; }
         // - nessuna tipologia di pietra si può ripetere più di max_rip volte consecutive
         if (p==pietraPrecedente){
             newNVC++;
-            if (newNVC > max_rip) {
-                criterioRipetizioniConsec = 0;
-            } else{ criterioRipetizioniConsec = 1; }
+            if (newNVC > max_rip) { continue; }
         }
-        else { criterioRipetizioniConsec = 1; newNVC = 1; }
+        else { newNVC = 1; }
         // - ci devono essere abbastanza pietre rimaste
-        criterioMark = mark[p] > 0;
+        if (mark[p] == 0) { continue; }
         // - il numero di zaffiri non può superare il numero di smeraldi
         int newSmeraldo = markInv[SMERALDO] + (p==SMERALDO);
         int newZaffiro = markInv[ZAFFIRO] + (p==ZAFFIRO);
-        criterioZminoreS = newZaffiro <= newSmeraldo;
+        if (newZaffiro > newSmeraldo) { continue; }
 
         // se tutti i criteri sono soddisfatti, aggiungi la pietra alla collana
-        if (criterioMark && criterioPrecedente && criterioRipetizioniConsec && criterioZminoreS){
-            sol[pos] = p;
-            mark[p]--; markInv[p]++;
-            if (findCollanaR(pos+1, sol, mark, markInv, val_pietre, maxPossible, max, maxCollana, max_rip, maxLenght, newNVC)) { return 1; }
-            mark[p]++; markInv[p]--;
-            addedAtLeasOne = 1;
-        }
+        sol[pos] = p;
+        mark[p]--; markInv[p]++;
+        if (findCollanaR(pos+1, sol, mark, markInv, val_pietre, maxPossible, max, maxCollana, max_rip, maxLenght, newNVC)) { return 1; }
+        mark[p]++; markInv[p]--;
+        addedAtLeasOne = 1;
     }
     // condizione di terminazione. non serve metterlo prima perchè nel caso si abbia pos=maxLenghtPossible, il vettore mark sarà tutto a 0, quindi sol[pos] non verrà mai eseguito (non c'è errore) e !addedAtLeasOne rimane a true
     if (!addedAtLeasOne){
