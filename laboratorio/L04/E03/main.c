@@ -23,7 +23,7 @@ int findCollanaR(int pos, int *sol, int *mark, int* maxPossible, int* max, int *
 
 int main(){
     int n, z, r, t, s;
-    FILE* fp = fopen("easy_test_set.txt", "r");
+    FILE* fp = fopen("hard_test_set.txt", "r");
     fscanf(fp, "%d\n", &n);
     for (int i=0;i<n;i++){
         fscanf(fp, "%d %d %d %d\n", &z, &r, &t, &s);
