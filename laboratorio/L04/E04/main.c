@@ -19,16 +19,6 @@ int thisOrderIsPossible(enum Pietra a, enum Pietra b){
     return 0;
 }
 
-int isPossible(enum Pietra pietraPrecedente, enum Pietra p, int *markInv, int max_rip, int nVolteConsec){
-    // le condizioni sono:
-    // - la pietra attuale può stare dopo la pietra precedente. questo è determinato dalle regole
-    // - nessuna tipologia di pietra si può ripetere più di max_rip volte consecutive
-    // - il numero di zaffiri non può superare il numero di smeraldi
-    int newSmeraldo = markInv[SMERALDO] + (p==SMERALDO);
-    int newZaffiro = markInv[ZAFFIRO] + (p==ZAFFIRO);
-    return thisOrderIsPossible(pietraPrecedente, p) && (nVolteConsec <= max_rip) && (newZaffiro <= newSmeraldo);
-}
-
 void findMaxCollana(int *mark, int *val_pietre, int max_rip);
 int findCollanaR(int pos, int *sol, int *mark, int *markInv, int *val_pietre, int maxPossible, int* max, int *maxCollana, int max_rip, int* maxLenght, int nVolteConsec);
 
@@ -49,9 +39,9 @@ void findMaxCollana(int *mark, int *val_pietre, int max_rip){
     int maxValFound = 0;
     int maxLenghtFound = 0;
     int maxLenghtPossible = 0;
-    for (int i=0; i<n_pietre; i++){ maxLenghtPossible += mark[i];}
+    for (enum Pietra p=ZAFFIRO; p<=SMERALDO; p++){ maxLenghtPossible += mark[p];}
     int maxValPoss = 0;
-    for (int i=0; i<n_pietre; i++){ maxValPoss += mark[i]*val_pietre[i]; }
+    for (enum Pietra p=ZAFFIRO; p<=SMERALDO; p++){ maxValPoss += mark[p]*val_pietre[p]; }
     
     int *maxCollana = malloc(sizeof(int)*maxLenghtPossible); // forse stiamo sovrallocando ma vabbe
     int *sol = malloc(sizeof(int)*maxLenghtPossible);
@@ -77,7 +67,7 @@ void findMaxCollana(int *mark, int *val_pietre, int max_rip){
 pos è l'indice della ricorsione a cui siamo arrivati
 sol è la collana che abbiamo composto finora. il numero 0 sta per zaffiro, 1 per rubino, eccetra
 mark è un vettore di n_pietre interi, che contirne il numero di pietre ancora disponibili per trovare la collana
-markInv è un vettore di n_pietre interi, che contirne il numero di pietre usate per trovare la collana
+markInv è un vettore di n_pietre interi, che contirne il numero di pietre usate per trovare la collana. NOTA: in realtà ci serve solo contare gli zaffiri e gli smeraldi, ma li contiamo tutti per generalità
 val_pietre è un vettore di n_pietre interi, che contiene il valore di ogni pietra
 maxPossible is z+r+t+s
 max è la lughezza massima trovata della collana finora (passato by reference)
@@ -91,20 +81,39 @@ int findCollanaR(int pos, int *sol, int *mark, int *markInv, int *val_pietre, in
     int addedAtLeasOne = 0;
     for (enum Pietra p=ZAFFIRO; p<=SMERALDO; p++){
         enum Pietra pietraPrecedente;
-        // prendi una pietra che possa stare davanti alla prima pietra della collana, in modo che tutte le pietre possano stare all'inizio della collana
-        if (pos==0){ pietraPrecedente = regole[p][0]; }
-        else {
+        int newNVC = nVolteConsec;
+        // calcola tutti i criteri di pruning
+        int criterioPrecedente, criterioRipetizioniConsec, criterioZminoreS, criterioMark;
+        // - prendi una pietra che possa stare davanti all'ultima pietra della collana
+        if (pos != 0){
             pietraPrecedente = sol[pos-1];
+            criterioPrecedente = thisOrderIsPossible(pietraPrecedente, p);
+            
+            // - nessuna tipologia di pietra si può ripetere più di max_rip volte consecutive
+            if (p==pietraPrecedente){
+                newNVC++;
+                if (newNVC > max_rip) {
+                    criterioRipetizioniConsec = 0;
+                } else{ criterioRipetizioniConsec = 1; }
+            }
+            else { criterioRipetizioniConsec = 1; newNVC = 1; }
+        } else {
+            // the first stone can always be there
+            criterioPrecedente = 1;
+            criterioRipetizioniConsec = 1;
+            newNVC = 1;
         }
+        // - ci devono essere abbastanza pietre rimaste
+        criterioMark = mark[p] > 0;
+        // - il numero di zaffiri non può superare il numero di smeraldi
+        int newSmeraldo = markInv[SMERALDO] + (p==SMERALDO);
+        int newZaffiro = markInv[ZAFFIRO] + (p==ZAFFIRO);
+        criterioZminoreS = newZaffiro <= newSmeraldo;
 
         // se tutti i criteri sono soddisfatti, aggiungi la pietra alla collana
-        if (isPossible(pietraPrecedente, p, markInv, max_rip, nVolteConsec) && mark[p] > 0){
+        if (criterioMark && criterioPrecedente && criterioRipetizioniConsec && criterioZminoreS){
             sol[pos] = p;
             mark[p]--; markInv[p]++;
-            int newNVC;
-            if (p==pietraPrecedente){ newNVC = nVolteConsec+1; }
-            else { newNVC = 1; }
-            
             if (findCollanaR(pos+1, sol, mark, markInv, val_pietre, maxPossible, max, maxCollana, max_rip, maxLenght, newNVC)) { return 1; }
             mark[p]++; markInv[p]--;
             addedAtLeasOne = 1;
