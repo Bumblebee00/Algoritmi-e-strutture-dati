@@ -1,11 +1,10 @@
 #include <stdio.h>
 #include<stdlib.h>
-
 #define n_pietre 4
 
 enum Pietra { ZAFFIRO, RUBINO, TOPAZIO, SMERALDO };
 
-// regole[RUBINO] (equivalente a regole[1]) contiene le pietre che possono precedere il rubino
+// regole[RUBINO] (equivalente a regole[1]) contiene le pietre che possono precedere il rubino, e così via
 int regole[n_pietre][2] = {
     {ZAFFIRO, TOPAZIO},
     {ZAFFIRO, TOPAZIO},
@@ -18,9 +17,9 @@ int thisOrderIsPossible(enum Pietra a, enum Pietra b){
     for (int i=0; i<2; i++){ if (regole[b][i] == a) return 1; }
     return 0;
 }
-
 void findMaxCollana(int *mark, int *val_pietre, int max_rip);
 int findCollanaR(int pos, int *sol, int *mark, int *markInv, int *val_pietre, int maxPossible, int* max, int *maxCollana, int max_rip, int* maxLenght, int nVolteConsec);
+void printCollana(int *collana, int lenght);
 
 int main(){
     int n, z, r, t, s, vz, vr, vt, vs, max_rip;
@@ -30,34 +29,30 @@ int main(){
         fscanf(fp, "%d %d %d %d  %d %d %d %d %d\n", &z, &r, &t, &s, &vz, &vr, &vt, &vs, &max_rip);
         int mark[n_pietre] = {z, r, t, s};
         int val_pietre[n_pietre] = {vz, vr, vt, vs};
-        printf("Test #%2d:", i+1);
+        printf("Test #%2d: ", i+1);
         findMaxCollana(mark, val_pietre, max_rip);
     }
+    fclose(fp);
 }
 
 void findMaxCollana(int *mark, int *val_pietre, int max_rip){
     int maxValFound = 0;
     int maxLenghtFound = 0;
     int maxLenghtPossible = 0;
-    for (enum Pietra p=ZAFFIRO; p<=SMERALDO; p++){ maxLenghtPossible += mark[p];}
     int maxValPoss = 0;
-    for (enum Pietra p=ZAFFIRO; p<=SMERALDO; p++){ maxValPoss += mark[p]*val_pietre[p]; }
-    
+    for (enum Pietra p=ZAFFIRO; p<=SMERALDO; p++){
+        maxLenghtPossible += mark[p];
+        maxValPoss += mark[p]*val_pietre[p];
+    }
     int *maxCollana = malloc(sizeof(int)*maxLenghtPossible); // forse stiamo sovrallocando ma vabbe
     int *sol = malloc(sizeof(int)*maxLenghtPossible);
     int markInv[n_pietre] = {0, 0, 0, 0};
 
     findCollanaR(0, sol, mark, markInv, val_pietre, maxLenghtPossible, &maxValFound, maxCollana, max_rip, &maxLenghtFound, 0);
 
-    printf(" Valore massimo trovato = %4d (usando %2d gemme). ", maxValFound, maxLenghtFound);
-    printf("Collana massima: ");
-    for (int i=0; i<maxLenghtFound; i++){
-        enum Pietra p = maxCollana[i];
-        if (p==ZAFFIRO) printf("z");
-        else if (p==RUBINO) printf("r");
-        else if (p==TOPAZIO) printf("t");
-        else if (p==SMERALDO) printf("s");
-    } printf("\n");
+    printf("Valore massimo trovato = %4d (usando %2d gemme). Collana massima: ", maxValFound, maxLenghtFound);
+    printCollana(maxCollana, maxLenghtFound);
+
     free(maxCollana);
     free(sol);
 }
@@ -72,6 +67,7 @@ maxPossible is z+r+t+s
 max è la lughezza massima trovata della collana finora (passato by reference)
 maxCollana è la collana più lunga trovata (stesso type di sol)
 max_rip è il numero massimo di ripetizioni di una pietra
+maxLenght è la lunghezza della collana più lunga trovata finora (passato by reference)
 nVolteConsec è il numero di volte consecutive che la tipologia di pietra attuale è stata aggiunta alla collana
 
 the return value is 0 or 1 (= max possible solution has been found)
@@ -82,8 +78,8 @@ int findCollanaR(int pos, int *sol, int *mark, int *markInv, int *val_pietre, in
         enum Pietra pietraPrecedente;
         int newNVC = nVolteConsec;
         // calcola tutti i criteri di pruning (sono 4):
-        // - in caso p sia la prima pietra, può sempre stare lì, quindi prendi una pietra che può di sicuro può precedere p
-        if (pos==0){ pietraPrecedente = regole[p][0]; }
+        // - la pietra p deve poter stare dopo la pietra precedente
+        if (pos==0){ pietraPrecedente = regole[p][0]; } // in caso p sia la prima pietra, può sempre stare lì, quindi prendi una pietra che può di sicuro può precedere p
         else { pietraPrecedente = sol[pos-1]; }
         if (!thisOrderIsPossible(pietraPrecedente, p)){ continue; }
         // - nessuna tipologia di pietra si può ripetere più di max_rip volte consecutive
@@ -95,9 +91,7 @@ int findCollanaR(int pos, int *sol, int *mark, int *markInv, int *val_pietre, in
         // - ci devono essere abbastanza pietre rimaste
         if (mark[p] == 0) { continue; }
         // - il numero di zaffiri non può superare il numero di smeraldi
-        int newSmeraldo = markInv[SMERALDO] + (p==SMERALDO);
-        int newZaffiro = markInv[ZAFFIRO] + (p==ZAFFIRO);
-        if (newZaffiro > newSmeraldo) { continue; }
+        if (markInv[SMERALDO] + (p==SMERALDO) > markInv[ZAFFIRO] + (p==ZAFFIRO)) { continue; }
 
         // se tutti i criteri sono soddisfatti, aggiungi la pietra alla collana
         sol[pos] = p;
@@ -119,4 +113,16 @@ int findCollanaR(int pos, int *sol, int *mark, int *markInv, int *val_pietre, in
         }
     }
     return 0;
+}
+
+void printCollana(int *collana, int lenght){
+    for (int i=0; i<lenght; i++){
+        switch (collana[i]){
+            case ZAFFIRO: printf("z"); break;
+            case RUBINO: printf("r"); break;
+            case TOPAZIO: printf("t"); break;
+            case SMERALDO: printf("s"); break;
+        }
+    }
+    printf("\n");
 }
