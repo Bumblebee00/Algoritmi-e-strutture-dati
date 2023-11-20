@@ -1,7 +1,33 @@
+[20/11/23] In questa lezione abbiamo parlato di cosa sono i tipi di dati astratti e come potremmo implementarli.
+Indice completo del file markdown:
+- [Tipi di dati astratti](#tipi-di-dati-astratti)
+  - [Tipo di dati standard](#tipo-di-dati-standard)
+  - [Tipo di dati definiti dall'utente](#tipo-di-dati-definiti-dallutente)
+  - [Quasi ADT](#quasi-adt)
+    - [Esemio: quasi ADT per numeri complessi](#esemio-quasi-adt-per-numeri-complessi)
+    - [Tipo 1](#tipo-1)
+    - [Tipo 2](#tipo-2)
+    - [Tipo 3](#tipo-3)
+    - [Tipo 4](#tipo-4)
+    - [Funzioni di interfaccia di Item](#funzioni-di-interfaccia-di-item)
+      - [Header](#header)
+      - [Implementazione](#implementazione)
+        - [Tipo 1](#tipo-1-1)
+        - [Tipo 2](#tipo-2-1)
+        - [Tipo 3](#tipo-3-1)
+        - [Tipo 4](#tipo-4-1)
+  - [ADT di I classe](#adt-di-i-classe)
+    - [Esempio: ADT di I classe per numeri complessi](#esempio-adt-di-i-classe-per-numeri-complessi)
+    - [Header](#header-1)
+    - [Implementazione](#implementazione-1)
+- [Usare ADT per collezioni](#usare-adt-per-collezioni)
+  - [Lista non ordinata](#lista-non-ordinata)
+  - [Set](#set)
+
 # Tipo di dato astratto
 astrastto: nasconde l'informazione in un livello inferiore. Sono utili perchènon si vuole che il client abbia accesso ai dettagli dell'implementazione.
 
-## Tipo di dati standard
+### Tipo di dati standard
 Tipi scalari (numeri e caratteri):
 - int (signed, unsigned, long, short) o float (double, long double)
 - char
@@ -9,16 +35,15 @@ Tipi strutturati (composti/aggregati)
 - array (vettori/matrici: campi omogenei)
 - struct (campi eterogenei)
 
-## Tipo di dati definiti dall'utente
+### Tipo di dati definiti dall'utente
 Valori:
 - typedef permette di introdurre un nuovo nome per un tipo (da ricondurre a un tipo base, scalare o composto aggregato)
 Operazioni
 - una funzione permette di definire una nuova operazione su argomenti e/o dato ritornato.
 
-## ADT
 Il C non ha un meccanismo semplice ed automatico di creazione di ADT. L’ADT è realizzato come modulo con una coppia di file interfaccia/implementazione. Enfasi su come nascondere i dettagli dell’implementazione al client.
 
-# Quasi ADT
+## Quasi ADT
 Interfaccia
 - definizione del nuovo tipo con typedef
 - raramente si appoggia su tipi base, in generale è un tipo composto, aggregato o contenitore (struct wrapper)
@@ -27,7 +52,7 @@ Interfaccia
 Implementazione
 - Il client include il file header, quindi vede i dettagli interni del dato e/o del wrapper
 
-## Esempio: quasi ADT per numeri complessi
+### Esempio: quasi ADT per numeri complessi
 - nuovo tipo Complex
 - struct con campi per parte reale e coefficiente dell’immaginario
 -  funzione di prodotto tra 2 numeri complessi.
@@ -69,21 +94,21 @@ il problema potrebbe essere che il main chiama .re, poi l'implementazione della 
 
 Ora per una cosa così semplici come i numeri complessi, è un po' troppo complicato. Ma per tipi di dati più complessi, come ad esempio una lista, è molto utile.
 
-## Tipo 1
+### Tipo 1
 Il più semplice: non c'è la struct. Nessun problema di proprietà, in quanto non c’è allocazione dinamica.
 ```c
 typedef int Item;
 typedef int Key;
 ```
 
-## Tipo 2
+### Tipo 2
 Stringa: item e chiave sono i puntatori al primo carattere della stringa.
 ```c
 typedef char *Item;
 typedef char *Key;
 ```
 
-## Tipo 3
+### Tipo 3
 struct con tutto dentro
 ```c
 typedef struct item {
@@ -92,7 +117,7 @@ typedef struct item {
 } Item;
 typedef char *Key;
 ```
-## Tipo 4
+### Tipo 4
 composto per riferimento: struct con puntatori. probabilmente richiede allocazione dinamica.
 ```c
 typedef struct item {
@@ -102,8 +127,8 @@ typedef struct item {
 typedef char *Key;
 ```
 
-## Funzioni di interfaccia di Item
-### Header
+### Funzioni di interfaccia di Item
+#### Header
 ```c
 /* definizione di Item e Key */
 int KEYcompare(Key k1, Key k2);
@@ -120,8 +145,8 @@ e per `KEYget()` ? cosa si passa come parametro? be se la chiave è un puntatore
 Key KEYget(Item *pval);
 ```
 
-### Implementazione
-#### Tipo 1
+#### Implementazione
+##### Tipo 1
 semplice intero
 ```c
 Key KEYget(Item val) { return (val); }
@@ -139,7 +164,7 @@ int ITEMless(Item val1, Item val2) {
 }
 ```
 
-#### Tipo 2
+##### Tipo 2
 stringa
 ```c
 static char buf[MAXC]; // NOTA: essendo questa non definta in un header, è statica, e quindi non è visibile al client. qundi altri file (compreso il client) possono avere una variabile buf, senza problemi
@@ -156,7 +181,7 @@ int ITEMless(Item val1, Item val2) {
 }
 ```
 
-#### Tipo 3
+##### Tipo 3
 struct con stringa tutta dentro
 ```c
 Key KEYget(Item *pval) { return (pval->name); }
@@ -175,7 +200,7 @@ int ITEMless(Item val1, Item val2) {
 }
 ```
 
-#### Tipo 4
+##### Tipo 4
 struct con puntatori
 ```c
 static char buf[MAXC];
@@ -201,7 +226,7 @@ int ITEMless(Item val1, Item val2) {
 Il tipo 4 (struttura mista) presenta un probelma: chi dealloca?
 
 
-# ADT di I classe
+## ADT di I classe
 Per impedire al client di vedere i dettagli della struct:
 - il tipo di dato viene dichiarato nel file .h di interfaccia come struttura incompleta, o come puntatore a struct incompleta, non viene quindi definita la struct composto, aggregato o wrapper
 - la struct viene invece completamente definita nel file .c
@@ -210,7 +235,7 @@ Per impedire al client di vedere i dettagli della struct:
 
 
 
-## Esempio: ADT di I classe per numeri complessi
+### Esempio: ADT di I classe per numeri complessi
 Il client che include complex.h NON vede i dettagli della struct.
 complex.h ha introdotto un nuovo tipo di dato Complex, che è un puntatore a struct incompleta.
 poi complex.c definisce la struct e le funzioni.
@@ -258,7 +283,7 @@ int main (void) {
 }
 ```
 
-## Header
+### Header
 ```c
 typedef struct item *Item;
 typedef char *Key;
@@ -275,7 +300,7 @@ void ITEMshow(Item val);
 int ITEMless(Item val1, Item val2); int ITEMgreater(Item val1, Item val2); int ITEMcheckvoid(Item val);
 Item ITEMsetvoid();
 ```
-## Implementazione
+### Implementazione
 ```c
 // per i tipo 3
 struct item {
@@ -322,6 +347,7 @@ void ITEMfree(Item val) {
 }
 ```
 Item scan invece... boh
+
 
 # Usare ADT per collezioni
 ## Lista non ordinata
