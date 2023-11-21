@@ -5,18 +5,13 @@
 
 enum Pietra { ZAFFIRO, RUBINO, TOPAZIO, SMERALDO };
 
-// regole[RUBINO] (equivalente a regole[1]) contiene le pietre che possono precedere il rubino
-int regole[n_pietre][2] = {
-    {ZAFFIRO, TOPAZIO},
-    {ZAFFIRO, TOPAZIO},
-    {RUBINO, SMERALDO},
-    {RUBINO, SMERALDO}
+// successivo[TOPAZIO] (equivalente a successivo[2]) contiene le pietre che possono stare dopo al topazio
+int successivo[n_pietre][2] = {
+    {ZAFFIRO, RUBINO},
+    {TOPAZIO, SMERALDO},
+    {ZAFFIRO, RUBINO},
+    {TOPAZIO, SMERALDO},
 };
-
-// decides wether the order of stones a -> b is alowed
-int thisOrderIsPossible(int a, int b){
-    return (a==regole[b][0] || a==regole[b][1]);
-}
 
 void findMaxCollana(int *mark);
 int findCollanaR(int pos, int *sol, int *mark, int* maxPossible, int* max, int *maxCollana);
@@ -40,18 +35,23 @@ void findMaxCollana(int *mark){
     int *maxCollana = malloc(sizeof(int)*maxLenghtPossible); // forse stiamo sovrallocando ma vabbe
     int *sol = malloc(sizeof(int)*maxLenghtPossible);
 
-    findCollanaR(0, sol, mark, &maxLenghtPossible, &maxLenghtFound, maxCollana);
+    for (enum Pietra p=ZAFFIRO; p<=SMERALDO; p++){
+        if (mark[p] == 0){ continue; }
+        sol[0] = p;
+        mark[p]--;
+        if (findCollanaR(1, sol, mark, &maxLenghtPossible, &maxLenghtFound, maxCollana)) { break; }
+        mark[p]++;
+    }
 
-    printf(" z + r + t + s = %2d. Lunghezza massima: %2d\n", maxLenghtPossible, maxLenghtFound);
+    printf(" z+r+t+s = %2d Lunghezza massima: %2d Collana massima: ", maxLenghtPossible, maxLenghtFound);
+    for (int i=0; i<maxLenghtFound; i++){
+        enum Pietra p = maxCollana[i];
+        if (p==ZAFFIRO) printf("z");
+        else if (p==RUBINO) printf("r");
+        else if (p==TOPAZIO) printf("t");
+        else if (p==SMERALDO) printf("s");
+    } printf("\n");
 
-    // printf("Collana massima: ");
-    // for (int i=0; i<maxLenghtFound; i++){
-    //     enum Pietra p = maxCollana[i];
-    //     if (p==ZAFFIRO) printf("ZAFFIRO ");
-    //     else if (p==RUBINO) printf("RUBINO ");
-    //     else if (p==TOPAZIO) printf("TOPAZIO ");
-    //     else if (p==SMERALDO) printf("SMERALDO ");
-    // } printf("\n");
     free(maxCollana);
     free(sol);
 }
@@ -68,21 +68,60 @@ the return value is 0 or 1 (= max possible solution has been found)
 */
 int findCollanaR(int pos, int *sol, int *mark, int* maxPossible, int* max, int *maxCollana){
     int addedAtLeasOne = 0;
-    for (enum Pietra p=ZAFFIRO; p<=SMERALDO; p++){
-        enum Pietra pietraPrecedente;
-        if (pos==0) pietraPrecedente = regole[p][0]; // prendi una pietra che possa stare davanti alla prima pietra della collana, in modo che tutte le pietre possano stare all'inizio della collana
-        else pietraPrecedente = sol[pos-1];
-
-        // se la pietra p può seguire la pietra precedente, prosegui la ricerca
-        if (thisOrderIsPossible(pietraPrecedente, p)){
-            if (mark[p] > 0){
-                sol[pos] = p;
-                mark[p]--;
-                if (findCollanaR(pos+1, sol, mark, maxPossible, max, maxCollana)) { return 1; }
-                mark[p]++;
-                addedAtLeasOne = 1;
+    for (int i=0; i<2; i++){
+        enum Pietra p = successivo[sol[pos-1]][i];
+        // - se non ci sono abbastanza pietre, passa alla prossima pietra
+        if (mark[p] == 0){ continue; }
+        // - se siamo a una ...t, e sono finite le r, la collana continuerà con tutte le z e poi bom
+        if (p == TOPAZIO && mark[RUBINO]==0){
+            int len = pos+1+mark[ZAFFIRO];
+            addedAtLeasOne=1;
+            if (len <= *max) { continue; }
+            else {
+                *max = len;
+                if (*max == *maxPossible){ return 1; }
+                
+                int i;
+                for (i=0; i<pos; i++){ maxCollana[i] = sol[i]; }
+                maxCollana[pos] = TOPAZIO;
+                i++;
+                while (mark[ZAFFIRO]!=0)
+                {
+                    mark[ZAFFIRO]--;
+                    maxCollana[i] = ZAFFIRO;
+                    i++;
+                }
+                continue;
             }
         }
+        // - se siamo a una ...r, e sono finite le t, la collana continuerà con tutte le s e poi bom
+        if (p == RUBINO && mark[TOPAZIO]==0){
+            int len = pos+1+mark[SMERALDO];
+            addedAtLeasOne=1;
+            if (len <= *max) { continue; }
+            else {
+                *max = len;
+                if (*max == *maxPossible){ return 1; }
+                
+                int i;
+                for (i=0; i<pos; i++){ maxCollana[i] = sol[i]; }
+                maxCollana[pos] = RUBINO;
+                i++;
+                while (mark[SMERALDO]!=0)
+                {
+                    mark[SMERALDO]--;
+                    maxCollana[i] = SMERALDO;
+                    i++;
+                }
+                continue;
+            }
+        }
+
+        sol[pos] = p;
+        mark[p]--;
+        if (findCollanaR(pos+1, sol, mark, maxPossible, max, maxCollana)) { return 1; }
+        mark[p]++;
+        addedAtLeasOne = 1;
     }
     // condizione di terminazione. non serve metterlo prima perchè nel caso si abbia pos=maxLenghtPossible, il vettore mark sarà tutto a 0, quindi sol[pos] non verrà mai eseguito (non c'è errore) e !addedAtLeasOne rimane a true
     if (!addedAtLeasOne){
