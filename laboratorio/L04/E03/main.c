@@ -111,7 +111,7 @@ void findMaxCollanaSmart(int *mark){
         max = 2*mark[TOPAZIO]+mark[SMERALDO]+mark[ZAFFIRO];
     }
 
-    printf(" z+r+t+s = %2d Collana massima (di lunghezza %d): ", nOfStones, max);
+    printf(" z+r+t+s = %2d Collana massima (di lunghezza %2d): ", nOfStones, max);
     printCollana(maxCollana, max);
 }
 
@@ -130,7 +130,7 @@ void findMaxCollana(int *mark){
         mark[p]++;
     }
 
-    printf(" z+r+t+s = %2d Collana massima (di lunghezza %d): ", nOfStones, maxLenghtFound);
+    printf(" z+r+t+s = %2d Collana massima (di lunghezza %2d): ", nOfStones, maxLenghtFound);
     printCollana(maxCollana, maxLenghtFound);
 
     free(maxCollana);
@@ -158,26 +158,20 @@ int findCollanaR(int pos, int *sol, int *mark, int* nOfStones, int* max, int *ma
             int len = pos+1+mark[ZAFFIRO];
             addedAtLeasOne=1;
             if (len > *max) {
-                // //
-                // //
-                // // debug
-                // printf("\nMancanza di RUBINI\n");
-                // for (int j=0; j<pos; j++){
-                //     enum Pietra p1 = sol[j];
-                //     if (p1==ZAFFIRO) printf("z");
-                //     else if (p1==RUBINO) printf("r");
-                //     else if (p1==TOPAZIO) printf("t");
-                //     else if (p1==SMERALDO) printf("s");
-                // }
-                // printf("+");
-                // if (p==ZAFFIRO) printf("z");
-                // else if (p==RUBINO) printf("r");
-                // else if (p==TOPAZIO) printf("t");
-                // else if (p==SMERALDO) printf("s");
-                // printf("\npos=%d len=%d p=%d mark[t]=%d mark[r]=%d(=0) mark[z]=%d(più alto possibile)\n", pos, len, p, mark[TOPAZIO], mark[RUBINO], mark[ZAFFIRO]);
-                // // end debug
-                // //
-                // //
+                //
+                //
+                // debug
+                printf("\nMancanza di RUBINI\n");
+                printCollana(sol, pos);
+                printf("+");
+                if (p==ZAFFIRO) printf("z");
+                else if (p==RUBINO) printf("r");
+                else if (p==TOPAZIO) printf("t");
+                else if (p==SMERALDO) printf("s");
+                printf("\npos=%d len=%d p=%d mark[t]=%d mark[r]=%d(=0) mark[z]=%d(più alto possibile)\n", pos, len, p, mark[TOPAZIO], mark[RUBINO], mark[ZAFFIRO]);
+                // end debug
+                //
+                //
                 *max = len;
                 // save this sol
                 int i;
@@ -195,26 +189,20 @@ int findCollanaR(int pos, int *sol, int *mark, int* nOfStones, int* max, int *ma
             int len = pos+1+mark[SMERALDO];
             addedAtLeasOne=1;
             if (len > *max) {
-                // //
-                // //
-                // // debug
-                // printf("\nMancanza di TOPAZI\n");
-                // for (int j=0; j<pos; j++){
-                //     enum Pietra p = sol[j];
-                //     if (p==ZAFFIRO) printf("z");
-                //     else if (p==RUBINO) printf("r");
-                //     else if (p==TOPAZIO) printf("t");
-                //     else if (p==SMERALDO) printf("s");
-                // }
-                // printf("+");
-                // if (p==ZAFFIRO) printf("z");
-                // else if (p==RUBINO) printf("r");
-                // else if (p==TOPAZIO) printf("t");
-                // else if (p==SMERALDO) printf("s");
-                // printf("\npos=%d len=%d p=%d mark[r]=%d mark[t]=%d (= 0) mark[s]=%d (il più alto possibile)\n", pos, len, p, mark[RUBINO], mark[TOPAZIO], mark[SMERALDO]);
-                // // end debug
-                // //
-                // //
+                //
+                //
+                // debug
+                printf("\nMancanza di TOPAZI\n");
+                printCollana(sol, pos);
+                printf("+");
+                if (p==ZAFFIRO) printf("z");
+                else if (p==RUBINO) printf("r");
+                else if (p==TOPAZIO) printf("t");
+                else if (p==SMERALDO) printf("s");
+                printf("\npos=%d len=%d p=%d mark[r]=%d mark[t]=%d (= 0) mark[s]=%d (il più alto possibile)\n", pos, len, p, mark[RUBINO], mark[TOPAZIO], mark[SMERALDO]);
+                // end debug
+                //
+                //
                 *max = len;
                 // save this sol
                 int i;
