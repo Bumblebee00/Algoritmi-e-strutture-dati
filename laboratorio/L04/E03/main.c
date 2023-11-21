@@ -18,7 +18,7 @@ int findCollanaR(int pos, int *sol, int *mark, int* maxPossible, int* max, int *
 
 int main(){
     int n, z, r, t, s;
-    FILE* fp = fopen("hard_test_set.txt", "r");
+    FILE* fp = fopen("easy_test_set.txt", "r");
     fscanf(fp, "%d\n", &n);
     for (int i=0;i<n;i++){
         fscanf(fp, "%d %d %d %d\n", &z, &r, &t, &s);
@@ -76,45 +76,35 @@ int findCollanaR(int pos, int *sol, int *mark, int* maxPossible, int* max, int *
         if (p == TOPAZIO && mark[RUBINO]==0){
             int len = pos+1+mark[ZAFFIRO];
             addedAtLeasOne=1;
-            if (len <= *max) { continue; }
-            else {
+            if (len > *max) {
                 *max = len;
                 if (*max == *maxPossible){ return 1; }
-                
+                // save this sol
                 int i;
                 for (i=0; i<pos; i++){ maxCollana[i] = sol[i]; }
                 maxCollana[pos] = TOPAZIO;
                 i++;
-                while (mark[ZAFFIRO]!=0)
-                {
-                    mark[ZAFFIRO]--;
-                    maxCollana[i] = ZAFFIRO;
-                    i++;
-                }
-                continue;
+                for (; i<len; i++) { maxCollana[i] = ZAFFIRO; }
             }
+            // now we calculated this branche and we passiamo alla prossima pietra
+            continue;
         }
         // - se siamo a una ...r, e sono finite le t, la collana continuerà con tutte le s e poi bom
         if (p == RUBINO && mark[TOPAZIO]==0){
             int len = pos+1+mark[SMERALDO];
             addedAtLeasOne=1;
-            if (len <= *max) { continue; }
-            else {
+            if (len > *max) {
                 *max = len;
                 if (*max == *maxPossible){ return 1; }
-                
+                // save this sol
                 int i;
                 for (i=0; i<pos; i++){ maxCollana[i] = sol[i]; }
                 maxCollana[pos] = RUBINO;
                 i++;
-                while (mark[SMERALDO]!=0)
-                {
-                    mark[SMERALDO]--;
-                    maxCollana[i] = SMERALDO;
-                    i++;
-                }
-                continue;
+                for (; i<len; i++) { maxCollana[i] = SMERALDO; }
             }
+            // now we calculated this branche and we passiamo alla prossima pietra
+            continue;
         }
 
         sol[pos] = p;
