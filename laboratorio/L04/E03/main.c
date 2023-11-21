@@ -18,12 +18,12 @@ int findCollanaR(int pos, int *sol, int *mark, int* maxPossible, int* max, int *
 
 int main(){
     int n, z, r, t, s;
-    FILE* fp = fopen("easy_test_set.txt", "r");
+    FILE* fp = fopen("hard_test_set.txt", "r");
     fscanf(fp, "%d\n", &n);
     for (int i=0;i<n;i++){
         fscanf(fp, "%d %d %d %d\n", &z, &r, &t, &s);
         int mark[n_pietre] = {z, r, t, s};
-        printf("Test #%2d:", i);
+        printf("\n\n\nTest #%2d:", i);
         findMaxCollana(mark);
     }
 }
@@ -73,35 +73,68 @@ int findCollanaR(int pos, int *sol, int *mark, int* maxPossible, int* max, int *
         // - se non ci sono abbastanza pietre, passa alla prossima pietra
         if (mark[p] == 0){ continue; }
         // - se siamo a una ...t, e sono finite le r, la collana continuerà con tutte le z e poi bom
-        if (p == TOPAZIO && mark[RUBINO]==0){
+        if (p == TOPAZIO && mark[RUBINO]==0 && mark[ZAFFIRO]>0){
             int len = pos+1+mark[ZAFFIRO];
             addedAtLeasOne=1;
             if (len > *max) {
+                // // debug
+                // printf("\nho scelto un topazio e sono finiti i rubini\n");
+                // printf("pos=%d len=%d p=%d mark[t]=%d mark[r]=%d(=0) mark[z]=%d(più alto possibile)\n", pos, len, p, mark[TOPAZIO], mark[RUBINO], mark[ZAFFIRO]);
+                // for (int j=0; j<pos; j++){
+                //     enum Pietra p1 = sol[j];
+                //     if (p1==ZAFFIRO) printf("z");
+                //     else if (p1==RUBINO) printf("r");
+                //     else if (p1==TOPAZIO) printf("t");
+                //     else if (p1==SMERALDO) printf("s");
+                // }
+                // printf("+");
+                // if (p==ZAFFIRO) printf("z");
+                // else if (p==RUBINO) printf("r");
+                // else if (p==TOPAZIO) printf("t");
+                // else if (p==SMERALDO) printf("s");
+                // printf("\n");
+                // // end debug
                 *max = len;
-                if (*max == *maxPossible){ return 1; }
                 // save this sol
                 int i;
                 for (i=0; i<pos; i++){ maxCollana[i] = sol[i]; }
                 maxCollana[pos] = TOPAZIO;
                 i++;
                 for (; i<len; i++) { maxCollana[i] = ZAFFIRO; }
+                if (*max == *maxPossible){ return 1; }
             }
             // now we calculated this branche and we passiamo alla prossima pietra
             continue;
         }
         // - se siamo a una ...r, e sono finite le t, la collana continuerà con tutte le s e poi bom
-        if (p == RUBINO && mark[TOPAZIO]==0){
+        if (p == RUBINO && mark[TOPAZIO]==0 && mark[SMERALDO]>0){
             int len = pos+1+mark[SMERALDO];
             addedAtLeasOne=1;
             if (len > *max) {
+                // // debug
+                // printf("\npos=%d len=%d p=%d mark[r]=%d mark[t]=%d (deve essere 0) mark[s]=%d (speriamo il più alto possibile)\n", pos, len, p, mark[RUBINO], mark[TOPAZIO], mark[SMERALDO]);
+                // for (int j=0; j<pos; j++){
+                //     enum Pietra p = sol[j];
+                //     if (p==ZAFFIRO) printf("z");
+                //     else if (p==RUBINO) printf("r");
+                //     else if (p==TOPAZIO) printf("t");
+                //     else if (p==SMERALDO) printf("s");
+                // }
+                // printf("+");
+                // if (p==ZAFFIRO) printf("z");
+                // else if (p==RUBINO) printf("r");
+                // else if (p==TOPAZIO) printf("t");
+                // else if (p==SMERALDO) printf("s");
+                // printf("(l'ho aggiunto adessso)\n");
+                // // end debug
                 *max = len;
-                if (*max == *maxPossible){ return 1; }
                 // save this sol
                 int i;
                 for (i=0; i<pos; i++){ maxCollana[i] = sol[i]; }
                 maxCollana[pos] = RUBINO;
                 i++;
                 for (; i<len; i++) { maxCollana[i] = SMERALDO; }
+                if (*max == *maxPossible){ return 1; }
             }
             // now we calculated this branche and we passiamo alla prossima pietra
             continue;
@@ -117,6 +150,7 @@ int findCollanaR(int pos, int *sol, int *mark, int* maxPossible, int* max, int *
     if (!addedAtLeasOne){
         // la lunghezza della collana è pos
         if (pos > *max){
+            printf("\nho trovato una collana più lunga di quella precedente. newmax=%d\n", pos);
             *max = pos;
             for (int i=0; i<pos; i++){ maxCollana[i] = sol[i]; }
             if (*max == *maxPossible){ return 1; }
