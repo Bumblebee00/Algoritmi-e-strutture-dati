@@ -15,6 +15,7 @@
         "chrono": "c",
         "limits": "c",
         "ratio": "c",
-        "algorithm": "c"
+        "algorithm": "c",
+        "variant": "c"
     }
 }

@@ -159,6 +159,11 @@ S = {c, a, s, a}
 n = 4
 P(4) = 4! = 24
 
+### Codice
+```c
+// DA AGGIUNGERE!!!
+```
+
 ## Permutazioni con ripetizioni
 S è un insieme di n elementi, di cui a elementi sono uguali tra loro, b elementi sono uguali tra loro, c elementi sono uguali tra loro, ecc. Quante sono le permutazioni possibili? non ci sono ripetizioni e l’ordine conta.
 P(n,a,b,c,...) = n! / (a! * b! * c! * ...)
