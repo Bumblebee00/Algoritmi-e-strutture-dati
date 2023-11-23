@@ -31,8 +31,7 @@ int main(){
 
     // array RxC, che contiene, tutte allineate, le tessere della scacchiera (quindi all'inizio lo riempiamo con la scacchiera iniziale)
     struct Casella *scacchiera;
-    // array RxC di zeri e uni, che rappresenta se la tessera all'indice i è già stata messa nella sacchiera
-    // 0 non è stata messa. 1 è stata messa
+    // array di mark per le tessere, per sapere quali sono già state usate. 0 = non usata, 1 = usata
     int *mark;
 
     fp = fopen("tiles.txt", "r");
@@ -82,6 +81,7 @@ void findMaxScacchiera(struct Casella *statoIniziale, int *mark){
 
     printf("MaxPoints: %d\n", maxPoints);
 
+    // stampa la scacchiera
     for (int i=0; i<R; i++){
         for (int j=0; j<C; j++){
             int indiceGriglia = R*i + j;
@@ -123,8 +123,10 @@ void findMaxScacchieraR(int pos, struct Casella *sol, int *mark, int* maxPoints,
         if (mark[i] == 0){
             mark[i] = 1;
             sol[pos].tessera = &tessere[i];
+            // parte il ramo della ricorsione con la tessera in orizzontale
             sol[pos].rot = 0;
             findMaxScacchieraR(pos+1, sol, mark, maxPoints, maxSol);
+            // parte il ramo della ricorsione con la tessera in verticale
             sol[pos].rot = 1;
             findMaxScacchieraR(pos+1, sol, mark, maxPoints, maxSol);
             mark[i] = 0;
