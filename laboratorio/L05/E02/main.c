@@ -13,10 +13,9 @@ struct Tessera{
 };
 
 struct Casella{
-    // if NULL there is no tessera here
+    // if NULL there is no tessera in this casella
     struct Tessera *tessera;
     int rot;
-    int unmodifiable;
 };
 
 void findMaxScacchiera(struct Casella *statoIniziale, int *mark);
@@ -63,10 +62,8 @@ int main(){
                 mark[indiceTessera] = 1;
                 scacchiera[indiceGriglia].tessera = &tessere[indiceTessera];
                 scacchiera[indiceGriglia].rot = rot;
-                scacchiera[indiceGriglia].unmodifiable = 1;
             } else {
                 scacchiera[indiceGriglia].tessera = NULL;
-                scacchiera[indiceGriglia].unmodifiable = 0;
             }
         }
         fscanf(fp, "\n");
@@ -111,11 +108,12 @@ void findMaxScacchieraR(int pos, struct Casella *sol, int *mark, int* maxPoints,
             for (int i=0; i<T; i++){
                 maxSol[i] = sol[i];
             }
-        } else { return; }
+        }
+        return;
     }
     
     // find the next modifiable casella
-    while (sol[pos].unmodifiable){
+    while (sol[pos].tessera != NULL){
         pos++;
     }
     
@@ -130,6 +128,7 @@ void findMaxScacchieraR(int pos, struct Casella *sol, int *mark, int* maxPoints,
             sol[pos].rot = 1;
             findMaxScacchieraR(pos+1, sol, mark, maxPoints, maxSol);
             mark[i] = 0;
+            sol[pos].tessera = NULL;
         }
     }
 }
