@@ -23,6 +23,8 @@ Indice completo del file markdown:
 - [Usare ADT per collezioni](#usare-adt-per-collezioni)
   - [Lista non ordinata](#lista-non-ordinata)
   - [Set](#set)
+    - [Implementazione con vettore ordinato](#implementazione-con-vettore-ordinato)
+    - [Implementazione con lista ordinata](#implementazione-con-lista-ordinata)
 
 # Tipo di dato astratto
 astrastto: nasconde l'informazione in un livello inferiore. Sono utili perchènon si vuole che il client abbia accesso ai dettagli dell'implementazione.
@@ -350,6 +352,7 @@ Item scan invece... boh
 
 
 # Usare ADT per collezioni
+Usiamo adt per generare code generalizzate / tabelle
 ## Lista non ordinata
 ```c
 // list.h
@@ -369,6 +372,158 @@ void LISTinsHead (LIST l, Item val) {
 }
 // implementazione delle altre funzioni
 ```
+E utile perchè permete al client di creare più di un dato.\
 Nota: a volte può avere senso non dare neanche un nome alla lista: nel caso in cui ce ne sia solo una si fa variabile globale il primo nodo e via
 
 ## Set
+collezione di dati non ordinata senza duplicati, in cui sono disponibili le operazioni di unione, intersezione.
+```c
+// set.h
+typedef struct set *SET;
+SET SETinit(int maxN);
+void SETfree(SET s);
+void SETfill(SET s, Item val);
+int SETsearch(SET s, Key k);
+SET SETunion(SET s1, SET s2);
+SET SETintersection(SET s1, SET s2); int SETsize(SET s);
+int SETempty(SET s);
+void SETdisplay(SET s);
+```
+L'insieme lo possiamo implementare con vettori ordinati, non ordinati o con liste ordinate o non ordinate. Con le liste la dimensione può crescere all'infinito, con i vettori no. La funzione `SETsearch` ha complessità O(n) per le liste (ord o non) e i vettori non ordinati O(log n) per i vettori ordinati (si può implementare la ricerca dicotomica). Le funzioni `SETunion` e `SETintersection` hanno complessità O(n) per le liste ordinate e i vettori ordinati, O(n^2) per le liste non ordinate e i vettori non ordinati.
+
+### Implementazione con vettore ordinato
+```c
+// set.c
+struct set { Item *v; int N; }; // dove N è il numero di elementi contenuti
+
+// wrapper
+SET SETinit(int maxN) {
+    SET s = malloc(sizeof *s);
+    s->v = malloc(maxN*sizeof(Item));
+    s->N=0;
+    return s;
+}
+
+void SETfree(SET s) {
+    free(s->v);
+    free(s);
+}
+
+// ricerca dicotomica
+int SETsearch(SET s, Key k) {
+    int l = 0, m, r = s->N -1;
+    while (l <= r) {
+        m = l + (r-l)/2;
+        if (KEYeq(key(s->v[m]), k))
+            return 1;
+        if (KEYless(key(s->v[m]), k))
+            l = m+1;
+        else
+            r = m-1;
+    }
+    return 0;
+}
+
+SET SETunion(SET s1, SET s2) {
+    int i=0, j=0, k=0, size1=SETsize(s1);
+    int size2=SETsize(s2);
+    SET s;
+    s = SETinit(size1+size2); // size init sovradimensionata, per essere pronti per il caso peggiore
+    // simile al merge di merge sort
+    for(k = 0; (i < size1) || (j < size2); k++){
+        if (i >= size1) s->v[k] = s2->v[j++];
+        else if (j >= size2) s->v[k] = s1->v[i++];
+        else if (ITEMless(s1->v[i], s2->v[j]))
+            s->v[k] = s1->v[i++];
+        else if (ITEMless(s2->v[j], s1->v[i]))
+            s->v[k] = s2->v[j++];
+        else { s->v[k] = s1->v[i++]; j++; }
+    }
+    s->N = k;
+    return s;
+}
+
+SET SETintersection(SET s1, SET s2) {
+    int i=0, j=0, k=0, size1=SETsize(s1);
+    int size2=SETsize(s2), minsize; SET s;
+    minsize = min(size1, size2); // size init sovradimensionata, per essere pronti per il caso peggiore
+    s = SETinit(minsize);
+    while ((i < size1) && (j < size2)) {
+        if (ITEMeq(s1->v[i], s2->v[j])) {
+            s->v[k++] = s1->v[i++]; j++;
+        }
+        else if (ITEMless(s1->v[i], s2->v[j])) i++;
+        else j++;
+    }
+    s->N = k;
+    return s;
+}
+```
+
+### Implementazione con lista ordinata
+```c
+typedef struct SETnode *link;
+
+struct set { link head; int N; };
+struct setNode { Item val; link next; };
+
+SET SETinit(int maxN) {
+    SET s = malloc(sizeof *s); s->head = NULL;
+    s->N = 0;
+    return s;
+}
+void SETfree(SET s) {
+    link x, t;
+    for (x=s->head; x!=NULL; x=t) {
+    t = x->next; free(x); }
+    free(s);
+}
+
+// ricerca lineare
+int SETsearch(SET s, Key k) {
+    link x;
+    x = s->head;
+    while (x != NULL) {
+        if (KEYeq(key(x->val), k)) return 1;
+    x = x->next;
+    }
+    return 0;
+}
+
+// O(nxm) dove n e m sono le dimensioni dei due insiemi
+SET SETunion(SET s1, SET s2) {
+    link x1, x2; int founds2, counts2=0;
+    SET s = SETinit(s1->N + s2->N); // size init sovradimensionata
+    
+    // inseriamo nella soluzione tutti gli elementi di s1
+    x1 = s1->head;
+    while (x1 != NULL) { SETfill(s, x1->val); x1 = x1->next;}
+    
+    // poi aggiungiamo gli elementi di s2 che non sono in s1
+    for (x2 = s2->head; x2 != NULL; x2 = x2->next) {
+        x1 = s1->head;
+        founds2 = 0;
+        while (x1 != NULL) {
+            if (ITEMeq(x1->val, x2->val)) founds2 = 1;
+            x1 = x1->next;
+        }
+        if (founds2 == 0) { SETfill(s, x2->val); counts2++; }
+    }
+    s->N = s1->N + counts2;
+    return s;
+}
+
+SET SETintersection(SET s1, SET s2) { link x1, x2; int counts=0; SET s; s = SETinit(s1->N + s2->N);
+    x1 = s1->head;
+    while (x1 != NULL) {
+        x2 = s2->head;
+        while (x2 != NULL) {
+            if (ITEMeq(x1->val, x2->val)) { SETfill(s, x1->val); counts++; break;}
+        x2 = x2->next;
+        }
+        x1 = x1->next;
+    }
+    s->N = counts;
+    return s;
+}
+
