@@ -1,6 +1,10 @@
-[13/11/2023] In questa lezione parliamo di applicazioni/esmpi di algoritmi di ricerca e ordinamento. ( e ripassato il quicksort, vedi `Merge sort e Quick sort.md`)
+[13/11/2023] In questa lezione parliamo di applicazioni/esmpi di algoritmi di ricerca e ordinamento. ( e ripassato il quicksort, vedi `Merge sort e Quick sort.md`). Indice completo del file markdown:
 
-# Esempi di problemi di ricerca e ottimizzazione
+- [Lampadine](#lampadine)
+  - [Algoritmo](#algoritmo)
+  - [Strutture dati usate](#strutture-dati-usate)
+
+
 
 ## Lampadine
 Ci sono `n` lampadine e `m` interruttori. Ogni interruttore controlla più lampadine, e ne scambia lo stato da acceso a spento e viceversa. Inizialmente tutte le lampadine sono spente. Vogliamo trovare il più piccolo insieme di interruttori che accenda tutte le lampadine.  Dato che cerchiamo un sottoinsieme di cardinalità minima, è un problema di ottimizzazione.\

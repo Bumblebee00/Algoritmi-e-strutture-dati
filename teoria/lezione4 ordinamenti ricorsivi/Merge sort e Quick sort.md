@@ -1,4 +1,23 @@
-In questa lezione, all'inizio introduciamo il concetto di tipo di dato astratto (ADT) e poi parliamo di [Merge sort](#merge-sort), e [Quick Sort](#quick-sort) (vedi [tabella riassuntiva](#tabella-riassuntiva)).
+In questa lezione, all'inizio introduciamo il concetto di tipo di dato astratto (ADT) e poi parliamo di Merge Sort e Quick Sort. Indice completo del file markdown:
+- [Tipo di dato astratto adt](#tipo-di-dato-astratto-adt)
+  - [Esempio: scalare e chiave coincidente:](#esempio-scalare-e-chiave-coincidente)
+- [Merge Sort](#merge-sort)
+  - [Codice](#codice)
+    - [Funzione ricorsiva](#funzione-ricorsiva)
+    - [2-way Merge](#2-way-merge)
+  - [Caratteristiche](#caratteristiche)
+  - [Complessità](#complessità)
+- [Quick Sort](#quick-sort)
+  - [Pseudocodice](#pseudocodice)
+  - [Codice](#codice-1)
+  - [Caratteristiche](#caratteristiche-1)
+  - [Complessità](#complessità-1)
+    - [Caso peggiore](#caso-peggiore)
+    - [Caso migliore](#caso-migliore)
+    - [Caso medio](#caso-medio)
+  - [Scelta del pivot](#scelta-del-pivot)
+- [Tabella Riassuntiva](#tabella-riassuntiva)
+
 
 # Tipo di dato astratto adt
 
