@@ -1,4 +1,14 @@
-[23/11/2023]
+[23/11/2023] Indice completo del file markdown:
+- [Code Generalizzate](#code-generalizzate)
+  - [Stack](#stack)
+    - [Implementazione con vettore quasi ADT](#implementazione-con-vettore-quasi-adt)
+    - [Implementazione con vettore ADT di 1° calsse](#implementazione-con-vettore-adt-di-1-calsse)
+    - [Implementazione con lista quasi ADT](#implementazione-con-lista-quasi-adt)
+    - [Implementazione con lista ADT di 1° classe](#implementazione-con-lista-adt-di-1-classe)
+  - [Queue](#queue)
+    - [Implementazione con vettore O(n)](#implementazione-con-vettore-on)
+    - [Implementazione con vettore O(1) (bufer circolare)](#implementazione-con-vettore-o1-bufer-circolare)
+  - [Queue di priorità](#queue-di-priorità)
 
 # Code Generalizzate
 sono dei contenitori con operazioni di `insert` `search` e `delete`. La funzione delete può eliminare in base a 
