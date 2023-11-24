@@ -6,10 +6,12 @@
   - [Principio di moltiplicazione](#principio-di-moltiplicazione)
 - [Elementi di calcolo combiantorio](#elementi-di-calcolo-combiantorio)
   - [Disposizioni semplici](#disposizioni-semplici)
+    - [Codice](#codice)
   - [Disposizioni con ripetizioni](#disposizioni-con-ripetizioni)
   - [Permutazioni semplici](#permutazioni-semplici)
+    - [Codice](#codice-1)
   - [Permutazioni con ripetizioni](#permutazioni-con-ripetizioni)
-    - [Codice](#codice)
+    - [Codice](#codice-2)
   - [Combinazioni semplici](#combinazioni-semplici)
   - [Combinazioni con ripetizioni](#combinazioni-con-ripetizioni)
   - [Insime delle parti (Powerset)](#insime-delle-parti-powerset)
@@ -130,6 +132,28 @@ S = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 n = 10
 k = 3
 D(10,3) = 10! / (10-3)! = 10! / 7! = 10 * 9 * 8 = 720
+
+### Codice
+```c
+int disp(int pos,int *val,int *sol,int *mark, int n, int k,int cnt){
+    int i;
+    // condizione di terminazione
+    if (pos >= k){
+        for (i=0; i<k; i++) printf("%d ", sol[i]);
+        printf("\n");
+        return cnt+1;
+    }
+
+    for (i=0; i<n; i++){
+        if (mark[i] == 0) {
+            mark[i] = 1;
+            sol[pos] = val[i];
+            cnt = disp(pos+1, val, sol, mark, n, k,cnt); mark[i] = 0;
+        }
+    }
+    return cnt;
+}
+```
 
 ## Disposizioni con ripetizioni
 S è un insieme di n elementi. Quante sono le disposizioni con ripetizioni di k elementi presi da S? ci sono ripetizioni e l’ordine conta (k può essere maggiore di n)

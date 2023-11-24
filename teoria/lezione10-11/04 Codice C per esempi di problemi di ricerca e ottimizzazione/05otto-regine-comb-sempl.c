@@ -32,6 +32,7 @@ void comb_sempl(int r0, int c0, int q) {
     }
     return;
   }
+  // scannerizza la scacchiera da sinistra a destra, poi una colonna giu' e così via, e considera slo gli elementi da (r0,c0) in poi
   for (r=r0; r<N; r++)
     for (c=0; c<N; c++)
       if (((r>r0) || ((r==r0)&&(c>=c0))) && scacchiera[r][c] == 0) {
