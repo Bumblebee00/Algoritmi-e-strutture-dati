@@ -10,6 +10,10 @@
 #include "invArray.h"
 
 /* ADT di prima classe collezione di oggetti di equipaggiamento */
+struct equipArray_s {
+    int inUso;
+    inv_t vettEq[EQUIP_SLOT];
+};
 typedef struct equipArray_s *equipArray_t; 
 
 /* creatore e disruttore */
@@ -24,8 +28,6 @@ void equipArray_print(FILE *fp, equipArray_t equipArray, invArray_t invArray);
 /* modifica equipaggiamento scegliendo un oggetto da inventario */
 void equipArray_update(equipArray_t equipArray, invArray_t invArray);
 /* torna indice (nel vettore inventario) dell'oggetto in posizione index (0..EQUIP_SLOT-1) di equipArray */
-int equipArray_getEquipByIndex(equipArray_t equipArray, int index);
-
-/* Si possono aggiungere altre funzioni se ritenute necessarie */
+int equipArray_getEquipByIndex(equipArray_t equipArray, int index, invArray_t invArray);
 
 #endif

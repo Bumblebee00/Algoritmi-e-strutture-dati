@@ -3,11 +3,10 @@
 #include <stdio.h>
 
 #include "pgList.h"
-#include "invArray.h"
-#include "pg.h"
 
 #define N_SCELTE 7
 #define DBG 0
+
 
 enum { falso, vero };
 typedef int bool;
@@ -82,10 +81,10 @@ int main(int argc, char **argv) {
     } break;
 
     case 4: {
-      printf("Cod Nome Classe HP MP ATK DEF MAG SPR: ");
-      if (pg_read(stdin, &pg) != 0) {
-        pgList_insert(pgList, pg);
-      }
+      // printf("Cod Nome Classe HP MP ATK DEF MAG SPR: ");
+      // if (pg_read(stdin, &pg) != 0) {
+      //   pgList_insert(pgList, pg);
+      // }
     } break;
 
     case 5: {

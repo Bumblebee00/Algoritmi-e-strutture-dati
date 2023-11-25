@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#define LEN 100
+#define LEN 50
 #define MIN_STAT 1
 
 /* quasi ADT statistiche */
@@ -22,7 +22,7 @@ typedef struct inv_s {
 
 /* funzioni di input/output delle statistiche */
 void stat_read(FILE *fp, stat_t *statp);
-void stat_print(FILE *fp, stat_t *statp, int soglia);
+void stat_print(FILE *fp, stat_t *statp);
 
 /* funzioni di input/output di un oggetto dell'inventario */
 void inv_read(FILE *fp, inv_t *invp);

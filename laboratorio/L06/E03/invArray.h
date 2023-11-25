@@ -8,7 +8,12 @@
 #include "inv.h"
 
 /* ADT di prima classe collezione di oggetti di inventario */
+struct invArray_s {
+  inv_t *vettInv;
+  int nInv;
+};
 typedef struct invArray_s *invArray_t;
+
 
 /* creatore e disruttore */
 invArray_t invArray_init();

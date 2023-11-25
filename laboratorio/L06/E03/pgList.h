@@ -7,7 +7,17 @@
 
 #include "pg.h"
 
+typedef struct nodoPg_s* nodoPg_t;
+struct nodoPg_s {
+    pg_t pg;
+    nodoPg_t next;
+};
 /* ADT di prima classe collezione di personaggi */
+struct pgList_s {
+    nodoPg_t head;
+    nodoPg_t tailPg;
+    int nPg;
+};
 typedef struct pgList_s *pgList_t;
 
 /* creatore e distruttore */

@@ -16,6 +16,10 @@
         "limits": "c",
         "ratio": "c",
         "algorithm": "c",
-        "variant": "c"
+        "variant": "c",
+        "inv.h": "c",
+        "invarray.h": "c",
+        "pglist.h": "c",
+        "equiparray.h": "c"
     }
 }
