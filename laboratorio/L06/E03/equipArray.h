@@ -25,8 +25,12 @@ int equipArray_inUse(equipArray_t equipArray);
 
 /* scrittura su file */
 void equipArray_print(FILE *fp, equipArray_t equipArray, invArray_t invArray);
-/* modifica equipaggiamento scegliendo un oggetto da inventario */
+/* modifica equipaggiamento */
 void equipArray_update(equipArray_t equipArray, invArray_t invArray);
+/* aggiunge equipaggiamento scegliendo un oggetto da inventario */
+void equipArray_add(equipArray_t equipArray, invArray_t invArray);
+/* rimuove equipaggiamento scegliendo un oggetto da equipaggiamento */
+void equipArray_remove(equipArray_t equipArray, invArray_t invArray);
 /* torna indice (nel vettore inventario) dell'oggetto in posizione index (0..EQUIP_SLOT-1) di equipArray */
 int equipArray_getEquipByIndex(equipArray_t equipArray, int index, invArray_t invArray);
 

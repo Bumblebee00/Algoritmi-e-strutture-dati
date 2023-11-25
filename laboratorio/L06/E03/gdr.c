@@ -16,7 +16,8 @@ void stampaMenu(char *scelte[], int *selezione){
   printf("\nMENU'\n");
   for(i=0;i<N_SCELTE;i++)
     printf("%2d > %s\n",i,scelte[i]);
-  scanf(" %d",selezione);
+  printf("Inserire comando: ");
+  scanf("%d",selezione);
 }
 
 int main(int argc, char **argv) {
@@ -27,7 +28,7 @@ int main(int argc, char **argv) {
     "Cerca personaggio",
     "Aggiungi personaggio",
     "Elimina personaggio",
-    "Modifica equip"
+    "Modifica equipaggiamento"
   };
 
   char codiceRicerca[LEN];
@@ -77,14 +78,19 @@ int main(int argc, char **argv) {
       pgp = pgList_searchByCode(pgList, codiceRicerca);
       if (pgp!=NULL) {
         pg_print(stdout, pgp, invArray);
+      } else {
+        printf("Personaggio non trovato\n");
       }
     } break;
 
     case 4: {
-      // printf("Cod Nome Classe HP MP ATK DEF MAG SPR: ");
-      // if (pg_read(stdin, &pg) != 0) {
-      //   pgList_insert(pgList, pg);
-      // }
+      printf("Cod Nome Classe HP MP ATK DEF MAG SPR: ");
+      if (pg_read(stdin, &pg) != 0) {
+        pgList_insert(pgList, pg);
+        printf("Personaggio inserito correttamente\n");
+      } else {
+        printf("Errore inserimento\n");
+      }
     } break;
 
     case 5: {
@@ -99,6 +105,8 @@ int main(int argc, char **argv) {
       pgp = pgList_searchByCode(pgList, codiceRicerca);
       if (pgp!=NULL) {
         pg_updateEquip(pgp, invArray);
+      } else {
+        printf("Personaggio non trovato\n");
       }
     } break;
 

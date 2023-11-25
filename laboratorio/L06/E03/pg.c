@@ -19,18 +19,24 @@ void pg_clean(pg_t *pgp){
 }
 
 void pg_print(FILE *fp, pg_t *pgp, invArray_t invArray){
-    fprintf(fp, "%s %s %s ", pgp->cod, pgp->nome, pgp->classe);
+    fprintf(fp, "%-5s; %-15s; %-15s; base stats=", pgp->cod, pgp->nome, pgp->classe);
     stat_print(fp, &pgp->b_stat);
-    fprintf(fp, " ");
-    stat_print(fp, &pgp->eq_stat);
+    if (pgp->equip->inUso > 0){
+        fprintf(fp, ";\n %*c equipped stats=", 36, ' ');
+        stat_print(fp, &pgp->eq_stat);
+        fprintf(fp, ";\n %*c equipped items=", 36, ' ');
+        for (int i = 0; i < pgp->equip->inUso; ++i) {
+            fprintf(fp, "%s ", pgp->equip->vettEq[i].nome);
+        }
+    }
     fprintf(fp, "\n");
-    equipArray_print(fp, pgp->equip, invArray);
 }
 /* modifica personaggio aggiungendo/togliendo un equipaggiamento selezionato da inventario:
 chiamare l'opportuna funzione dal modulo equipArray
 aggiorna eq_stat con quella base piu' gli effetti degli oggetti equipaggiati*/
 void pg_updateEquip(pg_t *pgp, invArray_t invArray){
     equipArray_update(pgp->equip, invArray);
+    // aggiorniamo le statistiche
     pgp->eq_stat = pgp->b_stat;
     for (int i = 0; i < equipArray_inUse(pgp->equip); ++i) {
         pgp->eq_stat.hp += invArray_getByIndex(invArray, equipArray_getEquipByIndex(pgp->equip, i, invArray))->stat.hp;

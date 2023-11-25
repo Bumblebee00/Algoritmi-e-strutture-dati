@@ -35,6 +35,10 @@ void pgList_print(FILE *fp, pgList_t pgList, invArray_t invArray){
 
 /* inserimento di un nuovo personaggio */
 void pgList_insert(pgList_t pgList, pg_t pg){
+    if (pgList_searchByCode(pgList, pg.cod) != NULL) {
+        printf("Codice già usato\n");
+        return;
+    }
     nodoPg_t x, p;
     x = malloc(sizeof(struct nodoPg_s));
     x->pg = pg;
@@ -60,9 +64,11 @@ void pgList_remove(pgList_t pgList, char* cod){
             }
             free(x);
             pgList->nPg--;
+            printf("Personaggio rimosso\n");
             return;
         }
     }
+    printf("Personaggio non trovato\n");
 }
 /* ricerca per codice, ritornando il puntatore */
 pg_t *pgList_searchByCode(pgList_t pgList, char* cod){
