@@ -8,6 +8,7 @@
   - [Queue](#queue)
     - [Implementazione con vettore O(n)](#implementazione-con-vettore-on)
     - [Implementazione con vettore O(1) (bufer circolare)](#implementazione-con-vettore-o1-bufer-circolare)
+    - [Strategie per riconoscere la coda vuota](#strategie-per-riconoscere-la-coda-vuota)
   - [Queue di priorità](#queue-di-priorità)
 
 # Code Generalizzate
@@ -172,12 +173,105 @@ Per tutte implementazioni serve un head e un tail. Nel caso div ettore saranno i
 come si può capire se la queue è piena o vuota? si potrebbe fare una seconda vriabile con il numero di interi. oppure si realizza un vettore di dimensione nMax+1 e si usa una cella come sentinella.\
 L'implementazione di questo metodo, e anche di quelli con liste e tutto quanto, sono da pag 87 a 94 delle slides.
 
+### Strategie per riconoscere la coda vuota
+bohhhh guarda le slides a pagina 85
+
 ## Queue di priorità
 ADT che supporta operazioni di:
-- insert:i nserisci un elemento (PQinsert)
+- insert: inserisci un elemento (PQinsert)
 - extract: preleva (e cancella) l’elemento a priorità massima (o minima) (PQextractmax o PQextractmin).
 
 Terminologia: la strategia di gestione dei dati è detta priority-first.
 
 Si può implementare con vettore, lista e heap (trattato più avanti).
 
+### Complessità:
+Se k'implementazione è con vettore/lista NON ordinato:
+- inserzione in testa alla lista o in coda al vettore -> O(1)
+- estrazione/visualizzazione del massimo/minimo con scansione -> O(N)
+- cambio di priorità: richiede ricerca dell’elemento con scansione -> O(N)
+Altrimenti se è con vettore/lista ordinato:
+- inserzione ordinata nella lista o nel vettore mediante scansione -> O(N)
+- estrazione/visualizzazione del massimo/minimo se memorizzato in testa alla lista o in coda al vettore con accesso diretto -> O(1)
+- richiede la ricerca dell'elemento
+
+### Implementazione con lista ordinata
+Noi tratteremo soltanto l'implementazione con liste ordinate.
+```c
+// PQ.h
+typedef struct pqueue *PQ;
+PQ PQinit(int maxN);
+int PQempty(PQ pq);
+void PQinsert(PQ pq, Item data); Item PQextractMax(PQ pq);
+Item PQshowMax(PQ pq);
+void PQdisplay(PQ pq);
+void PQchange(PQ pq, Item data); // cambia la priorità
+```
+```c
+typedef struct PQnode *link;
+struct PQnode{ Item val; link next; };
+
+struct pqueue { link head; };
+link NEW(Item val, link next) {
+    link x = malloc(sizeof *x);
+    x->val = val;
+    x->next = next;
+    return x;
+}
+
+PQ PQinit(int maxN) {
+    PQ pq = malloc(sizeof *pq);
+    pq->head = NULL;
+    return pq;
+}
+
+int PQempty(PQ pq) { return pq->head == NULL;}
+
+Item PQshowMax(PQ pq) { return pq->head->val; }
+
+void PQdisplay(PQ pq) {
+    link x;
+    for (x=pq->head; x!=NULL; x=x->next)
+        ITEMdisplay(x->val);
+    return;
+}
+
+void PQinsert (PQ pq, Item val) {
+    link x, p;
+    Key k = KEYget(val);
+    if (pq->head==NULL ||KEYless(KEYget(pq->head->val),k)) {
+        pq->head = NEW(val, pq->head);
+        return;
+    }
+    for(x=pq->head->next, p=pq->head; x!=NULL&&KEYless(k,KEYget(x->val)); p=x, x=x->next);
+        p->next = NEW(val, x);
+    return;
+}
+
+Item PQextractMax(PQ pq) {
+    Item tmp;
+    link t;
+    if (PQempty(pq)) {
+        printf("PQ empty\n");
+        return ITEMsetvoid();
+    }
+    tmp = pq->head->val;
+    t = pq->head->next;
+    free(pq->head);
+    pq->head = t;
+    return tmp;
+}
+
+void PQchange (PQ pq, Item val) {
+    link x, p;
+    if (PQempty(pq)) { printf("PQ empty\n"); return; }
+    for(x=pq->head, p=NULL; x!=NULL; p=x, x=x->next) {
+        if (ITEMeq(x->val, val)){
+            if (x==pq->head) pq->head = x->next;
+            else p->next = x->next; free(x);
+            break;
+        }
+    }
+    PQinsert(pq, val); return;
+}
+```
