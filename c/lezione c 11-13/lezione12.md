@@ -10,6 +10,8 @@
     - [Implementazione con vettore O(1) (bufer circolare)](#implementazione-con-vettore-o1-bufer-circolare)
     - [Strategie per riconoscere la coda vuota](#strategie-per-riconoscere-la-coda-vuota)
   - [Queue di priorità](#queue-di-priorità)
+    - [Complessità:](#complessità)
+    - [Implementazione con lista ordinata](#implementazione-con-lista-ordinata)
 
 # Code Generalizzate
 sono dei contenitori con operazioni di `insert` `search` e `delete`. La funzione delete può eliminare in base a 
