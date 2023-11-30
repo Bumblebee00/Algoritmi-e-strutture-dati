@@ -1,7 +1,6 @@
-[24/11/2023] In questa lezione continuiamo a parlare di applicazioni/esmpi di algoritmi di ricerca e ordinamento. Indice completo del file markdown:
+[24/11/2023] In questa lezione continuiamo a parlare di applicazioni/esmpi di algoritmi di ricerca e ordinamento.
 
 - [Longest Increasing Sequence](#longest-increasing-sequence)
-  - [Algoritmo](#algoritmo)
   - [Strutture dati](#strutture-dati)
   - [Codice](#codice)
 - [Le 8 regine](#le-8-regine)
@@ -12,7 +11,15 @@
   - [Soluzione 4](#soluzione-4)
 - [Aritmetica verbale](#aritmetica-verbale)
   - [Sturttura dati](#sturttura-dati)
-  - [Algoritmo](#algoritmo-1)
+  - [Algoritmo](#algoritmo)
+- [Sudoku](#sudoku)
+    - [36 ufficiali di Eulero](#36-ufficiali-di-eulero)
+    - [Quadrato latino (aka sudoku generalizzato)](#quadrato-latino-aka-sudoku-generalizzato)
+    - [Quadrato greco latino](#quadrato-greco-latino)
+  - [Implementazione](#implementazione)
+- [Il tour del cavallo](#il-tour-del-cavallo)
+- [Labirinto](#labirinto)
+
 
 # Longest Increasing Sequence
 Data una sequenza di N interi\
@@ -76,6 +83,8 @@ avremo un vetttore di char che contiene le lettere distinte `lett_dist`, poi avr
 - riempire lettere con lett_dist caratteri distinti (funzione setup che usa la funzione di servizio trova_indice)
 - calcolare le permutazioni di 10 elementi (funzione permuta)
 
+(il coidce si può trovare nel file `09aritmetica_verbale.c`)
+
 # Sudoku
 Prima diciamo un pò di probelmi simili
 ### 36 ufficiali di Eulero
@@ -90,3 +99,42 @@ questo problema è un caso particolare del:
 Come due quadrati latini diversi, quindi con n simboli er il primo e n per il secondo, ma poi sono messi enllo stesso quadrato, e c'è il requirement addizionale che ogni cella contenga una coppia di simboli distinti (quindi non è possibile avere due volte la stessa coppia di simboli).
 
 Eulero ipotizzò che i quadrati greco latini esistono solo per n multipli di 4. questo è falso, esistono per $n \geq 3$ con l'eccezione di $n=6$.
+
+## Implementazione
+(il codice si può trovare in `10sudoku.c`)
+creiamo il powerset per disposizioni ripetute, ma effettuamo il controllo di validità a ogni passo in giù.
+```c
+schema = ...
+
+void disp_ripet(int pos){
+  // ...
+  for (k=1; k<=9; k++) {
+    schema[i][j] = k;
+    if (controlla(pos, k))
+      disp_ripet(pos+1);
+    schema[i][j] = 0;
+  }
+  // ...
+}
+
+controlla(int pos, int k){
+  // da pos ci si ricava i e j
+  // controllo riga i
+  // controllo colonna j
+  // controllo quadrato 3x3
+}
+```
+
+# Il tour del cavallo
+Si consideri una scacchiera NxN , trovare un “giro di cavallo”, cioè una sequenza di mosse valide del cavallo tale che ogni casella venga visitata una sola volta (visitata = casella su cui il cavallo si ferma, non casella attraverso cui transita).
+Se il cavallo si ferma su una casella da cui si può raggiungere con una mossa la casella da cui si è partiti, il tour si dice chiuso, altrimenti si dice aperto.
+Il tour del cavallo è un caso particolare di cammino di Hamilton se aperto o ciclo di Hamilton se chiuso.
+
+Per risolverlo considerimao la scacchiera come grafo. i nodi sono le caselle, e gli archi collegano un nodo a un altro raggiungibile dal cavallo.
+Etichetteremo ogni cella con il numero della mossa del cavallo che ci si ferma sopra.
+
+Poi proviamo tutte le mosse. se troviamo un tour, bene.
+
+# Labirinto
+Interpretando il labirinto come grafo non orientato, i vertici sono le caselle, gli archi sono tra vertice e vertici adiacenti secondo le direzioni N, S, E, W.
+il problema si riconduce all’enumerazione dei cammini semplici a partire dalla cella di ingresso con condizione di terminazione di aver raggiunto la cella di uscita.
