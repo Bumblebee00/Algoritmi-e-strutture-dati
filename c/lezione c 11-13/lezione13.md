@@ -234,4 +234,4 @@ vedi slides pag 128
 - Occupazione di memoria proporzionale a N (non M)
 
 ## Gestione duplicati nelle tabelle di simboli
-Si può ignorare il nuovo elemento, o dimenticare il vecchio
+Si può ignorare il nuovo elemento, o dimenticare il vecchio. Oppure nella tabella si può mettere unalista con tutti gli elemneti con la stessa chaive. Addirittura si può lasicare inseriti entrambi come elementi distinti.

@@ -277,3 +277,6 @@ void PQchange (PQ pq, Item val) {
     PQinsert(pq, val); return;
 }
 ```
+
+## Gestione dulicati nelle pile e code
+o si aggiunge comunque un elemento con stessa chiave, perchè si tiene conto del fatto che ha tempo diverso, oppure anche se ha tempo diverso non ci possono essere due elementi con la stessa chiave. quindi si elimina il nuovo, il vecchio, o qualunque cosa si voglia.
