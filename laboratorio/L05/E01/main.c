@@ -95,9 +95,14 @@ int calculateDuration(int* sol, att* v, int n){
 
 // sol e val should be of the same lenght n
 void printSubset(int* sol, att* val, int n){
+    int duration = 0;
     for (int i=0; i<n; i++){
-        if (sol[i]){ printf("i: %-2d, f:%-2d\n", val[i].inizio, val[i].fine); }
+        if (sol[i]){
+            printf("i: %-2d, f:%-2d\n", val[i].inizio, val[i].fine);
+            duration += val[i].fine - val[i].inizio;
+        }
     }
+    printf("Max duration is %d\n", duration);
 }
 
 att* leggiFile(char* path, int* n, att* v) {
