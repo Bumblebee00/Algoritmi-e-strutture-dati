@@ -1,4 +1,4 @@
-[30/11/23] In questa lezione 
+[30/11/23] In questa lezione parliamo di programmazione dinamica, che cos'è e in quali casi è meglio del paradigma divide et impera.
 
 - [Programmazione dinamica](#programmazione-dinamica)
   - [Esempio della catena di montaggio](#esempio-della-catena-di-montaggio)
