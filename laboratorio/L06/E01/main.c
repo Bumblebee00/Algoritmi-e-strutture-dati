@@ -7,6 +7,7 @@ Strutture dati:
 #include <stdio.h>
 #include <stdlib.h>
 #include "main.h"
+#include "sort.h"
 
 void leggiFile(char *path, att* *v, int* n);
 
@@ -16,6 +17,15 @@ int main(int argc, char *argv[]){
     int n;
     att* v;
     leggiFile(argv[1], &v, &n);
+
+    printf("Before:\n");
+    for (int i=0; i<n; i++){ printf("%-6d|%d\n", v[i].inizio, v[i].fine); }
+
+    MergeSort(v, n); // sort by starting time
+    
+    printf("After:\n");
+    for (int i=0; i<n; i++){ printf("%-6d|%d\n", v[i].inizio, v[i].fine); }
+
     int *p = malloc(sizeof(int)*n);
     int *d = malloc(sizeof(int)*n);
 
