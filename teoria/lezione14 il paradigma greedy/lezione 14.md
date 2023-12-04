@@ -72,7 +72,7 @@ Si potrebbe scegliere come appetibilità la densità del'oggetto cioè valore / 
 
 `cap = 50`
 
-La soluzione greedy ci darebbe 1+2, mentre la soluzione ottima è 3.
+La soluzione greedy ci darebbe oggeto 1 e 2, mentre la soluzione ottima è oggetto 3.
 
 ## Esempio dello zaino continuo
 Dato un insieme di N liquidi, ciascuno in una certa massima quantità e ciascuno con un certo valore, e dato un volume massimo trovare il misuglio di liquidi che massimizzi il valore totale, senza superare il volume massimo. In questo caso il paradigma greedy con densità funziona.
