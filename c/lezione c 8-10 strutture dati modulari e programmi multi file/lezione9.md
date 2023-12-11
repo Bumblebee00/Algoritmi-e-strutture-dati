@@ -1,5 +1,12 @@
 [12/11/23] In questa lezione si parla brevemente all'inizio di strutture dati contenitore (cioè strutture dati che contengono altri dati), e poi si parla di programmi multi-file, e di come includere i file header in modo da evitare errori di compilazione.
 
+- [Strutture dati contenitore](#strutture-dati-contenitore)
+    - [La struttura involucro (wrapper)](#la-struttura-involucro-wrapper)
+      - [Esempio1:](#esempio1)
+      - [Esempio2:](#esempio2)
+- [Programmi multi-file](#programmi-multi-file)
+  - [Architettura SW (a strati)](#architettura-sw-a-strati)
+
 # Strutture dati contenitore
 Tipo contenitore (come vettori o liste): involucro che contiene diversi oggetti:
 - omogenei

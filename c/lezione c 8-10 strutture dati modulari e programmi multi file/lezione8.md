@@ -1,5 +1,13 @@
 in questa lezione si parla di strutture dati modulari, cioè strutture dati che sono composte da più parti, e i concetti di composizione e aggregazione, cioè come si possono raggruppare dati o riferimenti a dati in un unico dato composto tenendo conto delle relazioni gerarchiche di appartenenza e possesso.
 
+- [Strutture dati modulari](#strutture-dati-modulari)
+  - [Modularità e allocazione dinamica](#modularità-e-allocazione-dinamica)
+  - [Funzioni di creazione e distribuzione](#funzioni-di-creazione-e-distribuzione)
+- [Composizione e aggregazione](#composizione-e-aggregazione)
+  - [Composizione per valore](#composizione-per-valore)
+  - [Composizione per riferimento](#composizione-per-riferimento)
+  - [Aggregazinoe senza possesso](#aggregazinoe-senza-possesso)
+
 # Strutture dati modulari
 Dividere un dato in più pezzi. Hanno senso quando il programma usa solo uno dei vari pezzi del dato.
 

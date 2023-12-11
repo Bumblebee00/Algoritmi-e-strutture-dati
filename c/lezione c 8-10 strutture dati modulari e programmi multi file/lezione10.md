@@ -1,9 +1,21 @@
 [13/11/2023] In questa lezione si risolve un problema di aereoporti utilizzando i concetti visti nella lezione 9 (strutture dati contenitore e programmi multi-file).
 
+- [Esempi con aereoporti:](#esempi-con-aereoporti)
+    - [Strutture dati](#strutture-dati)
+    - [Collezioni di aereoporti e voli:](#collezioni-di-aereoporti-e-voli)
+- [Versione Base (v1): con array](#versione-base-v1-con-array)
+    - [Modulo aeroporti (`aeroporti.h`):](#modulo-aeroporti-aeroportih)
+    - [Modulo voli (`voli.h`):](#modulo-voli-volih)
+    - [Modulo principale (`main.c`):](#modulo-principale-mainc)
+- [Versione 2 (v2): con liste](#versione-2-v2-con-liste)
+    - [Modulo aeroporti (`aeroporti.h`):](#modulo-aeroporti-aeroportih-1)
+    - [Modulo voli (`voli.h`):](#modulo-voli-volih-1)
+    - [Modulo principale (`main.c`):](#modulo-principale-mainc-1)
+- [Versione 3 (v3): con indici](#versione-3-v3-con-indici)
+
 # Esempi con aereoporti:
 Dati due file contenenti un elenco di aeroporti e un elenco di voli. costruire una struttura dati contenente le informazioni di aeroporti e voli. I file (nomi ricevuti come argomenti al main) contengono nella prima riga il numero totale di aeroporti/voli. I formati sono (C indica codice):
-<C aeroporto> <nome citta>, <nome aeroporto>
-<C aeroporto p> <C aeroporto A> <C volo> <oraP> <oraA>
+`C aereoporto`, `nome citta`, `nome aeroporto`, `C aeroporto p`, `C aeroporto A`, `C volo`, `oraP`, `oraA`
 
 Esempio file:
 ```txt
