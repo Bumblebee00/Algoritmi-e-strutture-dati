@@ -1,3 +1,5 @@
+NOTA: questa lezione tratta gli stessi argomenti di lezione 16, ma con le slides di cabodi anzichè camurati. inoltre non è completa
+
 [4/12/23]
 
 - [ADT Heap](#adt-heap)
@@ -5,7 +7,7 @@
   - [Implementazione](#implementazione)
 
 # ADT Heap
-In italiano catasta. come una catasta per terra. non si può prendere l'elemento più in basso perchè crolla tutto. L'heap sostanzialmente è un albero binario. (cos'è un albero binario? è una terna formata da radice, sottoalbero destro, sottoalbero destro). La **proprietà funzionale** dell'heap è che per ogni terna, la chiave contenuta nei sottoalberi è >= della chaive della raadice. La sua **proprietà strutturale** è che l'aalbero è completo a sinistra. (cos'è un albero completo a sinistra? è un albero binario in cui tutti i livelli sono pieni tranne l'ultimo che può essere pieno o meno, ma se è meno è pieno a sinistra).
+In italiano catasta. come una catasta per terra. non si può prendere l'elemento più in basso perchè crolla tutto. L'heap sostanzialmente è un albero binario. (cos'è un albero binario? è una terna formata da radice, sottoalbero destro, sottoalbero destro). La **proprietà funzionale** dell'heap è che per ogni terna, la chiave contenuta nei sottoalberi è <= della chaive della radice. La sua **proprietà strutturale** è che l'aalbero è completo a sinistra. (cos'è un albero completo a sinistra? è un albero binario in cui tutti i livelli sono pieni tranne l'ultimo che può essere pieno o meno, ma se è meno è pieno a sinistra).
 
 ![esempio di heap](esempio%20heap.png)
 

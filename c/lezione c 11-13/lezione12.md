@@ -191,7 +191,7 @@ Terminologia: la strategia di gestione dei dati è detta priority-first.
 Si può implementare con vettore, lista e heap (trattato più avanti).
 
 ### Complessità:
-Se k'implementazione è con vettore/lista NON ordinato:
+Se l'implementazione è con vettore/lista NON ordinato:
 - inserzione in testa alla lista o in coda al vettore -> O(1)
 - estrazione/visualizzazione del massimo/minimo con scansione -> O(N)
 - cambio di priorità: richiede ricerca dell’elemento con scansione -> O(N)
