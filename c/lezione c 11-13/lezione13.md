@@ -1,5 +1,22 @@
 [29/11/23]
 
+- [Tabelle di simboli](#tabelle-di-simboli)
+  - [Varie implementazioni](#varie-implementazioni)
+    - [Complessità del caso peggiore](#complessità-del-caso-peggiore)
+    - [Complessità del caso medio](#complessità-del-caso-medio)
+  - [Tabelle ad accesso diretto](#tabelle-ad-accesso-diretto)
+    - [Esempi di GEt Index](#esempi-di-get-index)
+    - [Implementazione](#implementazione)
+    - [Vantaggi e svantaggi](#vantaggi-e-svantaggi)
+  - [Tabella di simboli con vettori](#tabella-di-simboli-con-vettori)
+    - [Vanataggi e svantaggi vettore non ordinato](#vanataggi-e-svantaggi-vettore-non-ordinato)
+    - [Vanataggi e svantaggi vettore ordinato](#vanataggi-e-svantaggi-vettore-ordinato)
+  - [Tabella di simboli con liste](#tabella-di-simboli-con-liste)
+    - [Implementazione](#implementazione-1)
+    - [Vanataggi e svantaggi lista non ordinata](#vanataggi-e-svantaggi-lista-non-ordinata)
+  - [Gestione duplicati nelle tabelle di simboli](#gestione-duplicati-nelle-tabelle-di-simboli)
+
+
 # Tabelle di simboli
 Sono simili alle code generalizzate ma un po strane
 Definizione: ADT che supporta operazioni di:
@@ -52,6 +69,7 @@ In seguito tratteremo anche:
 - tabelle di hash.
 
 ### Complessità del caso peggiore
+Selezione vuol dire scegliere l'elemento di rango r-esimo. Se la tabella è ordinata è facile, altrimenti è difficile.
 | Implementazioni | Inserimento | Ricerca | Selezione |
 | --- | --- | --- | --- |
 | Tabelle ad accesso diretto | 1 | 1 | maxN |
@@ -62,15 +80,15 @@ In seguito tratteremo anche:
 | Lista ordinata | n | n | n |
 | BST | n | n | n |
 | RB-tree | logn | logn | logn |
-| Hashing | 1 | 1 | non possibile |
+| Hashing | 1 | n | non possibile |
 
 ### Complessità del caso medio
 | Implementazioni | Inserimento | Ricerca | Selezione |
 | --- | --- | --- | --- |
 | Tabelle ad accesso diretto | 1 | 1 | maxN |
 | Array non ordinato | 1 | n/2 | non possibile |
-| Array ordinato e ricerca lineare | n/2 | n/2 | n/2 |
-| Array ordinato e ricerca binaria | n/2 | logn | logn |
+| Array ordinato e ricerca lineare | n/2 | n/2 | 1 |
+| Array ordinato e ricerca binaria | n/2 | logn | 1 |
 | Lista non ordinata | 1 | n/2 | non possibile |
 | Lista ordinata | n/2 | n/2 | n/2 |
 | BST | logn | logn | logn |
@@ -78,8 +96,9 @@ In seguito tratteremo anche:
 | Hashing | 1 | 1 | non possibile |
 
 
-## Tabelle ad accesso diretto
-Definiamo l'insieme universo U con tutte le chiavi, e M = cardinalità(U) = maxN elementi
+## ADT di 1 classe Tabelle ad accesso diretto
+Definiamo l'insieme universo U con tutte le chiavi, e M = cardinalità(U) = maxN elementi.
+
 Assumiamo una corrispondenza biunivoca tra ciascuna delle chiavi k in U e gli interi tra 0 e M-1 (funzione int GETindex(Key k)). L’intero funge da indice in un vettore
 - vettore st->a[] di dimensione maxN:
 - se la chiave k è nella tabella, essa è in posizione st->a[GETindex(k)], altrimenti st->a[GETindex(k)] contiene l’elemento vuoto
@@ -151,6 +170,7 @@ Item STselect(ST st, int r) {
       return st->a[i];
   return NULL;
 }
+
 void STdisplay(ST st){
   int i;
   for (i = 0; i < st->M; i++)

@@ -21,9 +21,11 @@ void findMaxCollanaSmart(int *mark);
 // funzione di uitility
 void printCollana(int *collana, int len);
 
-int main(){
+int main(int argc, char* argv[]){
     int n, z, r, t, s;
-    FILE* fp = fopen("easy_test_set.txt", "r");
+    
+    if (argc != 2){ printf("Usage: %s <path>", argv[0]); return 1; }
+    FILE* fp = fopen(argv[1], "r");
     fscanf(fp, "%d\n", &n);
     for (int i=0;i<n;i++){
         fscanf(fp, "%d %d %d %d\n", &z, &r, &t, &s);

@@ -1,10 +1,10 @@
 [20/11/23] In questa lezione abbiamo parlato di cosa sono i tipi di dati astratti e come potremmo implementarli.
-Indice completo del file markdown:
-- [Tipi di dati astratti](#tipi-di-dati-astratti)
-  - [Tipo di dati standard](#tipo-di-dati-standard)
-  - [Tipo di dati definiti dall'utente](#tipo-di-dati-definiti-dallutente)
+
+- [Tipo di dato astratto](#tipo-di-dato-astratto)
+    - [Tipo di dati standard](#tipo-di-dati-standard)
+    - [Tipo di dati definiti dall'utente](#tipo-di-dati-definiti-dallutente)
   - [Quasi ADT](#quasi-adt)
-    - [Esemio: quasi ADT per numeri complessi](#esemio-quasi-adt-per-numeri-complessi)
+    - [Esempio: quasi ADT per numeri complessi](#esempio-quasi-adt-per-numeri-complessi)
     - [Tipo 1](#tipo-1)
     - [Tipo 2](#tipo-2)
     - [Tipo 3](#tipo-3)
@@ -25,6 +25,7 @@ Indice completo del file markdown:
   - [Set](#set)
     - [Implementazione con vettore ordinato](#implementazione-con-vettore-ordinato)
     - [Implementazione con lista ordinata](#implementazione-con-lista-ordinata)
+
 
 # Tipo di dato astratto
 astrastto: nasconde l'informazione in un livello inferiore. Sono utili perchènon si vuole che il client abbia accesso ai dettagli dell'implementazione.
