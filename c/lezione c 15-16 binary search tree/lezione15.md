@@ -1,4 +1,4 @@
-[11/12/23]
+[11/12/23] In questa lezione si parla di alberi binari e alberi binari di ricerca.
 
 - [Albero binario](#albero-binario)
   - [Valutazione di espressioni](#valutazione-di-espressioni)

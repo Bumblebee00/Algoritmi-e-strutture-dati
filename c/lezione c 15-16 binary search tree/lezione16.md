@@ -25,14 +25,14 @@ il padre del nodo radice è il tappo `z`
 Con queste estensioni, alcune delle funzioni viste prima rimangono unmodified, altre vanno modificate leggermente, e altre che non erano possibili (o lo erano molto inefficientemente) diventano possibili.
 
 ## Successore e predecessore
-> DOMANDA CHE FARA ALL'ORALE DI SICURO!!!
-il successore è il più piccolo di tutti quelli che stanno dopo, il predecessore trova il massimo di tutti quelli che vengono prima.
+Il successore di un nodo `x` è il nodo `s` che contiene il valore più piccolo tra tutti i nodi che contengono un valore più grande del nodo `x`. Cioè mettendo tutti i nodi in un array ordinato secondo la chiave, il successore `s` è l'elemento successivo a `x` nell'array. Analogamente il predecessore è l'elemento precedente a `x` nell'array.
 
-Il successore di un nodo quindi è in basso a destra, se il sottoalbero esiste, per arrivarci facciamo un passo a destra, e poi tutti a sinistra.
+> DOMANDA CHE FARA ALL'ORALE DI SICURO!!!:
 
-Se il sottoalbero non esiste, il nodo è il massimo di qualcun'altro, quindi il predecessore di qualcunaltro, quindi per trovare il successore troviamo il primo antenato di h il cui figlio sinistro è anche un antenato di h.
+Dov'è quindi il successore del nodo `x`?
+È nel sottoalbero destro, più a sinistra possibile, se il sottoalbero esiste. Per arrivarci facciamo un passo a destra, e poi tutti a sinistra. Se il sottoalbero non esiste invece, il nodo `x` è il ramo destro di suo padre (ed è anche maggiore di suo padre). Qundi si continua così risalendo l'albero sperando di risalire fino a un nodo il cui valore è maggiore di `x`. Se si arriva al tappo `z` vuol dire che `x` è il nodo con la chiave massima, e quindi non ha successore.
 
-da riscrivere
+![](<successore in bst.png>)
 
 ```c
 Item searchPred(link h, key k, link z) {
