@@ -1,24 +1,19 @@
-[11/12/23]
+[11/12/23] in questa lezione si parla di ???
 
+- [Estensione dei BST elementari](#estensione-dei-bst-elementari)
+  - [Successore e predecessore](#successore-e-predecessore)
+  - [BST insert in foglia](#bst-insert-in-foglia)
+    - [Ricorsiva](#ricorsiva)
+    - [Iterativa](#iterativa)
+  - [BSTselect](#bstselect)
+  - [Rotazione a destra e sinistra del BST](#rotazione-a-destra-e-sinistra-del-bst)
+  - [BST insert in radice](#bst-insert-in-radice)
+  - [BST partition](#bst-partition)
+  - [BST delete](#bst-delete)
+  - [Bilanciamento](#bilanciamento)
+- [Order statistic BST](#order-statistic-bst)
+  - [Interval BST](#interval-bst)
 
-# BST elementari?
-ogni nodo contiene item, puntatore al figlio sinistro e destro
-
-
-## ???
-
-figlio sinistro < padre < figlio destro
-### Rotazione a destra del BST
-![](<rotazione a destra di bst.png>)
-
-### BSTinsert (in radice)
-- Inserimento dalle foglie a scelta e non obbligatorio
-- Nodi più recenti nella parte alta del BST
-- Inserimento ricorsivo alla radice:
-  - inserimento nel sottoalbero appropriato
-  - rotazione per farlo diventare radice dell'albero principale.
-
-???
 
 # Estensione dei BST elementari
 Si possono aggiungere:
