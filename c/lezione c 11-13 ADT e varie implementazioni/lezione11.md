@@ -95,7 +95,7 @@ int main() {
 NOTA: questo è un quasi ADT perchè il main può vedere il campo .re e .im\
 il problema potrebbe essere che il main chiama .re, poi l'implementazione della libraria cambia, e il codice non compila più.
 
-Ora per una cosa così semplici come i numeri complessi, è un po' troppo complicato. Ma per tipi di dati più complessi, come ad esempio una lista, è molto utile.
+Ora per una cosa così semplici come i numeri complessi, è un po' overkill fare un ADT, va bene il quasi ADT. Ma per tipi di dati più complessi, come ad esempio una lista, è molto utile.
 
 ### Tipo 1
 Il più semplice: non c'è la struct. Nessun problema di proprietà, in quanto non c’è allocazione dinamica.
