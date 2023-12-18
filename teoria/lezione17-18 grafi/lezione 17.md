@@ -1,5 +1,4 @@
-che differenza c'è tra il cammino di eulero e di hamilton?
-[18/12/23]
+[18/12/23] In questa lezione abbiamo parlato di grafi, e di come rappresentarli in memoria. Abbiamo visto due rappresentazioni: con matrice di adiacenza e con liste di adiacenza. Abbiamo visto i vantaggi e gli svantaggi di entrambe, e abbiamo visto come implementare le funzioni base di un grafo (load, store, insert, remove, ...). Abbiamo visto anche come generare grafi a caso.
 
 - [Grafo](#grafo)
   - [Problemi con grafi](#problemi-con-grafi)
@@ -18,6 +17,11 @@ che differenza c'è tra il cammino di eulero e di hamilton?
       - [Vantaggi](#vantaggi)
       - [Svantaggi](#svantaggi)
   - [Generazinoe di grafi (a caso)](#generazinoe-di-grafi-a-caso)
+  - [Cammino semplice](#cammino-semplice)
+    - [Codice](#codice-2)
+  - [Cammino di Hamilton](#cammino-di-hamilton)
+    - [Codice](#codice-3)
+  - [Cammino di Eulero](#cammino-di-eulero)
 
 # Grafo
 > DEF (grafo pesato): Un grafo pesato è un grafo in cui ogni arco ha un peso associato.
@@ -314,3 +318,42 @@ Graph GRAPHrand2(Graph G, int V, int E) {
     return G;
 }
 ```
+
+## Cammino semplice
+Dato un grafo non orientato G =(V, E) e 2 suoi vertici v e w, esiste un cammino semplice che li connette? Non è richiesto trovarli tutti.
+
+Se il grafo non orientato è connesso il cammino esiste per definizione, basta trovarne uno qualsiasi senza altri vincoli se non essere semplice. Non serve backtrack.
+
+Se il grafo non orientato non è connesso il cammino esiste per definizione se i vertici sono nella stessa componente connessa, altrimenti non esiste. Non serve backtrack.
+
+Algoritmo:
+- qualunque vertice t adiacente al vertice corrente v, determinare ricorsivamente se esiste un cammino semplice da t a w
+
+Uso un array visited[maxV] per marcare i nodi già visitati. cammino visualizzato in ordine inverso. complessità T(n) = O(|V+E|)
+
+Guarda l'esempio pag 53-58
+
+### Codice
+???
+
+## Cammino di Hamilton
+Dato un grafo non orientato G =(V, E) e 2 suoi vertici v e w, se esiste un cammino semplice che li connette visitando ogni vertice una e una sola volta, questo si dice cammino di Hamilton. (se v = w si dice ciclo di Hamilton).
+
+Algoritmo:
+- qualunque vertice t adiacente al vertice corrente v, determinare ricorsivamente se esiste un cammino semplice da t a w
+- ritorno con successo se e solo se la lunghezza del cammino è V-1
+Si usa set della cella dell’array visited per marcare i nodi già visitati. Si fa il reset della cella dell’array visited quando ritorna con insuccesso (backtrack).
+
+complessità esponenziale!
+
+### Codice
+???
+
+## Cammino di Eulero
+Dato un grafo non orientato G =(V, E) e 2 suoi vertici v e w, si dice cammino di Eulero un cammino (anche non semplice) che li connette attraversando ogni arco una e una sola volta. Se v coincide con w, si parla di ciclo di Eulero.
+
+> DEF (grado di un vertice): Il grado di un vertice è il numero di archi incidenti su di esso.
+
+Cose dimostrate da Eulero nel 1736:
+- Un grafo non orientato ha un ciclo di Eulero se e solo se è connesso e tutti i suoi vertici sono di grado pari
+- Un grafo non orientato ha un cammino di Eulero se e solo se è connesso e se esattamente due vertici hanno grado dispari.
