@@ -145,11 +145,6 @@ void disp_rip(programma currentP, programma maxP){
 
     // esplorazione
     for (int i=0; i<n_elementi; i++){
-        // add temporany variables to see currentP in debug
-        int current_diagonale_in_riempimento = currentP->diagonale_in_riempimento;
-        int current_diagonale_lunghezza = currentP->diagonali[current_diagonale_in_riempimento].lunghezza;
-        int current_diagonale_finita = currentP->diagonali[current_diagonale_in_riempimento].finita;
-
         if (addElementoToProgramma(currentP, i, n_elementi-1)){
             disp_rip(currentP, maxP);
             revertDiUno(currentP);
