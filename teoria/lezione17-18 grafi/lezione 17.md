@@ -5,7 +5,6 @@
     - [Problemi facili](#problemi-facili)
     - [Problemi trattabili](#problemi-trattabili)
     - [Problemi intrattabili:](#problemi-intrattabili)
-      - [Ciclo di Hamilton](#ciclo-di-hamilton)
       - [Colorabilità](#colorabilità)
   - [ADT Grafo](#adt-grafo)
     - [Funzioni base](#funzioni-base)
@@ -18,10 +17,12 @@
       - [Svantaggi](#svantaggi)
   - [Generazinoe di grafi (a caso)](#generazinoe-di-grafi-a-caso)
   - [Cammino semplice](#cammino-semplice)
+    - [Strutture dati](#strutture-dati)
     - [Codice](#codice-2)
   - [Cammino di Hamilton](#cammino-di-hamilton)
     - [Codice](#codice-3)
   - [Cammino di Eulero](#cammino-di-eulero)
+
 
 # Grafo
 > DEF (grafo pesato): Un grafo pesato è un grafo in cui ogni arco ha un peso associato.
@@ -58,11 +59,6 @@
 
 problemi a complessità non nota:
 - isomorfismo di grafi
-
-#### Ciclo di Hamilton
-Dato un grafo non orientato G = (V, E), esiste un ciclo semplice che visita ogni vertice una e una sola volta?
-
-![](<esempio ciclo di hamilton.png>)
 
 #### Colorabilità
 Dato un grafo non orientato G =(V,E), quale è il minimo numero di colori k necessario affinché nessun vertice abbia lo stesso colore di un vertice ad esso adiacente?
@@ -320,15 +316,18 @@ Graph GRAPHrand2(Graph G, int V, int E) {
 ```
 
 ## Cammino semplice
+> DEF (cammino semplice): Un cammino semplice è un cammino in cui non ci sono vertici ripetuti.
+
 Dato un grafo non orientato G =(V, E) e 2 suoi vertici v e w, esiste un cammino semplice che li connette? Non è richiesto trovarli tutti.
 
 Se il grafo non orientato è connesso il cammino esiste per definizione, basta trovarne uno qualsiasi senza altri vincoli se non essere semplice. Non serve backtrack.
 
-Se il grafo non orientato non è connesso il cammino esiste per definizione se i vertici sono nella stessa componente connessa, altrimenti non esiste. Non serve backtrack.
+Se il grafo non orientato non è connesso il cammino non esiste per definizione.
 
 Algoritmo:
 - qualunque vertice t adiacente al vertice corrente v, determinare ricorsivamente se esiste un cammino semplice da t a w
 
+### Strutture dati
 Uso un array visited[maxV] per marcare i nodi già visitati. cammino visualizzato in ordine inverso. complessità T(n) = O(|V+E|)
 
 Guarda l'esempio pag 53-58
@@ -338,6 +337,9 @@ Guarda l'esempio pag 53-58
 
 ## Cammino di Hamilton
 Dato un grafo non orientato G =(V, E) e 2 suoi vertici v e w, se esiste un cammino semplice che li connette visitando ogni vertice una e una sola volta, questo si dice cammino di Hamilton. (se v = w si dice ciclo di Hamilton).
+
+Esmepio di ciclo di Hamilton:
+![](<esempio ciclo di hamilton.png>)
 
 Algoritmo:
 - qualunque vertice t adiacente al vertice corrente v, determinare ricorsivamente se esiste un cammino semplice da t a w

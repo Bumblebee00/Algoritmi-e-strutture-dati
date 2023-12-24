@@ -77,15 +77,62 @@ complessità O(n) se nel nodo non c'è annotata la dimensione del sottoalbero, O
 molte modifiche rispetto al BST elementare
 è complicata perchè ci sono tre cambi di padre e tre cambi di dimansioni.
 
+```c
+link rotR(link h) {
+  link x = h->l;
+  h->l = x->r;
+  x->r->p = h;
+  x->r = h;
+  x->p = h->p;
+  h->p = x;
+  x->N = h->N;
+  h->N = 1;
+  h->N += (h->l) ? h->l->N : 0;
+  h->N += (h->r) ? h->r->N : 0;
+  return x;
+}
+```
+
+```c
+link rotL(link h) {
+  link x = h->r;
+  h->r = x->l;
+  x->l->p = h;
+  x->l = h;
+  x->p = h->p;
+  h->p = x;
+  x->N = h->N;
+  h->N = 1;
+  h->N += (h->l) ? h->l->N : 0;
+  h->N += (h->r) ? h->r->N : 0;
+  return x;
+}
+```
+
 ## BST insert in radice
 leggere modifiche rispetto al BST elementare
 
 ## BST partition
 è un sottoprodotto della select, cioè potremmo usare quello pseudocodice per fare un altra cosa.
 La BSTpartition riorganizza l'albero avendo l'item con la k-esima chiave più piccola nella radice. definendo sempre t come il numero di nodi del sottoalbero sinistro, ecco lo pseudocodice:
-porre il nodo come radice di un sottoalbero:
-• t > k: ricorsione nel sottoalbero sinistro, partizionamento rispetto alla k-esima chiave più piccola, al termine rotazione a destra
-• t < k: ricorsione nel sottoalbero destro, partizionamento rispetto alla (k-t-1)-esima chiave più piccola, al termine rotazione a sinistra
+- porre il nodo come radice di un sottoalbero:
+  - t > k: ricorsione nel sottoalbero sinistro, partizionamento rispetto alla k-esima chiave più piccola, al termine rotazione a destra
+  - t < k: ricorsione nel sottoalbero destro, partizionamento rispetto alla (k-t-1)-esima chiave più piccola, al termine rotazione a sinistra
+
+```c
+link partR(link h, int r) {
+  int t = h->l->N;
+  if (t > r) {
+    h->l = partR(h->l, r);
+    h = rotR(h);
+  }
+  if (t < r) {
+    h->r = partR(h->r, r-t-1);
+    h = rotL(h);
+  }
+  return h;
+}
+```
 
 ## BST delete
 se devo concellare una foglia è banale, se devo cancellare un nodo con un solo figlio, lo sostituisco con il figlio, se devo cancellare un nodo con due figli, è più complicato. Per farlo si lascia la topologia dell'albero intatta, e fa risalire un nodo foglia al posto del nodo eliminato. il nodo foglia che si fa risalire è il successore o il predecessore del nodo eliminato.
@@ -95,9 +142,23 @@ se devo concellare una foglia è banale, se devo cancellare un nodo con un solo 
 ???
 
 ## Bilanciamento
-I BST bilanciati sono BST in cui la differenza tra il numero di nodi del sottoalbero sinistro e destro è limitata. I B-tree sono un esempio di BST perfettamente bilanciato, in cui la differenza è sempre 0 o 1. Un abero 2,3 o 4 RB-tree ???
+I BST bilanciati sono BST in cui la differenza tra il numero di nodi del sottoalbero sinistro e destro è limitata. I B-tree sono un esempio di BST perfettamente bilanciato, in cui la differenza è sempre 0 o 1. Un abero 2,3 o 4 RB-tree ha uno sbilanciamento di 2,3 o 4.
 
-si può fare il bilanciamento dopo ogni operazione, o solo dopo un tot. noi adesso vediamo la versione dopo un tot. vedremo un algoritmo O(n)
+si può fare il bilanciamento dopo ogni operazione, o solo dopo un tot. noi adesso vediamo la versione dopo un tot. vediamo l'algoritmo di Day, Stout e Warren, di complessità O(n), che costruisce un albero quasi completo (tutti i livelli completi, tranne l’ultimo riempito da sinistra a destra, come l'heap).
+
+```c
+static link balanceR(link h, link z) { int r;
+  if (h == z)
+    return z;
+  r = (h->N+1)/2-1;
+  h = partR(h, r);
+  h->l = balanceR(h->l, z);
+  h->r = balanceR(h->r, z); return h;
+}
+void BSTbalance(BST bst) {
+  bst->root = balanceR(bst->root, bst->z);
+}
+```
 
 # Order statistic BST
 

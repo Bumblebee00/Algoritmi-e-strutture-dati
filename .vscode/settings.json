@@ -22,6 +22,7 @@
         "pglist.h": "c",
         "equiparray.h": "c",
         "titolo.h": "c",
-        "quotazione.h": "c"
+        "quotazione.h": "c",
+        "tempo.h": "c"
     }
 }
