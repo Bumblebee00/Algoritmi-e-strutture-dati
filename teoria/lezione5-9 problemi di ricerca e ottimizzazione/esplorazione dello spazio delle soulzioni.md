@@ -173,6 +173,23 @@ k = 4
 Dr(2,4) = 2^4 = 16
 Soluzione = {0000, 0001, 0010, 0011, 0100, 0101, 0110, 0111, 1000, 1001, 1010, 1011, 1100, 1101, 1110, 1111}
 
+```c
+int disp_rip(int pos,int *val,int *sol,int n,int k,int cnt){
+  int i;
+  if (pos >= k) {
+    for (i=0; i<k; i++)
+        printf("%d ", sol[i]);
+      printf("\n");
+      return cnt+1;
+  }
+  for (i = 0; i < n; i++) {
+    sol[pos] = val[i];
+    cnt = disp_rip(pos+1, val, sol, n, k, cnt);
+  }
+  return cnt;
+}
+```
+
 ## Permutazioni semplici
 S è un insieme di n elementi. Quante sono le permutazioni possibili? non ci sono ripetizioni e l’ordine conta.
 P(n) = n!
