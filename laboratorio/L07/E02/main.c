@@ -1,3 +1,5 @@
+// Va troppo lento. perchè ogni volta ricalcola diagonali che ha gia calcolato.
+
 /*
 soluzione1: trovare e salvare tutte le diagonali possibili . dopo trovare la combinazione di diagonali possiblie che massimizza il punteggio.
 
@@ -33,6 +35,7 @@ struct diagonale_s{
 };
 typedef struct diagonale_s* diagonale;
 
+// programma è una struttura dati che semplifica la ricerca del programma e il calcolo punteggi
 struct programma_s{
     diagonale diagonali;
     int diagonale_in_riempimento;
@@ -45,7 +48,8 @@ int addElementoToProgramma(programma p, int elemento, int indice_del_separatore)
 void revertDiUno(programma p);
 
 programma findMaxProgramma();
-void disp_rip(programma currentP, programma maxP);
+void disp_rip(programma currentP, programma maxP, int cnt);
+void printProgramma(programma p);
 
 e elementi;
 int n_elementi, DD, DP;
@@ -92,7 +96,7 @@ programma programmaInit(){
 programma findMaxProgramma(){
     programma maxP = programmaInit();
     programma currentP = programmaInit();
-    disp_rip(currentP, maxP);
+    disp_rip(currentP, maxP, 0);
     return maxP;
 }
 
@@ -102,9 +106,11 @@ currentP è il programma attuale
 pos è l'indice di currentP->elementi_i a cui siamo arrivati a rimepire
 maxP è il programma a punteggio massimo trovato finora
 */
-void disp_rip(programma currentP, programma maxP){
+void disp_rip(programma currentP, programma maxP, int cnt){
+    // printf("\nNuova disp rip nuova vita\n");
     // condizione terminazione
     if (currentP->diagonale_in_riempimento >= 3){
+        // printf("Calcolo il punteggio...");
         // calcola validità e punteggio
         // 1) ha incluso almeno un elemento acrobatico avanti nel corso del suo programma?
         // 2) ha incluso almeno un elemento acrobatico indietro nel corso del suo programma?
@@ -140,32 +146,59 @@ void disp_rip(programma currentP, programma maxP){
         if (c1 && c2 && c3 && c4 && punteggio_totale>currentP->punteggio_tot){
             currentP->punteggio_tot = punteggio_totale;
             memcpy(maxP, currentP, sizeof(struct programma_s));
+            printf("nuovo max salvato\n");
+            printProgramma(maxP);
         }
+        // printf("Fine disp rip!!!\n\n");
+        return;
     }
 
     // esplorazione
     for (int i=0; i<n_elementi; i++){
-        if (addElementoToProgramma(currentP, i, n_elementi-1)){
-            disp_rip(currentP, maxP);
+        // printf("It: %d. Provo a aggiungere %d a questo programma:\n", cnt, i);
+        int tmp = addElementoToProgramma(currentP, i, n_elementi-1);
+        // printf("esito: %d\n", tmp);
+        if (tmp){
+            // printProgramma(currentP);
+            disp_rip(currentP, maxP, cnt+1);
             revertDiUno(currentP);
         }
     }
+    // printf("Fine disp rip!!!\n\n");
+}
+
+void printProgramma(programma p){
+    printf("d. in riempimento: %d, ptot: %f, diagonali:\n", p->diagonale_in_riempimento, p->punteggio_tot);
+    for (int i =0;i<3;i++){
+        printf("lunghezza: %d, finita:%d, elementi:", p->diagonali[i].lunghezza, p->diagonali[i].finita);
+        for (int j=0; j<p->diagonali[i].lunghezza; j++){
+            printf("%-2d, ", p->diagonali[i].diag[j]);
+        }
+        printf("\n");
+    }
+    printf("\n");
 }
 
 void revertDiUno(programma p){
-    if (p->diagonale_in_riempimento>=3){
-        p->diagonale_in_riempimento--;
+    if (p->diagonale_in_riempimento>=3){// può essere al più 3
+        p->diagonale_in_riempimento--; // adesso è = 2
+        p->diagonali[2].lunghezza--; // adesso è 4
+        p->diagonali[2].finita = 0;
         return;
     }
     diagonale currentD = &(p->diagonali[p->diagonale_in_riempimento]);
-    currentD->lunghezza--;
-    if (currentD->lunghezza < 0){
+    if (currentD->lunghezza > 0){
+        currentD->lunghezza--;
+    } else {
         p->diagonale_in_riempimento--;
+        p->diagonali[p->diagonale_in_riempimento].lunghezza--;
+        p->diagonali[p->diagonale_in_riempimento].finita = 0;
     }
 }
 
 /*
-vengono controllate 2 regole qui per prunare:
+in questa funzione è implementato il pruning, vengono controllate le seguenti cose:
+- no diagonali vuote
 - ogni diagonale può contenere al massimo 5 elementi
 - il ginnasta deve presentare 3 diagonali
 - la direzione di uscita del primo elemento deve coincidere con la direzione di ingresso del secondo elemento
@@ -174,18 +207,22 @@ vengono controllate 2 regole qui per prunare:
 - ogni diagonale ha una difficoltà inferiore a DD?
 
 ritorna 0 (e non aggiunge nulla) se è un agginuta impossibile
-ritorna 1 se è possibile
+ritorna 1 (e aggiunge l'elemento in questione) se è possibile
 */
 
 int addElementoToProgramma(programma p, int e, int separator_index){
+    diagonale currentD = &(p->diagonali[p->diagonale_in_riempimento]);
+
     // se aggiungiamo un separatore, cambia diagonale in riempimento
     if (e==separator_index){
-        p->diagonali[p->diagonale_in_riempimento].finita = 1;
+        if (currentD->lunghezza==0){ return 0; }
+        currentD->diag[currentD->lunghezza] = e;
+        currentD->lunghezza++;
+        currentD->finita = 1;
         p->diagonale_in_riempimento++;
         return 1;
     }
 
-    diagonale currentD = &(p->diagonali[p->diagonale_in_riempimento]);
     // se il ginnasta non inizia la diagonale frontalmente
     if(currentD->lunghezza==0){ if (elementi[e].dir_ingresso != 1){ return 0; } }
     // se l'elemento prima non ha la stessa direzione di uscita di quello da aggiungere
