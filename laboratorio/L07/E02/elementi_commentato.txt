@@ -1,0 +1,25 @@
+for (int i=0; i<n_elementi; i++){
+    printf("%-24s tipologia: %d dir_ing: %d dir_usc: %d prec: %d finale: %d valore: %f difficoltà: %d\n", elementi[i].nome, elementi[i].tipologia, elementi[i].dir_ingresso, elementi[i].dir_uscita, elementi[i].precedenza, elementi[i].finale, elementi[i].valore, elementi[i].difficoltà);
+}
+
+ruota                    tipologia: 0 dir_ing: 1 dir_usc: 0 prec: 0 finale: 0 valore: 0.000000 difficoltà: 1
+rondata                  tipologia: 0 dir_ing: 1 dir_usc: 0 prec: 0 finale: 0 valore: 0.200000 difficoltà: 1
+ribaltata_a_2            tipologia: 0 dir_ing: 1 dir_usc: 1 prec: 0 finale: 0 valore: 0.250000 difficoltà: 2
+back_handspring          tipologia: 0 dir_ing: 0 dir_usc: 0 prec: 0 finale: 0 valore: 0.400000 difficoltà: 2
+front_tuck               tipologia: 2 dir_ing: 1 dir_usc: 1 prec: 0 finale: 0 valore: 1.750000 difficoltà: 3
+front_pike               tipologia: 2 dir_ing: 1 dir_usc: 1 prec: 0 finale: 0 valore: 2.000000 difficoltà: 4
+front_layout             tipologia: 2 dir_ing: 1 dir_usc: 1 prec: 0 finale: 0 valore: 2.250000 difficoltà: 5
+back_tuck                tipologia: 1 dir_ing: 0 dir_usc: 0 prec: 0 finale: 0 valore: 1.750000 difficoltà: 3
+back_pike                tipologia: 1 dir_ing: 0 dir_usc: 0 prec: 0 finale: 0 valore: 2.000000 difficoltà: 4
+back_layout              tipologia: 1 dir_ing: 0 dir_usc: 0 prec: 0 finale: 0 valore: 2.250000 difficoltà: 5
+double_front_tuck        tipologia: 2 dir_ing: 1 dir_usc: 1 prec: 1 finale: 0 valore: 3.000000 difficoltà: 6
+double_front_layout      tipologia: 2 dir_ing: 1 dir_usc: 1 prec: 1 finale: 1 valore: 4.000000 difficoltà: 7
+double_back_tuck         tipologia: 1 dir_ing: 0 dir_usc: 0 prec: 1 finale: 0 valore: 3.000000 difficoltà: 6
+double_back_layout       tipologia: 1 dir_ing: 0 dir_usc: 0 prec: 1 finale: 1 valore: 4.000000 difficoltà: 7
+triple_front_tuck        tipologia: 2 dir_ing: 1 dir_usc: 1 prec: 1 finale: 1 valore: 6.500000 difficoltà: 8
+triple_back_tuck         tipologia: 1 dir_ing: 0 dir_usc: 0 prec: 1 finale: 1 valore: 6.000000 difficoltà: 8
+back_layout_double_twist tipologia: 1 dir_ing: 0 dir_usc: 0 prec: 1 finale: 0 valore: 8.000000 difficoltà: 9
+back_layout_quad_twist   tipologia: 1 dir_ing: 0 dir_usc: 0 prec: 1 finale: 1 valore: 12.000000 difficoltà: 10
+arabian                  tipologia: 1 dir_ing: 0 dir_usc: 1 prec: 0 finale: 0 valore: 2.500000 difficoltà: 4
+
+tipologia:(0 transizione, 1 acro indietro, 2 acro avanti) dir:(1fornt 0 spalle) precedenza: (può essere primo 0 o no) finale (non può essere seguito da altri elementi [1] o meno [0])

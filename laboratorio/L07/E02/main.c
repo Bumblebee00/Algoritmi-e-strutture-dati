@@ -1,20 +1,16 @@
-// Va troppo lento. perchè ogni volta ricalcola diagonali che ha gia calcolato.
-
 /*
-soluzione1: trovare e salvare tutte le diagonali possibili . dopo trovare la combinazione di diagonali possiblie che massimizza il punteggio.
-
-soluzione2: introdurre un elemento separatore, che separa la fine di una diagonale dall'inizio di un altra. trovare la combianzione di elementi (al più 15) che massimizza il punteggio.
-
-provo con la seconda perchè credo che le diagonali possibili siano tantissime, e memorizzarle tutte sia uno spreco. però boh
+trovare e salvare tutte le diagonali possibili. dopo trovare la combinazione di diagonali possiblie che massimizza il punteggio.
+Abbiamo 19 elementi e una prima stima del numero di diagonali possibili è 19^5 = 2.476.099, combinate in (19^5)^3 = 1,518e19. In realtà saranno molto meno. le diagonali saranno salvare in un vettore o lista? vettore dovrei fare un alloc da 2,4M*(sizeof diagonale tipo 28 byte) = 69 Mbyte che però sarà sovrallocatissima. il vantaggio è che non devo scrivere il codice per le liste. il vantaggio delle liste sarebbe non sprecare memoria... e non mi sembra altro. Per trovare tutte le diagonali possibili utilizzerò il modello delle disposizioni ripetute
+per trovare la comb di diagonali che massimizza il punteggio userò la strategia delle disposizioni ripetute. perciò non serve che il vettore sia ordinato nè niente.
 */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include<stdio.h>
+#include<stdlib.h>
 
-#define MAX_L_PROGR 17 // 15 elements + 2 separators
+#define LUNGHEZZA_DIAG 5
+#define MAX_C 100
 
 struct elemento{
-    char nome[100];
+    char nome[MAX_C];
     int tipologia; // acrobatico avanti [2], acrobatico indietro [1] o di transizione [0]
     int dir_ingresso; // frontalmente [1] o di spalle [0]
     int dir_uscita; // frontalmente [1] o di spalle [0]
@@ -23,229 +19,175 @@ struct elemento{
     float valore;
     int difficoltà;
 };
-typedef struct elemento* e;
+typedef struct elemento* Elemento;
 
 struct diagonale_s{
-    int diag[5];
-    int lunghezza;
-    int finita;
+    int elementi[LUNGHEZZA_DIAG];
     int difficoltà;
     float punteggio;
-    int ha_un_elemento_acrobatico;
 };
-typedef struct diagonale_s* diagonale;
+typedef struct diagonale_s* Diagonale;
 
-// programma è una struttura dati che semplifica la ricerca del programma e il calcolo punteggi
-struct programma_s{
-    diagonale diagonali;
-    int diagonale_in_riempimento;
-    int bonus;
-    float punteggio_tot;
-};
-typedef struct programma_s* programma;
+void trovaDiagonali(Diagonale sol, int pos, Diagonale diagonali, int* n_diagonali, Elemento elementi, int n_elementi, int k, int DD);
+void trovaProgramma(int sol[3], int pos, Diagonale diagonali, int n_diagonali, Elemento elementi, int n_elementi, int DP, int programma_max[3], float *punteggio_max);
 
-int addElementoToProgramma(programma p, int elemento, int indice_del_separatore);
-void revertDiUno(programma p);
+int main(){
+    int n_elementi, DD, DP, n_diagonali_max, n_diagonali;
+    Elemento elementi;
+    Diagonale diagonali;
 
-programma findMaxProgramma();
-void disp_rip(programma currentP, programma maxP, int cnt);
-void printProgramma(programma p);
+    printf("Inserisci i valore di DD e DP separati da uno spazio: ");
+    scanf("%d %d", &DD, &DP);
 
-e elementi;
-int n_elementi, DD, DP;
-
-int main(int argc, char *argv[]){
-    //if (argc!=2){ printf("Usage: %s <path>\n", argv[0]); return 1; }
-
-    // FILE* fp = fopen(argv[1], "r");
     FILE* fp = fopen("elementi.txt", "r");
     fscanf(fp, "%d\n", &n_elementi);
-    n_elementi++;
     elementi = malloc(sizeof(struct elemento)*(n_elementi));
-
-    for (int i=0; i<n_elementi-1; i++){
+    for (int i=0; i<n_elementi; i++){
         fscanf(fp, "%s %d %d %d %d %d %f %d\n", elementi[i].nome, &elementi[i].tipologia, &elementi[i].dir_ingresso, &elementi[i].dir_uscita, &elementi[i].precedenza, &elementi[i].finale, &elementi[i].valore, &elementi[i].difficoltà);
     }
     fclose(fp);
-    strcpy(elementi[n_elementi-1].nome, "SEPARATORE");
-    printf("Inserisci il valore massimo di una diagonale e del programma: "); //scanf("%d %d", &DD, &DP);
-    DD=10; DP=20;
 
-    programma p = findMaxProgramma();
+    // trova tutte le diagonali
+    n_diagonali_max = 1;
+    for (int i=0; i<LUNGHEZZA_DIAG; i++){ n_diagonali_max *= n_elementi; }
+    diagonali = malloc(sizeof(struct diagonale_s)*n_diagonali_max);
 
-    printf("DD = %d DP = %d\n", DD, DP);
-    printf("TOT = %.3f\n", p->punteggio_tot);
+    n_diagonali = 0;
+    Diagonale sol_d = malloc(sizeof(struct diagonale_s));
+    for (int l=1; l<=LUNGHEZZA_DIAG; l++){
+        trovaDiagonali(sol_d, 0, diagonali, &n_diagonali, elementi, n_elementi, l, DD);
+    }
+    printf("%d diagonali trovate\n", n_diagonali);
+
+    // trova il programma che massimizza il punteggio
+    int sol_p[3], programma_max[3];
+    float punteggio_max;
+    trovaProgramma(sol_p, 0, diagonali, n_diagonali, elementi, n_elementi, DP, programma_max, &punteggio_max);
+
+    printf("Il programma massimo, con punteggio %f, è:\n", punteggio_max);
     for (int i=0; i<3; i++){
-        printf("DIAG #%d > %.3f", i+1, p->diagonali[i].punteggio);
-        if (p->diagonali[i].finita && p->bonus){ printf(" * 1.5 (BONUS)\n"); }
-        else{ printf("\n"); }
-        for (int j=0; j<p->diagonali[i].lunghezza; j++){
-            printf(" %s", elementi[p->diagonali[i].diag[j]].nome);
+        printf("Diag %d (%f): ", i, diagonali[programma_max[i]].punteggio);
+        for (int j=0; j<LUNGHEZZA_DIAG; j++){
+            printf("%s ", elementi[diagonali[programma_max[i]].elementi[j]].nome);
         }
         printf("\n");
     }
 }
 
-programma programmaInit(){
-    programma p = malloc(sizeof(struct programma_s));
-    p->diagonali = malloc(sizeof(struct diagonale_s)*3);
-    p->diagonale_in_riempimento=0;
-    return p;
+/*
+sol è la diagonale in riempimento
+pos è l'indice di riempimento a cui siamo arrivati
+diagonali è il vettorone dove salviamo tutte la diagonali
+n_diagonali è il numero di diagonali (che viene aumentato)
+elementi e n_elementi
+k è la lunghezza delle diagonali da formare
+DD è la difficoltà massima della diagnoale
+
+Una volta riempita la diagonale valuteremo le seguenti condizioni:
+- ogni diagonale non può avere difficoltà superiore a un dato valore DD
+- Un ginnasta inizia una diagonale sempre frontalmente.
+- la direzione di uscita di un elemento deve coincidere con la direzione di ingresso del successivo elemento.
+- il ginnasta deve includere almeno un elemento acrobatico in ogni diagonale
+- un elememento (precedenza = 1) non può stare all'inizio
+- un elemento finale (finale = 1) non può essere seguito da altri elementi (la diag non è valida se c'è un finale non alla fine)
+*/
+void trovaDiagonali(Diagonale sol, int pos, Diagonale diagonali, int* n_diagonali, Elemento elementi, int n_elementi, int k, int DD){
+    if (pos >= k){
+        // controlla se valida
+        if (sol->difficoltà > DD){ return; }
+        if (elementi[sol->elementi[0]].dir_ingresso == 0){ return; }
+        if (elementi[sol->elementi[0]].precedenza == 1){ return; }
+        int ha_acrobatico = 0;
+        int cond_ingr_usc = 1;
+        int ha_final_in_mezzo = 0;
+        for (int i=0; i<k; i++){
+            if (elementi[sol->elementi[i]].tipologia > 0){ ha_acrobatico=1; }
+            if (i!=k-1 && elementi[sol->elementi[i]].dir_uscita != elementi[sol->elementi[i+1]].dir_ingresso){ cond_ingr_usc = 0; break; }
+            if (i!=k-1 && elementi[sol->elementi[i]].finale==1){ ha_final_in_mezzo=1; break; }
+        }
+        if (!ha_acrobatico || !cond_ingr_usc || ha_final_in_mezzo){ return; }
+
+        // mette nell'array
+        diagonali[*n_diagonali].difficoltà = sol->difficoltà;
+        diagonali[*n_diagonali].punteggio = sol->punteggio;
+        for (int i=0; i<k; i++){ diagonali[*n_diagonali].elementi[i] = sol->elementi[i]; }
+        for (int i=k; i<LUNGHEZZA_DIAG; i++){ diagonali[*n_diagonali].elementi[i] = -1; }
+        (*n_diagonali)++;
+        return;
+    }
+
+    for (int e=0; e<n_elementi; e++){
+        sol->elementi[pos] = e;
+        sol->difficoltà += elementi[e].difficoltà;
+        sol->punteggio += elementi[e].valore;
+
+        trovaDiagonali(sol, pos+1, diagonali, n_diagonali, elementi, n_elementi, k, DD);
+
+        sol->difficoltà -= elementi[e].difficoltà;
+        sol->punteggio -= elementi[e].valore;
+    }
 }
 
-programma findMaxProgramma(){
-    programma maxP = programmaInit();
-    programma currentP = programmaInit();
-    disp_rip(currentP, maxP, 0);
-    return maxP;
-}
 
 /*
-n_elementi è il numero di elementi del vettore elementi
-currentP è il programma attuale
-pos è l'indice di currentP->elementi_i a cui siamo arrivati a rimepire
-maxP è il programma a punteggio massimo trovato finora
-*/
-void disp_rip(programma currentP, programma maxP, int cnt){
-    // printf("\nNuova disp rip nuova vita\n");
-    // condizione terminazione
-    if (currentP->diagonale_in_riempimento >= 3){
-        // printf("Calcolo il punteggio...");
-        // calcola validità e punteggio
-        // 1) ha incluso almeno un elemento acrobatico avanti nel corso del suo programma?
-        // 2) ha incluso almeno un elemento acrobatico indietro nel corso del suo programma?
-        // 3) ha presentato almeno una diagonale in cui compaiono almeno due elementi acrobatici in sequenza?
-        // 4) il programma ha una difficolta inferiore a DP?
-        // 5) nell'ultima diagonale c'è un elemento di difficoltà >= 8?
-        int c1=0, c2=0, c3=0, c4=0, c5=0;
-        float punteggio_totale=0;
-        for (int i=0; i<3; i++){
-            int prev_acrobatico = 0;
-            float punteggio_diagonale = 0;
-            for (int j=0; j<currentP->diagonali[i].lunghezza; j++){
-                int e = currentP->diagonali[i].diag[j];
-                if (elementi[e].tipologia>0){ // elemento acrobatico
-                    if (elementi[e].tipologia == 2){ c1=1; }
-                    if (elementi[e].tipologia == 1){ c2=1; }
-                    if (prev_acrobatico){ c3=1; }
-                    else { prev_acrobatico=1; }
-                }
-                if (i==2 && elementi[e].difficoltà>=8){ c5=1;}
+sol è il programma in riempimento (indici delle diagnoali nel vettore diagonali)
+pos è l'indice di riempimento a cui siamo arrivati
+diagonali è il vettorone dove salviamo tutte la diagonali
+n_diagonali è il numero di diagonali trovate
+elementi e n_elementi
+DP è la difficoltà massima del programma
+programma_max è il programma amssimo trovato finora
+punteggio_max
 
-                c4 += elementi[e].difficoltà;
-                punteggio_diagonale += elementi[e].valore;
+Una volta riempito il programma valuteremo le seguenti condizioni:
+- il ginnasta deve includere almeno un elemento acrobatico avanti e almeno un elemento acrobatico indietro nel corso del suo programma, ma non necessariamente nella stessa diagonale
+- il ginnasta deve presentare almeno una diagonale in cui compaiono almeno due elementi acrobatici in sequenza
+- se il ginnasta include un elemento finale di difficoltà 8 o superiore nell'ultima diagonale presentata in gara, il punteggio complessivo della diagonale viene moltiplicato per 1.5
+- il programma complessivamente non può avere difficoltà superiore a un dato valore DP.
+
+*/
+void trovaProgramma(int sol[3], int pos, Diagonale diagonali, int n_diagonali, Elemento elementi, int n_elementi, int DP, int programma_max[3], float *punteggio_max){
+    if (pos >= 3){
+        // controlla se valido e calcola punteggio
+        float punteggio = 0;
+        int ha_el_acr_avanti = 0;
+        int ha_el_acr_indietro = 0;
+        int due_el_acr_in_seq = 0;
+
+        for (int i=0; i<3; i++){
+            int precedente_acrobatico = 0;
+            int el_di_diff_8_o_sup = 0;
+
+            for (int j=0; j<LUNGHEZZA_DIAG; j++){
+                int tmp = elementi[diagonali[sol[i]].elementi[j]].tipologia;
+                // se elemento acrobatico
+                if (tmp>0){
+                    if (tmp == 2){ ha_el_acr_avanti=1; }
+                    else if (tmp == 1){ ha_el_acr_indietro=1; } // anche else e basta andrebbe bene
+                    if (precedente_acrobatico){ due_el_acr_in_seq=1; }
+                    precedente_acrobatico = 1; // per la prossima iterazione
+                } else { precedente_acrobatico = 0; }
+                if (elementi[diagonali[sol[i]].elementi[j]].difficoltà >= 8){ el_di_diff_8_o_sup=1; }
             }
 
-            if (c5){ punteggio_diagonale *= 1.5; currentP->bonus=1;}
-            currentP->diagonali[i].punteggio = punteggio_diagonale;
-            punteggio_totale += punteggio_diagonale;
+            punteggio += diagonali[sol[i]].punteggio * ((i==2 && el_di_diff_8_o_sup) ? 1.5 : 1.0);
         }
-        if (c4<=DP){ c4=1; }
-        else{ c4=0; }
 
-        if (c1 && c2 && c3 && c4 && punteggio_totale>currentP->punteggio_tot){
-            currentP->punteggio_tot = punteggio_totale;
-            memcpy(maxP, currentP, sizeof(struct programma_s));
-            printf("nuovo max salvato\n");
-            printProgramma(maxP);
+        if (punteggio < DP && ha_el_acr_avanti && ha_el_acr_indietro && due_el_acr_in_seq && punteggio > *punteggio_max){
+            *punteggio_max = punteggio;
+            printf("newmax (%f): ", *punteggio_max);
+            for (int i=0; i<3; i++){
+                printf("%d ", sol[i]);
+                programma_max[i] = sol[i];
+            }
+            printf("\n");
         }
-        // printf("Fine disp rip!!!\n\n");
+
         return;
     }
 
-    // esplorazione
-    for (int i=0; i<n_elementi; i++){
-        // printf("It: %d. Provo a aggiungere %d a questo programma:\n", cnt, i);
-        int tmp = addElementoToProgramma(currentP, i, n_elementi-1);
-        // printf("esito: %d\n", tmp);
-        if (tmp){
-            // printProgramma(currentP);
-            disp_rip(currentP, maxP, cnt+1);
-            revertDiUno(currentP);
-        }
+    for (int i=0; i<n_diagonali; i++){
+        sol[pos] = i;
+        trovaProgramma(sol, pos+1, diagonali, n_diagonali, elementi, n_elementi, DP, programma_max, punteggio_max);
     }
-    // printf("Fine disp rip!!!\n\n");
-}
-
-void printProgramma(programma p){
-    printf("d. in riempimento: %d, ptot: %f, diagonali:\n", p->diagonale_in_riempimento, p->punteggio_tot);
-    for (int i =0;i<3;i++){
-        printf("lunghezza: %d, finita:%d, elementi:", p->diagonali[i].lunghezza, p->diagonali[i].finita);
-        for (int j=0; j<p->diagonali[i].lunghezza; j++){
-            printf("%-2d, ", p->diagonali[i].diag[j]);
-        }
-        printf("\n");
-    }
-    printf("\n");
-}
-
-void revertDiUno(programma p){
-    if (p->diagonale_in_riempimento>=3){// può essere al più 3
-        p->diagonale_in_riempimento--; // adesso è = 2
-        p->diagonali[2].lunghezza--; // adesso è 4
-        p->diagonali[2].finita = 0;
-        return;
-    }
-    diagonale currentD = &(p->diagonali[p->diagonale_in_riempimento]);
-    if (currentD->lunghezza > 0){
-        currentD->lunghezza--;
-    } else {
-        p->diagonale_in_riempimento--;
-        p->diagonali[p->diagonale_in_riempimento].lunghezza--;
-        p->diagonali[p->diagonale_in_riempimento].finita = 0;
-    }
-}
-
-/*
-in questa funzione è implementato il pruning, vengono controllate le seguenti cose:
-- no diagonali vuote
-- ogni diagonale può contenere al massimo 5 elementi
-- il ginnasta deve presentare 3 diagonali
-- la direzione di uscita del primo elemento deve coincidere con la direzione di ingresso del secondo elemento
-- Un ginnasta inizia una diagonale sempre frontalmente
-- ha inlcuso almeno un elemento acrobatico in ogni diagonale?
-- ogni diagonale ha una difficoltà inferiore a DD?
-
-ritorna 0 (e non aggiunge nulla) se è un agginuta impossibile
-ritorna 1 (e aggiunge l'elemento in questione) se è possibile
-*/
-
-int addElementoToProgramma(programma p, int e, int separator_index){
-    diagonale currentD = &(p->diagonali[p->diagonale_in_riempimento]);
-
-    // se aggiungiamo un separatore, cambia diagonale in riempimento
-    if (e==separator_index){
-        if (currentD->lunghezza==0){ return 0; }
-        currentD->diag[currentD->lunghezza] = e;
-        currentD->lunghezza++;
-        currentD->finita = 1;
-        p->diagonale_in_riempimento++;
-        return 1;
-    }
-
-    // se il ginnasta non inizia la diagonale frontalmente
-    if(currentD->lunghezza==0){ if (elementi[e].dir_ingresso != 1){ return 0; } }
-    // se l'elemento prima non ha la stessa direzione di uscita di quello da aggiungere
-    else if (elementi[e].dir_ingresso != elementi[currentD->diag[(currentD->lunghezza)-1]].dir_uscita){ return 0; }
-    // se devo aggiungere solo più un elemento
-    if (currentD->lunghezza==4){
-        // se non è acrobatico, e la diagonale non ha ancora neanche un elemento acrobatico
-        if (!(currentD->ha_un_elemento_acrobatico) && elementi[e].tipologia<=0){ return 0; }
-        // se aggingendolo straborderò il massimo DD
-        if (currentD->difficoltà + elementi[e].difficoltà > DD){ return 0; }
-    }
-
-    currentD->diag[currentD->lunghezza] = e;
-    currentD->lunghezza++;
-    currentD->difficoltà += elementi[e].difficoltà;
-
-    // se è un elemento acrobatico
-    if (elementi[e].tipologia>0){ currentD->ha_un_elemento_acrobatico=1; }
-    // se la diagnoale è lunga 5, cambia diagonale in riempimento
-    if (currentD->lunghezza >= 5){
-        currentD->finita = 1;
-        p->diagonale_in_riempimento++;
-    }
-
-    return 1;
 }
