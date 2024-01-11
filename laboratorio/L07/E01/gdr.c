@@ -7,7 +7,7 @@
 #include "pg.h"
 
 #define N_SCELTE 7
-#define DBG 0
+#define DBG 1
 
 enum { falso, vero };
 typedef int bool;
@@ -17,6 +17,7 @@ void stampaMenu(char *scelte[], int *selezione){
   printf("\nMENU'\n");
   for(i=0;i<N_SCELTE;i++)
     printf("%2d > %s\n",i,scelte[i]);
+  printf("Inserire scelta: ");
   scanf(" %d",selezione);
 }
 
@@ -44,14 +45,18 @@ int main(int argc, char **argv) {
   pgList_read(fin, pgList);
   fclose(fin);
 #if DBG
-  pgList_print(stdout, pgList);
+  printf("Lista di personaggi:\n");
+  pgList_print(stdout, pgList, invArray);
+  printf("Fine lista di personaggi.\n\n");
 #endif /* DBG */
 
   fin = fopen("inventario.txt","r");
   invArray_read(fin, invArray);
   fclose(fin);
 #if DBG
+  printf("Array dell'inventario:\n");
   invArray_print(stdout, invArray);
+  printf("Fine array dell'inventario.\n\n");
 #endif /* DBG */
 
   fineProgramma = falso;
@@ -100,12 +105,15 @@ int main(int argc, char **argv) {
       pgp = pgList_searchByCode(pgList, codiceRicerca);
       if (pgp!=NULL) {
         pg_updateEquip(pgp, invArray);
+      } else {
+        printf("Personaggio non trovato\n");
       }
     } break;
 
     default:{
       printf("Scelta non valida\n");
     } break;
+
     }
   } while(!fineProgramma);
 
