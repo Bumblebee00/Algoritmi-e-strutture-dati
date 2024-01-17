@@ -89,6 +89,7 @@ int main(int argc, char** argv){
         {
         case 1:
             CreaListaAdiacenza(g);
+            printf("Lista di adiacenza generata\n");
             break;
 
         case 2:
@@ -100,7 +101,7 @@ int main(int argc, char** argv){
             break;
 
         case 4:{
-            printf("Inserisci l'indice di tre vertici, per controllare se sono adiacenti a coppie (questo metodo usa la matrice di adiacenza):");
+            printf("Inserisci l'indice di tre vertici (separati da spazi), per controllare se sono adiacenti a coppie (questo metodo usa la matrice di adiacenza):");
             int a, b, c;
             scanf("%d %d %d", &a, &b, &c);
             if (controllaSottografoM(g, a, b, c)){
@@ -119,6 +120,17 @@ int main(int argc, char** argv){
             break;
         }
 
+        case 6:
+            printAlphabeticalSymbolTab(g);
+            break;
+
+        case 7:
+            printf("Inserire l'indice del vertice desiderato: ");
+            int index;
+            scanf("%d", &index);
+            printAlphabeticalAdjLstEl(g, index);
+            break;
+
         default:
             break;
         }
@@ -132,6 +144,8 @@ int stampaMenu(){
     printf("3) Stampa matrice di adiacenza\n");
     printf("4) Tre vertici sottografo completo, con matrice\n");
     printf("5) Tre vertici sottografo completo, con lista\n");
+    printf("6) Elencare in ordine alfabetico i vertici\n");
+    printf("7) Dato un vertice stampare gli archi che su di esso insistono\n");
     printf("Inserire scelta: ");
     int x;
     scanf("%d", &x);

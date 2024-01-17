@@ -1,3 +1,5 @@
+#include<string.h>
+
 typedef struct edge { int v; int w; int wt; } Edge;
 typedef struct graph *Graph;
 
@@ -12,3 +14,6 @@ void CreaListaAdiacenza(Graph g);
 
 int controllaSottografoM(Graph g, int a, int b, int c);
 int controllaSottografoL(Graph g, int a, int b, int c);
+
+void printAlphabeticalSymbolTab(Graph g);
+void printAlphabeticalAdjLstEl(Graph g, int index);
