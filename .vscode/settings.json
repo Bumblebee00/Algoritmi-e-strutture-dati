@@ -23,6 +23,7 @@
         "equiparray.h": "c",
         "titolo.h": "c",
         "quotazione.h": "c",
-        "tempo.h": "c"
+        "tempo.h": "c",
+        "ts.h": "c"
     }
 }
