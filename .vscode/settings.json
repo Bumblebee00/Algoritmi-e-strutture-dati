@@ -24,6 +24,7 @@
         "titolo.h": "c",
         "quotazione.h": "c",
         "tempo.h": "c",
-        "ts.h": "c"
+        "ts.h": "c",
+        "module1.h": "c"
     }
 }
