@@ -1,4 +1,4 @@
-[18/12/2023] In questa lezione si parla di algoritmi di visita dei grafi, della visita in profondità e della visita in ampiezza. Il concetto chaive della visita in profondità è: partendo da un vertice, visitare un suo vicino, e da quel vicino un suo vicino, e così via. Quando si finiscono i vicini si torna indietro. La visita in ampiezza invece usa una queue. Partendo da un vertice visita tutti i vicini di un vertice, e poi passa algi altri, che intanto ha messo nella queue.
+[18/12/2023] In questa lezione si parla di algoritmi di visita dei grafi, della visita in profondità e della visita in ampiezza. Il concetto chaive della visita in profondità è: partendo da un vertice, visitare un suo vicino, e da quel vicino un suo vicino, e così via. Quando si finiscono i vicini si torna indietro. La visita in ampiezza invece usa una queue. Partendo da un vertice visita tutti i vicini di un vertice subito, e poi passa algi altri, che intanto ha messo nella queue.
 
 - [Gli algoritmi di visita dei grafi](#gli-algoritmi-di-visita-dei-grafi)
   - [Visita in profondità](#visita-in-profondità)
