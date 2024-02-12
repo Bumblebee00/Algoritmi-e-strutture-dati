@@ -1,4 +1,4 @@
-[9/02/24]
+[9/02/24] In questa lezione definiamo Gli alberi ricoprenti minimi e analizziamo due algoritmi per trovarli: Kruskal e Prim.
 
 - [Alberi ricoprenti minimi](#alberi-ricoprenti-minimi)
   - [Definizione](#definizione)
