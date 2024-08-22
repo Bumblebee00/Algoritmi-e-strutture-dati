@@ -82,6 +82,7 @@ Ricombinazione:
 ### Funzione ricorsiva
 ```c
 // wrapper😎, cosicchè l'utente debba solo passare il vettore da ordinare e non gli indici
+// B è un vettore ausiliario lungo N
 void MergeSort(Item A[], Item B[], int N) {
     int l=0, r=N-1;
     MergeSortR(A, B, l, r);
@@ -198,7 +199,7 @@ int partition (Item A[], int l, int r ){
             break;
         Swap(A, i, j);
     }
-    // scambia il pivot con l'elemento in posizione j
+    // scambia il pivot con l'elemento in posizione i
     Swap(A, i, r);
     return i;
 }
