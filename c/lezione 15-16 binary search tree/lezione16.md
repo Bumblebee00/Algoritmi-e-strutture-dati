@@ -1,10 +1,8 @@
-[11/12/23] in questa lezione si parla di ???
+[11/12/23] in questa lezione si parla di estensione della struttura dati BST aggiungendo un puntatore al padre e la dimensione del sottoalbero. SI parla anche di interval BST.
 
 - [Estensione dei BST elementari](#estensione-dei-bst-elementari)
   - [Successore e predecessore](#successore-e-predecessore)
   - [BST insert in foglia](#bst-insert-in-foglia)
-    - [Ricorsiva](#ricorsiva)
-    - [Iterativa](#iterativa)
   - [BSTselect](#bstselect)
   - [Rotazione a destra e sinistra del BST](#rotazione-a-destra-e-sinistra-del-bst)
   - [BST insert in radice](#bst-insert-in-radice)
@@ -13,7 +11,6 @@
   - [Bilanciamento](#bilanciamento)
 - [Order statistic BST](#order-statistic-bst)
   - [Interval BST](#interval-bst)
-
 
 # Estensione dei BST elementari
 Si possono aggiungere:
@@ -35,21 +32,50 @@ Dov'è quindi il successore del nodo `x`?
 ![](<successore in bst.png>)
 
 ```c
-Item searchPred(link h, key k, link z) {
-    link p;
-    if (h == z) return ITEMsetNul1 () ;
-    if (KEYmp(k, KEYget (h->item))==0) {
-        if (h->1 != z) return max (h->1, z);
-        else {
-            p = h->p;
-            // finchè c'è un padre e il figlio sinistro del padre è h
-            while (p != z && h == p->l) {h = p; p = p->p;}
-            return p->item;
-        }
+Item searchSucc(link h, Key k, link z) {
+  link p;
+  if (h == z) return ITEMsetNull();
+  // se la chiave è uguale alla chiave del nodo corrente
+  if (KEYcmp(k, KEYget(h->item))==0) {
+    // se il sottoalbero destro esiste, ritorna il minimo del sottoalbero destro
+    if (h->r != z) return minR(h->r, z);
+    // se non esiste
+    else {
+      p = h->p;
+      // risali l'albero finchè non fai un passo a destra (e qunidi h sarà il figlio sinistro)
+      while (p != z && h == p->r) {
+        h = p; p = p->p;
+      }
+      // ritorna il padre trovato
+      return p->item;
     }
-    if (KEYcmp(k, KEYget (h->item))==-1)
-        return searchPred(h->1, k, z);
-    return searchpred (h->r, k, z);
+  }
+  // se la chiave è minore della chiave del nodo corrente, cerca nel sottoalbero destro
+  if (KEYcmp(k, KEYget(h->item))==-1)
+    return searchSucc(h->l, k, z);
+  // se la chiave è maggiore della chiave del nodo corrente, cerca nel sottoalbero sinistro
+  return searchSucc(h->r, k, z);
+}
+
+Item BSTsucc(BST bst, Key k) {
+  return searchSucc(bst->root, k, bst->z);
+}
+
+Item searchPred(link h, key k, link z) {
+  link p;
+  if (h == z) return ITEMsetNull () ;
+  if (KEYcmp(k, KEYget (h->item))==0) {
+      if (h->l != z) return max (h->1, z);
+      else {
+          p = h->p;
+          // finchè c'è un padre e il figlio sinistro del padre è h
+          while (p != z && h == p->l) {h = p; p = p->p;}
+          return p->item;
+      }
+  }
+  if (KEYcmp(k, KEYget (h->item))==-1)
+      return searchPred(h->l, k, z);
+  return searchpred (h->r, k, z);
 }
 Item BSTpred (BST bst, Key k) {
     return searchPred (bst->root, k, bst->z);
@@ -135,11 +161,45 @@ link partR(link h, int r) {
 ```
 
 ## BST delete
-se devo concellare una foglia è banale, se devo cancellare un nodo con un solo figlio, lo sostituisco con il figlio, se devo cancellare un nodo con due figli, è più complicato. Per farlo si lascia la topologia dell'albero intatta, e fa risalire un nodo foglia al posto del nodo eliminato. il nodo foglia che si fa risalire è il successore o il predecessore del nodo eliminato.
+se devo concellare una foglia è banale. Altrimenti cancello l'elemento, e unisco i due sottoalberi rimasti. come? uno di questi due modi:
+- prendo il successore, faccio la partition del sottalbero destro rispetto al successore, e poi ci collego il sottoalbero sinistro.
+- prendo il predecessore, faccio la partition del sottoalbero sinistro rispetto al predecessore, e poi ci collego il sottoalbero destro.
 
-è come una partition con l'elemento di rango 0
+vedi esempio pag 152-155
+  
+```c
+link joinLR(link a, link b, link z) {
+  if (b == z)
+    return a;
+  b = partR(b, 0);
+  b->l = a;
+  a->p = b;
+  b->N = a->N + b->r->N +1;
+  return b;
+}
 
-???
+link deleteR(link h, Key k, link z) {
+  link y, p;
+  if (h == z) return z;
+  if (KEYcmp(k, KEYget(h->item))==-1)
+    h->l = deleteR(h->l, k, z);
+  if (KEYcmp(k, KEYget(h->item))==1)
+    h->r = deleteR(h->r, k, z);
+  // aggiornamento del numero di nodi
+  (h->N)--;
+  if (KEYcmp(k, KEYget(h->item))==0) {
+    y=h; p=h->p;
+    h = joinLR(h->l, h->r, z); h->p = p;
+    free(y);
+  }
+  return h;
+}
+
+void BSTdelete(BST bst, Key k) {
+  bst->root= deleteR(bst->root, k, bst->z);
+}
+
+```
 
 ## Bilanciamento
 I BST bilanciati sono BST in cui la differenza tra il numero di nodi del sottoalbero sinistro e destro è limitata. I B-tree sono un esempio di BST perfettamente bilanciato, in cui la differenza è sempre 0 o 1. Un abero 2,3 o 4 RB-tree ha uno sbilanciamento di 2,3 o 4.
@@ -164,3 +224,29 @@ void BSTbalance(BST bst) {
 
 ## Interval BST
 Sono dei BST nel quale la chiave è un intervallo $[low, high] \subset \R$, e non un solo valore. il confrono degli intervalli viene fatto sul low. inoltre c'è un altra annotazione, oltre a quella del numero di nodi del sottoalbero, che è il massimo high tra tutti i nodi del sottoalbero.
+
+Non serve a niente cercare un intervallo in un BST. Non c'è nessuna applicazione che lo richiede. Quello che serve è trovare un intervallo che interseca un altro intervallo.
+
+Nota: quest'estensione di BST non rende le cose più compelesse in quanto scrivere l'annotazione (cioè trovare il massimo) è un'operazione che si fa in tempo O(1).
+
+### Search
+Ricerca di un nodo h con intervallo che interseca l’intervallo i:
+```c
+Item searchR(link h, Item item, link z) {
+  if (h == z)
+    return ITEMsetNull();
+  if (ITEMoverlap(item, h->item))
+    return h->item;
+  if (ITEMlt_int(item, h->l->max))
+    return searchR(h->l, item, z);
+  else
+    return searchR(h->r, item, z);
+}
+
+Item IBSTsearch(IBST ibst, Item item) {
+  return searchR(ibst->root, item, ibst->z);
+}
+```
+
+### Applicazioni
+Dati N rettangoli disposti parallelamente agli assi ortogonali, determinare tutte le coppie che si intersecano:

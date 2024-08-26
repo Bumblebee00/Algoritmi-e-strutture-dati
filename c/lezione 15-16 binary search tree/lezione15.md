@@ -1,4 +1,4 @@
-[11/12/23] In questa lezione si parla di alberi binari e alberi binari di ricerca.
+[11/12/23] In questa lezione si introducono gli di alberi binari. Poi si definisocno gli alberi binari di ricerca, nei quali vale (sottoalbero sinistro) < radice < (sottoalbero destro). Si definiscono le operazioni di base sugli alberi binari di ricerca come inserimento in foglia e in radice, ricerca, visita, minimo, massimo, rotazione a destra e sinistra. 
 
 - [Albero binario](#albero-binario)
   - [Valutazione di espressioni](#valutazione-di-espressioni)
@@ -49,9 +49,9 @@ Ora mostreremo alcuni esempi d'uso:
 
 ## Valutazione di espressioni
 ![](<Screenshot 2023-12-12 alle 17.18.20.png>)
-L'attraversamento in post-order delll'albero mostrato nell'esmpio mostra prima i due operandi e poi l'operatore, si chiama notazione polacca inversa, e produce una striga come `AB+CD-*E*`. Nota come non siano necessarie le parentesi. Attraversandolo in-order si ottiene la notazione normale, che invece richiede le parentesi: `((A+B)*(C-D))*E`.
+L'attraversamento in post-order delll'albero mostrato nell'esmpio mostra prima i due operandi e poi l'operatore, si chiama notazione polacca inversa (notazione Polacca normale è la visita in pre-order), e produce una striga come `AB+CD-*E*`. Nota come non siano necessarie le parentesi. Attraversandolo in-order si ottiene la notazione normale, che invece richiede le parentesi: `((A+B)*(C-D))*E`.
 
-se abbiamo una stringa in notazione polacca inversa (tipo `*+5 12 3`), possiamo costruire l'albero binario corrispondente con un algoritmo ricorsivo:
+se abbiamo una stringa in notazione polacca (tipo `*+5 12 3`), possiamo costruire l'albero binario corrispondente con un algoritmo ricorsivo:
 ```c
 int eval() {
   int x = 0;
@@ -226,7 +226,8 @@ static link insertR(link h, Item x, link z) {
 
 Versione iterativa:
 ```c
-void BSTinsert_leafI(BST bst, Item x) { link p = bst->root, h = p;
+void BSTinsert_leafI(BST bst, Item x) {
+  link p = bst->root, h = p;
   if (bst->root == bst->z) {
     bst->root = NEW(x, bst->z, bst->z);
     return;

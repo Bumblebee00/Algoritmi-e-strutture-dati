@@ -128,7 +128,7 @@ Ho un alfabeto di 6 lettere, con queste frequenze (ogni cento lettere):
 e ho un file di 100 000 caratteri. Memorizzarlo con il codice fisso richiederebbe `100 000 * 3 = 300 000 bit`. Memorizzarlo con il codice variabile richiederebbe `(45 * 1 + 13 * 3 + 12 * 3 + 16 * 3 + 9 * 4 + 5 * 4)*1000 = 224 000 bit`. In questo caso il codice variabile è più conveniente.
 
 ## Codice Prefisso
-Nota: il codice mostrato nell'esempio precedente è un **codice prefisso**, cioè nessuna parola di codice è prefisso di un altra parola di codice. Questo è necessario per poter decodificare il codice, altrimenti come faccio a sapere dove finisce una parola e inizia l'altra? La **codiifica** si fa giustapponendo le parole di codice, e la **decodifica** si fa percorrendo un albero binario!
+Nota: il codice mostrato nell'esempio precedente è un **codice prefisso**, cioè nessuna parola di codice è prefisso di un altra parola di codice. Questo è necessario per poter decodificare il codice, altrimenti come faccio a sapere dove finisce una parola e inizia l'altra? La **codifica** si fa giustapponendo le parole di codice, e la **decodifica** si fa percorrendo un albero binario!
 
 ![Albero binario del codice in esempio](<esempio albero binario.png>)
 
