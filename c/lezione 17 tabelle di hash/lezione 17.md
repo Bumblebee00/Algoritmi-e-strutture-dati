@@ -167,11 +167,12 @@ ST STinit(int maxN, float alpha) {
     return st;
 }
 ```
-In caso di collisione si cerca una cella non ancora occupata mediante probing.
-$h(k, t) = ...$
-dove k è la chiave e t è il tentativo di inserimento.
 
-Un problema dell’open addressing è il clustering, cioè il raggruppamento di posizioni occupate contigue.
+In caso di collisione si cerca una cella non ancora occupata mediante probing. Ci sono diversi tipi di probing:
+- linear probing: si prova h(k), poi h(k)+1, h(k)+2, ...
+- quadratic probing: si prova h(k), poi $[ h(k) + c_i*i + c_2*i^2 ] \% M$ con i da 1 in avanti
+- double hashing: si hanno due funzioni di hash h1(k) e h2(k), si prova h1(k), poi $[ h1(k) + i*h2(k) ] \% M$ con i da 1 in avanti
+
 
 #### Linear probing
 ##### Insert
