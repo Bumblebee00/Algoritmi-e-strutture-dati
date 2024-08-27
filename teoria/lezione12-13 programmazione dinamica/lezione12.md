@@ -120,7 +120,7 @@ per ricostruire la soluzione
 - Se la serie di matrici è lunga 2, il costo è il prodotto delle tre dimensioni
 - Se la catena è lunga tre, per esempio le matrici $A_1$, $A_2$, $A_3$, il costo minimo è
   - m[1,1] (=0) + m[2,3] + prodotto delle dimensioni, oppure
-  - m[1,2] + m[3,3] (=9) + prodotto delle dimensioni.
+  - m[1,2] + m[3,3] (=0) + prodotto delle dimensioni.
   (nota: non ci sono solo le matrici $A_1$, $A_2$, $A_3$, ma anche $A_2$, $A_3$, $A_4$ e così via )
 - Se la catena è lunga 4, per esempio le matrici $A_1$, $A_2$, $A_3$, $A_4$, il costo minimo è 
   - m[1,1] + m[2,4] + prodotto delle dimensioni 0, 1, 4 ,oppure

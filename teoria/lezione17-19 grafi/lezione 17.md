@@ -145,7 +145,7 @@ Dato G = (V, E), la matrice di adiacenza è una matrice VxV in cui l'elemento (i
 
 Nota: per i grafi non orientati la matrice è simmetrica.
 Nota: per i grafi pesati si memorizza il peso al posto di 1 (quindi il peso 0 non è permesso).
-Nota: abbiamo assunto che tra ogni coppia di vertici ci sia al più un arco (uno o zero, ma non due o più). In questo caso abbiamo un...
+Nota: abbiamo assunto che tra ogni coppia di vertici ci sia al più un arco (uno o zero, ma non due o più). In caso contrario abbiamo un...
 > DEF (multigrafo): un grafo in cui tra due vertici possono esserci più archi.
 L'esempio più famoso di multigrafo sono i ponti di Königsberg.
 

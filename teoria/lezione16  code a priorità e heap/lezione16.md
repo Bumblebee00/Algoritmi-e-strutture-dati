@@ -30,7 +30,8 @@ typedef struct heap *Heap;
 
 Heap HEAPinit(int maxN);
 Void HEAPfree(Heap h);
-void HEAPfill(Heap h, Item val); void HEAPsort(Heap h);
+void HEAPfill(Heap h, Item val);
+void HEAPsort(Heap h);
 void HEAPdisplay(Heap h);
 ```
 
@@ -101,7 +102,7 @@ $$
 T(n) &= 2T(n/2) + log2(n)\\
 T(n/2) &= 2T(n/4) + log2(n/2)\\
 T(n/4) &= 2T(n/8) + log2(n/4)\\
-
+\\
 T(n) &= \sum_{i=0}^{log_2(n)} 2^i log_2(\frac{n}{2^i})\\
 \end{align*}
 $$
@@ -159,17 +160,17 @@ vedi esempio a pag 26-31
 
 # Code a priorità
 struttura dati PQ per mantenere un set di elementi di tipo Item, ciascuno dei quali include un campo priorità. Si può implementare con
-- vettore/lista oridnato/non ordinato
+- vettore/lista (oridnato/a)/(non ordinato/a)
 - heap
 
 Complessità:
 | | PQinsert | PQshowMax| PQextractMax |
 |---|---|---|---|
 | vettore non ordinato | 1 | n | n |
-| lista non ordinata | 1 | n | n |
-| vettore ordinato | n | 1 | 1 |
-| lista ordinata | n | 1 | 1 |
-| heap | logn | 1 | logn |
+| lista non ordinata   | 1 | n | n |
+| vettore ordinato     | n | 1 | 1 |
+| lista ordinata       | n | 1 | 1 |
+| heap                 | logn | 1 | logn |
 
 ```c
 // PQ.h
@@ -178,7 +179,8 @@ typedef struct pqueue *PQ;
 PQ PQinit(int maxN);
 void PQfree(PQ pq);
 int PQempty(PQ pq);
-void PQinsert(PQ pq, Item val); Item PQextractMax(PQ pq);
+void PQinsert(PQ pq, Item val);
+Item PQextractMax(PQ pq);
 Item PQshowMax(PQ pq);
 void PQdisplay(PQ pq);
 int PQsize(PQ pq);
@@ -200,7 +202,8 @@ static int PARENT(int i) { return ((i-1)/2); }
 
 PQ PQinit(int maxN){
     PQ pq = malloc(sizeof(*pq));
-    pq->A = (Item *)malloc(maxN*sizeof(Item)); pq->heapsize = 0;
+    pq->A = (Item *)malloc(maxN*sizeof(Item));
+    pq->heapsize = 0;
     return pq;
 }
 
