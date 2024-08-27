@@ -1,7 +1,7 @@
 [12/02/23]
 
 # Cammini minimi
-Nel contensto di grafi orientati e pesati, un cammino è un insieme di vertici connessi da archi. Il peso di un cammino è la sommma dei pesi degli archi che lo compongono. Un cammino minimo (s,v), è un cammino tra due vertici s e v con peso minore o uguale a tutti gli altri cammini tra s e v. Se s e v non sono connessi, il cammino minimo tra di loro è infinito.
+Nel contensto di grafi orientati e pesati, un cammino è un insieme di vertici connessi da archi. Il peso di un cammino è la sommma dei pesi degli archi che lo compongono. Un cammino minimo (s,v), è un cammino tra due vertici s e v con peso minore o uguale a tutti gli altri cammini tra s e v. Se s e v non sono connessi, il cammino minimo tra di loro ha peso infinito.
 
 Elenco di problemi:
 - Trovare tutti i cammini minimi da un vertice s a tutti gli altri vertici

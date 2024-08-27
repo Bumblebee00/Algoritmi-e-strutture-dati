@@ -185,7 +185,7 @@ Se esiste un cammino hamiltoniano orientato, l'ordinamento topologico è unico.
 
 Se non esiste un cammino hamiltoniano orientato, l'ordinamento topologico non è unico.
 
-Nel caso non ti ricordi cosa è un cammino hamiltoniano, è un cammino che passa per tutti i nodi del grafo una e una sola volta.
+Nel caso non ti ricordi cosa è un cammino hamiltoniano, è un cammino che passa per tutti i nodi del grafo una e una sola volta (ma non si richiude su se stesso, quello è il ciclo di hamilton).
 
 ![](<camm top dag.png>)
 
@@ -193,7 +193,7 @@ Qundi ogni DAG ha almeno un ordinamento topologico. Se è unico, il nostro algor
 
 ## Implementazione
 ### Ordinamento topologico inverso
-DAG come lista di adiacenze. Usiamo un vettore `pre` per memorizzare il tempo di scoperta di un nodo (-1 se non scoperto). Usiamo un vettore `ts` per memorizzare l'ordinamento topologico inverso. Ogni volta che un nodo viene visitato, lo si aggiunge al vettore `ts`.
+DAG come lista di adiacenze. Usiamo un vettore `pre` per memorizzare il tempo di scoperta di un nodo (-1 se non scoperto). Usiamo un vettore `ts` per memorizzare l'ordinamento topologico inverso. Ogni volta che un nodo viene completato, lo si aggiunge al vettore `ts`.
 
 ```c
 // DFS modificata
@@ -203,7 +203,7 @@ void TSdfsR(Dag D, int v, int *ts, int *pre, int *time) {
     for (t = D->ladj[v]; t != D->z; t = t->next)
         if (pre[t->v] == -1) TSdfsR(D, t->v, ts, pre, time);
 
-    // aggiunge il nodo al vettore ts
+    // una volta completato aggiunge il nodo al vettore ts
     ts[(*time)++] = v;
 }
 
