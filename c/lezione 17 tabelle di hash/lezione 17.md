@@ -195,6 +195,7 @@ int full(ST st, int i) {
 ##### Search
 calcola i = h(k), se trovata chiave, termina con successo, altrimenti incrementa i di 1 modulo M o ripeti fino a cella vuota (insuccesso).
 ```c
+// cerca la chiave k nella tabella st e restituisce l’item corrispondente se presente
 Item STsearch(ST st, Key k) {
     int i = hash(k, st->M);
     while (full(st, i)) {

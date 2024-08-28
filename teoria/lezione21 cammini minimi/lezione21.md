@@ -1,5 +1,20 @@
 [12/02/23]
 
+- [Cammini minimi](#cammini-minimi)
+- [Algoritmo di Dijkstra](#algoritmo-di-dijkstra)
+  - [Pseudocodice](#pseudocodice)
+  - [Implementazione](#implementazione)
+  - [Complessità](#complessità)
+- [Cammini minimi su DAG pesati](#cammini-minimi-su-dag-pesati)
+  - [Seam carving](#seam-carving)
+- [Camminimi massimi su DAG pesati](#camminimi-massimi-su-dag-pesati)
+- [Algoritmo di Bellman-Ford](#algoritmo-di-bellman-ford)
+  - [Pseudocodice](#pseudocodice-1)
+  - [Implementazione](#implementazione-1)
+  - [Complessità](#complessità-1)
+  - [Arbitrage](#arbitrage)
+
+
 # Cammini minimi
 Nel contensto di grafi orientati e pesati, un cammino è un insieme di vertici connessi da archi. Il peso di un cammino è la sommma dei pesi degli archi che lo compongono. Un cammino minimo (s,v), è un cammino tra due vertici s e v con peso minore o uguale a tutti gli altri cammini tra s e v. Se s e v non sono connessi, il cammino minimo tra di loro ha peso infinito.
 
@@ -32,17 +47,23 @@ Ipotizza che non esistono archi con peso negativo. dato un grafo G=(V,E), un ver
 
 ## Pseudocodice
 dist[v] = distanza minima da s a v (inizialmente infinito)
-pred[v] = predecessore di v nel cammino minimo da s a v (inizialmente null)
+pred[v] = predecessore di v nel cammino minimo da s a v (inizialmente null) (da qua si ricostruiscono i cammini minimi)
 
+```
 dist[s] = 0
 coda a priorità Q = V
 while Q non è vuota
-    estrai da Q il vertice u con distanza minima
+    estrai un vertice u da Q (il vertice con distanza minima)
     aggiungi u a S
-    per ogni vertice v adiacente a u rilassare(u,v). cioè:
-        se v appartiene a Q e dist[u] + peso(u,v) < dist[v]
-            dist[v] = dist[u] + peso(u,v)
-            pred[v] = u
+    per ogni vertice w adiacente a u rilassare(u,w). cioè:
+    se w appartiene a Q e dist[u] + peso(u,w) < dist[w]
+        dist[w] = dist[u] + peso(u,w)
+        pred[w] = u
+
+ricostituisci i cammini minimi usando pred[]
+```
+![](<esempio rilassamento.png>)
+esempio di rilassamento
 
 ## Implementazione
 ```c
