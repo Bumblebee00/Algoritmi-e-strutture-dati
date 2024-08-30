@@ -81,8 +81,24 @@ Funzione per modificare uno heap in cui la proprietà funzionale non è rispetta
 - se c’è stato scambio tra A[i] e A[LEFT(i)], applica ricorsivamente HEAPify su sottoalbero con radice LEFT(i)
 (analogamente per scambio tra A[i] e A[RIGHT(i)])
 
-vedi esempio pag 12-14 e codice a pag 15
+```c
+void HEAPify(Heap h, int i) {
+  int l, r, largest;
+  l = LEFT(i);
+  r = RIGHT(i);
+  if ((l<h->heapsize) && KEYcmp(KEYget(h->A[l]),KEYget(h->A[i]))==1)
+    largest = l;
+  else
+    largest = i;
+  if ((r<h->heapsize) && KEYcmp(KEYget(h->A[r]), KEYget(h->A[largest]))==1)
+    largest = r;
 
+  if (largest != i) {
+    Swap(h, i,largest);
+    HEAPify(h, largest);
+  }
+}
+```
 
 ## HEAPbuild
 Trasforma un albero binario memorizzato in vettore in uno heap. Le foglie sono già heap, quindi partiamo dal penultimo livello e risaliamo fino alla radice chiamando heapify su ogni nodo. Iterare da n/2-1 a 0 ci garantisce di iniziare dall'ultimo nodo che ha un figlio, e di risalire fino alla radice. è facile capire perchè: ipotizziamo prima che l'albero sia con l'ultimo livello tutto riempito. L'ultimo livello nel vettore corrisponde agli indici da n/2 fino alla fine, quindi tutti gli altri nodi (sui quali noi chiamiamo HEAPify) sono prima. se poi togliamo i due figli dell'ultimo nodo del penultimo livello (che chiamiamo x), n/2 diminuisce di 1 rispetto a prima, e ciò corrispone al fatto che HEAPify non sarà chiamata sul nodo x ma su quello prima.
