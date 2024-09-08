@@ -5,14 +5,15 @@
   - [Pseudocodice](#pseudocodice)
   - [Implementazione](#implementazione)
   - [Complessità](#complessità)
-- [Cammini minimi su DAG pesati](#cammini-minimi-su-dag-pesati)
-  - [Seam carving](#seam-carving)
-- [Camminimi massimi su DAG pesati](#camminimi-massimi-su-dag-pesati)
 - [Algoritmo di Bellman-Ford](#algoritmo-di-bellman-ford)
   - [Pseudocodice](#pseudocodice-1)
   - [Implementazione](#implementazione-1)
   - [Complessità](#complessità-1)
   - [Arbitrage](#arbitrage)
+- [sui DAG](#sui-dag)
+  - [Cammini minimi su DAG pesati](#cammini-minimi-su-dag-pesati)
+    - [Seam carving](#seam-carving)
+  - [Camminimi massimi su DAG pesati](#camminimi-massimi-su-dag-pesati)
 
 
 # Cammini minimi
@@ -111,18 +112,8 @@ insierire u in S: O(1)
 rilassare(u,v): O(E)
 
 Quindi la complessità totale è O((V + E) log V)
-
-# Cammini minimi su DAG pesati
-Basta ordinare topologicamente il DAG, poi applicare la relaxation in quell'ordine
-
-## Seam carving
-Da un immagine si costruisce un DAG, in cui i vertici sono i pixel, e il peso degli archi è la differenza di luminosità tra i due pixel. Trovando il cammino minimo tra due vertici, e poi rimuovendo i pixel del cammino, si ottiene un'immagine ridimensionata, senza distorsioni.
-
-# Camminimi massimi su DAG pesati
-Basta ordinare topologicamente il DAG, poi applicare la relaxation in quell'ordine. La relaxation però è diversa: si parte da -inf e se v appartiene a Q il nuovo cammino ha peso maggiore, allora aggiorno dist[v] e pred[v]
-
 # Algoritmo di Bellman-Ford
-L'algoritmo di Dijkstra non è applicabile se esistono archi con peso negativo. L'algoritmo di Bellman-Ford è applicabile in questo caso. L'algoritmo di Bellman-Ford è anche applicabile se esistono cicli a peso negativo, e in questo caso rileva la presenza di cicli a peso negativo. L'algoritmo di Bellman-Ford è meno efficiente di Dijkstra, ma è più generale.
+L'algoritmo di Dijkstra non è applicabile se esistono archi con peso negativo. L'algoritmo di Bellman-Ford è applicabile in questo caso. L'algoritmo di Bellman-Ford è anche applicabile se esistono cicli a peso negativo, e in questo caso rileva la loro presenza. L'algoritmo di Bellman-Ford è meno efficiente di Dijkstra, ma è più generale.
 
 dato un grafo G=(V,E), e un vertice s, l'algoritmo di Bellman-Ford trova la distanza minima da s a tutti gli altri vertici.
 ## Pseudocodice
@@ -193,3 +184,17 @@ O(V*E)
 
 ## Arbitrage
 L'arbitrage è la pratica di sfruttare le differenze di prezzo di un bene in mercati diversi. L'arbitrage è possibile se esiste un ciclo a peso negativo. L'algoritmo di Bellman-Ford può essere usato per rilevare la presenza di cicli a peso negativo.
+
+
+
+
+# sui DAG
+## Cammini minimi su DAG pesati
+L'assenza di cicli diminuisce di molto la complessità: basta ordinare topologicamente il DAG, poi applicare la relaxation in quell'ordine.
+
+### Seam carving
+Da un immagine si costruisce un DAG, in cui i vertici sono i pixel, e il peso degli archi è la differenza di luminosità tra i due pixel. Trovando il cammino minimo tra due vertici, e poi rimuovendo i pixel del cammino, si ottiene un'immagine ridimensionata, senza distorsioni.
+![](<seam carving-1.png>)
+
+## Camminimi massimi su DAG pesati
+Basta ordinare topologicamente il DAG, poi applicare la relaxation in quell'ordine. La relaxation però è diversa: si parte da -inf e se v appartiene a Q il nuovo cammino ha peso maggiore, allora aggiorno dist[v] e pred[v]

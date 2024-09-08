@@ -1,6 +1,7 @@
 [24/11/2023] In questa lezione continuiamo a parlare di applicazioni/esmpi di algoritmi di ricerca e ordinamento.
 
 - [Longest Increasing Sequence](#longest-increasing-sequence)
+  - [Algoritmo](#algoritmo)
   - [Strutture dati](#strutture-dati)
   - [Codice](#codice)
 - [Le 8 regine](#le-8-regine)
@@ -11,7 +12,7 @@
   - [Soluzione 4](#soluzione-4)
 - [Aritmetica verbale](#aritmetica-verbale)
   - [Sturttura dati](#sturttura-dati)
-  - [Algoritmo](#algoritmo)
+  - [Algoritmo](#algoritmo-1)
 - [Sudoku](#sudoku)
     - [36 ufficiali di Eulero](#36-ufficiali-di-eulero)
     - [Quadrato latino (aka sudoku generalizzato)](#quadrato-latino-aka-sudoku-generalizzato)
@@ -31,7 +32,7 @@ $X = \{0, 8, 4, 12, 2, 10, 6, 14, 1, 9, 5, 13, 3, 11, 7, 15\}$\
 esistono 4 LIS con k=6:
 $\{0,2,6,9,11,15\}$ $\{0,4,6,9,11,15\}$ $\{0,2,6,9,13,15\}$ $\{0,4,6,9,13,15\}$
 
-## Algoritmo
+## Algoritmo
 - generare tutti i sottoinsiemi di elementi di X (non necessario l’insieme vuoto)
 - per ogni sottoinsieme applicare una funzione di verifica di validità (controllo di monotonia stretta)
 - problema di ottimizzazione: tenere traccia della soluzione ottima corrente e confrontarla con ciascuna soluzione generata

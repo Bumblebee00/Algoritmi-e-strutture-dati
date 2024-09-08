@@ -81,7 +81,7 @@ si inizia da una foresta formata da alberi, ogni albero composto da un singolo v
 si itera su tutti gli archi in ordine crescente di peso
 se un arco connette due alberi diversi, i due alberi diventano uno solo connessi da quell'arco
 se un arco connette due vertici dello stesso albero, si scarta l'arco perchè creerebbe un ciclo
-quando tutti i vertici sono rinuiti in un solo albero, l'algoritmo termina.
+quando tutti i vertici sono rinuiti in un solo albero, l'algoritmo termina e l'albero è l'MST.
 
 ### Struttura dati
 Useremo l'adt di prima classe Union Find, struttura dati per memorizzare una collezione di insiemi disgiunti, ad esempio la partizione di un insieme in più sottoinsiemi (disgiunti per definizione di partizione). Questa struttura ha due operazioni: union (fonde 2 sottoinsiemi) e find (verifica se due elementi sono nello stesso sottoinsieme). È implementata con un vettore `id` che contiene per ogni elemento l'indice dell'elemento che lo rappresenta, e un vettore `sz` che contiene per ogni elemento la dimensione del sottoinsieme di cui fa parte.
