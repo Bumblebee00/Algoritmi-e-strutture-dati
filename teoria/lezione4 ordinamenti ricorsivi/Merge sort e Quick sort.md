@@ -1,12 +1,15 @@
 In questa lezione, all'inizio introduciamo il concetto di tipo di dato astratto (ADT) e poi parliamo di Merge Sort e Quick Sort. Indice completo del file markdown:
+
 - [Tipo di dato astratto adt](#tipo-di-dato-astratto-adt)
-  - [Esempio: scalare e chiave coincidente:](#esempio-scalare-e-chiave-coincidente)
+    - [Esempio: scalare e chiave coincidente:](#esempio-scalare-e-chiave-coincidente)
+- [Selection Sort](#selection-sort)
+- [Insertion Sort](#insertion-sort)
 - [Merge Sort](#merge-sort)
   - [Codice](#codice)
     - [Funzione ricorsiva](#funzione-ricorsiva)
     - [2-way Merge](#2-way-merge)
   - [Caratteristiche](#caratteristiche)
-  - [Complessità](#complessità)
+    - [Complessità](#complessità)
 - [Quick Sort](#quick-sort)
   - [Pseudocodice](#pseudocodice)
   - [Codice](#codice-1)
@@ -20,7 +23,6 @@ In questa lezione, all'inizio introduciamo il concetto di tipo di dato astratto 
 
 
 # Tipo di dato astratto adt
-
 Prima di tutto chiariamo cosa vogliamo ordinare:
 Vorremmo in qualche modo **disgiungere i dati da ordinare dall'algoritmo di ordinamento**. ciò ci permette di concentrarci sull algoritmo più che sul tipo di dato.
 Qundi per generalizzare, diciamo che volgiamo ordinare un oggetto di tipo Item (generele) (realizzato in c con una struct). Uno dei dati di item sarà la chiave, con cui ordiniamo, gli altri sono dati satelliti. Quindi ci serviranno funzioni per leggere/scrivere, generare valori casuali, accedere alla chiave, confrontare due item, stampare un item.
@@ -67,6 +69,12 @@ Item ITEMscan(){
 
 Item ITEMrand() { Item A= maxKey*((float)rand()/RAND_MAX); return A; }
 ```
+
+# Selection Sort
+Nel caso di un vettore di n elementi, si cerca il minimo e lo si scambia con il primo elemento. Si cerca il minimo tra i restanti n-1 elementi e lo si scambia con il secondo elemento. Si cerca il minimo tra i restanti n-2 elementi e lo si scambia con il terzo elemento. E così via. Alla fine il vettore è ordinato.
+
+# Insertion Sort
+Si parte da un vettore di n elementi, si considera il secondo elemento e lo si inserisce nel posto giusto tra i primi due. Si considera il terzo elemento e lo si inserisce nel posto giusto tra i primi tre. E così via. Alla fine il vettore è ordinato.
 
 # Merge Sort
 (Von Neumann, 1945)

@@ -150,7 +150,7 @@ Dato un grafo non orientato e connesso, determinare se perde la proprietà di co
 Come trovare i punti di articolazione:
 - Si fa una DFS e si analizza l'albero generato.
 - La radice dell'albero è un punto di articolazione se e solo se ha almeno due figli.
-- Un nodo intermedio dell'albero A è un punto di articolazione se e solo se almeno un suo figlo NON ha archi Back che puntano a un antenato proprio di A. Qundi se tutti i suoi figli hanno archi Back che puntano a un antenato proprio di A, allora A non è un punto di articolazione.
+- Un nodo intermedio dell'albero A è un punto di articolazione se e solo se almeno un suo figlo è tale che lui e i suoi antenati NON hanno archi Back che puntano a un antenato proprio di A.
 - Le foglie dell'albero non sono punti di articolazione.
 
 ## Archi ponte

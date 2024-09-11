@@ -116,6 +116,7 @@ Quindi la complessità totale è O((V + E) log V)
 L'algoritmo di Dijkstra non è applicabile se esistono archi con peso negativo. L'algoritmo di Bellman-Ford è applicabile in questo caso. L'algoritmo di Bellman-Ford è anche applicabile se esistono cicli a peso negativo, e in questo caso rileva la loro presenza. L'algoritmo di Bellman-Ford è meno efficiente di Dijkstra, ma è più generale.
 
 dato un grafo G=(V,E), e un vertice s, l'algoritmo di Bellman-Ford trova la distanza minima da s a tutti gli altri vertici.
+
 ## Pseudocodice
 dist[v] = distanza minima da s a v (inizialmente infinito)
 pred[v] = predecessore di v nel cammino minimo da s a v (inizialmente null)
@@ -184,8 +185,6 @@ O(V*E)
 
 ## Arbitrage
 L'arbitrage è la pratica di sfruttare le differenze di prezzo di un bene in mercati diversi. L'arbitrage è possibile se esiste un ciclo a peso negativo. L'algoritmo di Bellman-Ford può essere usato per rilevare la presenza di cicli a peso negativo.
-
-
 
 
 # sui DAG

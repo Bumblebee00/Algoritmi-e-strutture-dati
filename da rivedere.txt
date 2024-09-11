@@ -1,3 +1,0 @@
-Camminimi Minimi - Algoritmo di Bellman-Ford
-Programmazione dinamica
-Approccio greedy
