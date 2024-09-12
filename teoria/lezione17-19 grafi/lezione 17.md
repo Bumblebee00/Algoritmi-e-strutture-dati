@@ -184,7 +184,7 @@ void GRAPHfree(Graph G) {
 BAROCCHISMO ALERT !!! abbiamo creato un arco (nella funzione) `GRAPHinsertE` solo per splittarlo di novo in due interi. si va proprio per il sottile qua...
 ![](<insert edge matrice di adiacenza.png>)
 Anche nel remove c'è il barocchismo.
-![](<remove edge matrice di adiacenza.png>)
+![](<cod remove edge matrice di adiacenza.png>)
 
 #### Vantaggi e svantaggi
 - Complessità in spazio: O(V^2). Per grafi densi è ottimo, per grafi sparsi è pessimo.

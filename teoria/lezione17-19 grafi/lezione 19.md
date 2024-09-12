@@ -68,6 +68,7 @@ int GRAPHcc(Graph G) {
 ```
 
 ## Ricerca componenti fortemente connesse
+![](<componenti fort conn-1.png>)
 Come trovare il più grande sottografo fortemente connesso? Ci sono due algoritmi: Kosaraju e Tarjan. Analizzeremo solo il primo, ecco gli step:
 - trasporre il grafo (cioè invertire la direzione degli archi)
 - eseguire DFS sul grafo trasposto, calcolando i tempi di scoperta (che non ci serviranno) e di fine elaborazione (che ci serviranno)
@@ -144,7 +145,7 @@ Dato un grafo non orientato e connesso, determinare se perde la proprietà di co
 
 > DEF(punto di articolazione): Un nodo è un punto di articolazione se la rimozione di quel nodo rende il grafo non connesso. (ovviamente rimozione del nodo implica la rimozione degli archi su di esso incidenti)
 
-![](<punti di articolaz.png>)
+![](<es punti di articolaz.png>)
 
 ## Punti di articolazione
 Come trovare i punti di articolazione:
