@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<stdlib.h>
 
 typedef struct ELENCO_s* ELENCO;
 struct ELENCO_s{
@@ -15,15 +16,12 @@ struct DISTMATR_s{
     int N;
     int** mat; // NxN matrix
 };
-int getM(DISTMATR m, int i, int j){
-    return m->mat[i][j];
-};
 
 typedef struct SEDI_s* SEDI;
 struct SEDI_s{
     int M;
     int* sedi; // elenco di M int contenenti l'indice delle città sede di p.s. nell'elenco
- };
+};
 
 // liste usate per le città N-M da assegnare alle N città con p.s.
 typedef struct node* link;
@@ -31,17 +29,14 @@ struct node{ int i; link next; }; // indice della città nell'elenco
 // funzinoe per aggiungere un elemento al fondo di una lista (ritorna la nuova lista)
 link addToList(link l, int i){
     link new = malloc(sizeof(struct node));
-    new->i = i; new->next == NULL;
+    new->i = i; new->next = NULL;
     if (l == NULL){ return new; }
     link t = l;
     while (t->next != NULL){ t = t->next; }
     t->next = new;
     return l;   
 }
-// removes last element form list
-link removeFromList(link l){
-    // ...
-}
+
 typedef struct SERVIZI_s* SERVIZI;
 struct SERVIZI_s{
     SEDI sedi_ps; // città sedi del p.s. di riferimento
@@ -53,7 +48,7 @@ SERVIZI serviziInit(SEDI s){
     SERVIZI new = malloc(sizeof(struct SERVIZI_s));
     new->sedi_ps = s;
     new->l = malloc(sizeof(int) * s->M);
-    for (int i=0; i<s->M; i++){ new->l[i] = NULL; }
+    for (int i=0; i<s->M; i++){ new->l[i] = 0; }
         new->v = calloc(s->M, sizeof(link));
     new->dist_media = -1;
     return new;
@@ -62,16 +57,22 @@ SERVIZI serviziInit(SEDI s){
 
 // elenco e distmat passaty by reference e NON ancora inizializzati con malloc
 void caricaDATI(FILE* fp, ELENCO* e, DISTMATR* m){
-    e = malloc(sizeof(struct ELENCO_s));
-    m = malloc(sizeof(struct DISTMATR_s));
+    *e = malloc(sizeof(struct ELENCO_s));
+    *m = malloc(sizeof(struct DISTMATR_s));
     fscanf(fp, "%d", &((*e)->N));
+
     (*m)->N = (*e)->N;
+    (*e)->nome_città = malloc(sizeof(char*) * (*e)->N);
     for (int i=0; i<(*e)->N; i++){
+        (*e)->nome_città[i] = malloc(sizeof(char) * 100);
         fscanf(fp, "%s", (*e)->nome_città[i]);
     }
+
+    (*m)->mat = malloc(sizeof(int*) * (*m)->N);
     for (int i=0; i<(*m)->N; i++){
+        (*m)->mat[i] = malloc(sizeof(int) * (*m)->N);
         for (int j=0; j<(*m)->N; j++){
-            fscanf(fp, "%d", (*m)->mat[i][j]);
+            fscanf(fp, "%d", &(*m)->mat[i][j]);
         }
     }
 }
@@ -79,7 +80,7 @@ void caricaDATI(FILE* fp, ELENCO* e, DISTMATR* m){
 // utility function: returns 1 if an int is in the vectro, 0 otherwise
 int elInVector(int* v, int lenght, int el){
     for (int i=0; i<lenght; i++){
-        if (v[i] = el){return 1;}
+        if (v[i] == el){return 1;}
     }
     return 0;
 }
@@ -96,8 +97,11 @@ int* getCittàSenzaPS(SEDI s, int N, int M){
     return città_no_ps;
 }
 
-// per ogniuna delle altre N-M città esiste almeno una città con p.s. a distanza minore di MAXD
-// ogni città con p.s. deve servire almeno MINS città senza p.s. (a distanza < di MAXD) // returns 0 if the sol is not valid, 1 if valid
+/*
+ * per ogniuna delle altre N-M città esiste almeno una città con p.s. a distanza minore di MAXD
+ * ogni città con p.s. deve servire almeno MINS città senza p.s. (a distanza < di MAXD)
+ * returns 0 if the sol is not valid, 1 if valid
+ */
 int checkSedi(DISTMATR m, int MAXD, int MINS, SEDI s){
     int N_M = m->N - s->M;
     int* città_no_ps = getCittàSenzaPS(s, m->N, s->M);
@@ -107,7 +111,7 @@ int checkSedi(DISTMATR m, int MAXD, int MINS, SEDI s){
         for (int j=0; j<s->M; j++){
             if (m->mat[città_no_ps[i]][s->sedi[j]] <= MAXD){ found = 1; break; }
         }
-        if (found = 0){ return 0; } // if there is not even one città con sedi at required distance
+        if (found == 0){ return 0; }
     }
     int n_servite;
     for (int i=0; i<s->M; i++){
@@ -124,7 +128,7 @@ int checkSedi(DISTMATR m, int MAXD, int MINS, SEDI s){
 SERVIZI sol_from_appartenenza_c_n_ps(DISTMATR m, SEDI s, int* appartenenza_c_n_ps){
     int N_M = m->N - s->M;
     int* città_no_ps = getCittàSenzaPS(s, m->N, s->M);
-    SERVIZI sol = serviziInit(s->M);
+    SERVIZI sol = serviziInit(s);
     sol->sedi_ps = s;
     for(int i=0; i<N_M; i++){
         addToList(sol->v[appartenenza_c_n_ps[i]], città_no_ps[i]);
@@ -139,11 +143,15 @@ SERVIZI sol_from_appartenenza_c_n_ps(DISTMATR m, SEDI s, int* appartenenza_c_n_p
 // return 1 if you can prune, 0 otherwise
 // prune if
 int prunePart(DISTMATR m, SEDI s, int* appartenenza_c_n_ps, int MINS, int MAXD){
-    SERVIZI cuurent_sol = sol_from_appartenenza_c_n_ps(m, s, appartenenza_c_n_ps);
+    SERVIZI current_sol = sol_from_appartenenza_c_n_ps(m, s, appartenenza_c_n_ps);
     int MAXS = m->N - MINS * s->M;
     for (int i=0 ; i<s->M; i++){
         if (current_sol->l[i] < MINS || current_sol->l[i] > MAXS){ return 1; }
     }
+    return 0;
+}
+
+int checkPart(SERVIZI s){
     return 0;
 }
 
@@ -173,4 +181,5 @@ SERVIZI bestpart(ELENCO e, DISTMATR m, SEDI s, int MINS, int MAXD){
     for (int i=0; i<N-M; i++){ appartenenza_c_n_ps[i] = -1; }
     bestpart_r(m, s, MINS, MAXD, 0, &best_sol, appartenenza_c_n_ps);
     // print bestsol
+    return best_sol;
 }
