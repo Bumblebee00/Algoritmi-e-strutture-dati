@@ -7,6 +7,14 @@ struct ELENCO_s{
     char** nome_città; // vettore di N stringhe contente i nomi delle città
 };
 
+void printELENCO(ELENCO e){
+    printf("Elenco delle città:\n");
+    for (int i=0; i<e->N; i++){
+        printf("%s\n", e->nome_città[i]);
+    }
+    printf("\n");
+}
+
 char* getNome(ELENCO e, int i){
     return e->nome_città[i];
 }
@@ -71,8 +79,8 @@ int* getCittàSenzaPS(SEDI s, int N, int M){
 }
 
 /*
- * per ogniuna delle altre N-M città esiste almeno una città con p.s. a distanza minore di MAXD
- * ogni città con p.s. deve servire almeno MINS città senza p.s. (a distanza < di MAXD)
+ * per ognuna delle altre N-M città esista almeno una città sede di p.s. a distanza minore di MAXD
+ * ogni città sede di p.s. deve servire almeno MINS città senza p.s. (a distanza < di MAXD)
  * returns 0 if the sol is not valid, 1 if valid
  */
 int checkSedi(DISTMATR m, int MAXD, int MINS, SEDI s){
@@ -101,13 +109,13 @@ int checkSedi(DISTMATR m, int MAXD, int MINS, SEDI s){
  * struct SERVIZI_s:
  * - N: numero totale di città
  * - M: numero di città con pronto soccorso
- * - dist_media: distanza media tra le città con p.s. e le città senza p.s.
+ * - dist_media: distanza media tra le città sede di p.s. e le città senza p.s.
  * - città_no_ps: vettore di N-M interi. indici nell'elenco generale delle
  *   città senza p.s.
  * - sol: vettore di N-M interi. l'i-esimo elemento è l'indice (nell'elenco 
  *   generale) della città a cui l'i-esima città senza p.s. è stata assegnata
  * - servite: vettore di M interi. l'i-esimo elemento è il numero di città senza 
- *   pronto soccorso servite dalla i-esima città con p.s. (che ha indice
+ *   pronto soccorso servite dalla i-esima città sede di p.s. (che ha indice
  *   nell'elenco generale pari a sedi_ps->sedi[i])
  * 
  * Nota: il vettore servite si può calcolare a partire dal vettore sol, ma è
@@ -175,9 +183,9 @@ int prunePart(DISTMATR m, SEDI s, SERVIZI current_sol, int MINS, int MAXD, int p
 /*
  * checkPart: ritorna 1 se la soluzione è valida, 0 altrimenti
  * (1) controlla che a ognuna delle sedi di pronto soccorso si assegnano almeno MINS città.
- * (2) controlla che ogni città sia a distanza minore di MAXD da almeno una città con p.s.
+ * (2) controlla che ogni città sia a distanza minore di MAXD da almeno una città sede di p.s.
  *     (in realtà viene già controllato in prunePart)
- * (3) calcola la distanza media tra le città con p.s. e le città senza p.s.
+ * (3) calcola la distanza media tra le città sede di p.s. e le città senza p.s.
  */
 int checkPart(SERVIZI current_sol, int MINS, DISTMATR m, SEDI sedi){
     // (1)
@@ -208,7 +216,7 @@ void bestPart_r(DISTMATR m, SEDI sedi_ps, int MINS, int MAXD, int pos, SERVIZI* 
         }
         return;
     }
-    // assegna alla città senza p.s. corrente ogni possibile città con p.s.
+    // assegna alla città senza p.s. corrente ogni possibile città sede di p.s.
     for (int i=0; i<sedi_ps->M; i++){
         current_sol->sol[pos] = sedi_ps->sedi[i];
         current_sol->servite[i]++;
@@ -218,6 +226,11 @@ void bestPart_r(DISTMATR m, SEDI sedi_ps, int MINS, int MAXD, int pos, SERVIZI* 
 }
 
 
+/*
+ * bestPart: funzione che cerca la migliore assegnazione di città senza pronto
+ * soccorso a città con pronto soccorso, dove per migliore si intende che con
+ * distanza media minore tra le città senza p.s. e le città sede di p.s.
+ */
 SERVIZI bestPart(DISTMATR m, SEDI sedi_ps, int MINS, int MAXD){
     SERVIZI best_sol = serviziInit(m->N, sedi_ps);
     SERVIZI current_sol = serviziInit(m->N, sedi_ps);
@@ -235,9 +248,13 @@ void printSEDI(SEDI s, ELENCO e){
 }
 
 void printSERVIZI(SERVIZI s, ELENCO e, SEDI sedi){
+    if (s->dist_media == 9999999.0){
+        printf("Nessuna soluzione trovata\n");
+        return;
+    }
     printf("Assegnazione città con pronto soccorso:\n");
     for (int i=0; i<s->N - s->M; i++){
         printf("%s (senza p.s.) assegnata a %s (con p.s.)\n", getNome(e, s->città_no_ps[i]), getNome(e, s->sol[i]));
     }
-    printf("Distanza media tra città con p.s. e città senza p.s.: %.2f\n", s->dist_media);
+    printf("Distanza media tra città sede di p.s. e città senza p.s.: %.2f\n", s->dist_media);
 }
