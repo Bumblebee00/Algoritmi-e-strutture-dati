@@ -1,7 +1,7 @@
+#include"strutture.h"
 #include<stdio.h>
 #include<stdlib.h>
 
-typedef struct ELENCO_s* ELENCO;
 struct ELENCO_s{
     int N; // numero totale di città
     char** nome_città; // vettore di N stringhe contente i nomi delle città
@@ -11,49 +11,10 @@ char* getNome(ELENCO e, int i){
     return e->nome_città[i];
 }
 
-typedef struct DISTMATR_s* DISTMATR;
 struct DISTMATR_s{
     int N;
     int** mat; // NxN matrix
 };
-
-typedef struct SEDI_s* SEDI;
-struct SEDI_s{
-    int M;
-    int* sedi; // elenco di M int contenenti l'indice delle città sede di p.s. nell'elenco
-};
-
-// liste usate per le città N-M da assegnare alle N città con p.s.
-typedef struct node* link;
-struct node{ int i; link next; }; // indice della città nell'elenco
-// funzinoe per aggiungere un elemento al fondo di una lista (ritorna la nuova lista)
-link addToList(link l, int i){
-    link new = malloc(sizeof(struct node));
-    new->i = i; new->next = NULL;
-    if (l == NULL){ return new; }
-    link t = l;
-    while (t->next != NULL){ t = t->next; }
-    t->next = new;
-    return l;   
-}
-
-typedef struct SERVIZI_s* SERVIZI;
-struct SERVIZI_s{
-    SEDI sedi_ps; // città sedi del p.s. di riferimento
-    link* v; // vettore di M liste, ogni lista contiene le città senza p.s. assegnate alle rispettive città con p.s.
-    int* l; // lunghezza delle liste
-    int dist_media; // distanza media p.s. - città senza p.s.
-};
-SERVIZI serviziInit(SEDI s){
-    SERVIZI new = malloc(sizeof(struct SERVIZI_s));
-    new->sedi_ps = s;
-    new->l = malloc(sizeof(int) * s->M);
-    for (int i=0; i<s->M; i++){ new->l[i] = 0; }
-        new->v = calloc(s->M, sizeof(link));
-    new->dist_media = -1;
-    return new;
-}
-
 
 // elenco e distmat passaty by reference e NON ancora inizializzati con malloc
 void caricaDATI(FILE* fp, ELENCO* e, DISTMATR* m){
@@ -77,6 +38,20 @@ void caricaDATI(FILE* fp, ELENCO* e, DISTMATR* m){
     }
 }
 
+struct SEDI_s{
+    int M;
+    int* sedi; // elenco di M int contenenti l'indice delle città sede di p.s. nell'elenco generale
+};
+
+// indice_sedi: vettore di M interi contenenti l'indice delle città sede di p.s. nell'elenco generale
+SEDI creaSEDI(int M, int* indice_sedi){
+    SEDI new = malloc(sizeof(struct SEDI_s));
+    new->M = M;
+    new->sedi = malloc(sizeof(int) * M);
+    for (int i=0; i<M; i++){ new->sedi[i] = indice_sedi[i]; }
+    return new;
+}
+
 // utility function: returns 1 if an int is in the vectro, 0 otherwise
 int elInVector(int* v, int lenght, int el){
     for (int i=0; i<lenght; i++){
@@ -85,13 +60,11 @@ int elInVector(int* v, int lenght, int el){
     return 0;
 }
 
+// utility function: returns a vector of N-M elements containing the index of the cities without p.s.
 int* getCittàSenzaPS(SEDI s, int N, int M){
-    int N_M = N - M;
-    int* città_no_ps = malloc(sizeof(int) * (N_M));
+    int* città_no_ps = malloc(sizeof(int) * (N-M));
     int index = 0;
-    // per ogni città (indice i)...
     for (int i=0; i<N; i++){
-        // se non è nelle città con p.s. (sedi)
         if (!elInVector(s->sedi, M, i)){ città_no_ps[index] = i; index++; }
     }
     return città_no_ps;
@@ -124,62 +97,147 @@ int checkSedi(DISTMATR m, int MAXD, int MINS, SEDI s){
     return 1; // se ha passato tutti i check...
 }
 
-// runnning out of time...
-SERVIZI sol_from_appartenenza_c_n_ps(DISTMATR m, SEDI s, int* appartenenza_c_n_ps){
-    int N_M = m->N - s->M;
-    int* città_no_ps = getCittàSenzaPS(s, m->N, s->M);
-    SERVIZI sol = serviziInit(s);
-    sol->sedi_ps = s;
-    for(int i=0; i<N_M; i++){
-        addToList(sol->v[appartenenza_c_n_ps[i]], città_no_ps[i]);
-        sol->l[appartenenza_c_n_ps[i]]++;
-    }
-    // calcola dist_media
-    for (int i=0; i<s->M; i++){
-    }
-    return sol;
+/*
+ * struct SERVIZI_s:
+ * - N: numero totale di città
+ * - M: numero di città con pronto soccorso
+ * - dist_media: distanza media tra le città con p.s. e le città senza p.s.
+ * - città_no_ps: vettore di N-M interi. indici nell'elenco generale delle
+ *   città senza p.s.
+ * - sol: vettore di N-M interi. l'i-esimo elemento è l'indice (nell'elenco 
+ *   generale) della città a cui l'i-esima città senza p.s. è stata assegnata
+ * - servite: vettore di M interi. l'i-esimo elemento è il numero di città senza 
+ *   pronto soccorso servite dalla i-esima città con p.s. (che ha indice
+ *   nell'elenco generale pari a sedi_ps->sedi[i])
+ * 
+ * Nota: il vettore servite si può calcolare a partire dal vettore sol, ma è
+ *       comodo averlo già calcolato per fare i controlli
+ * Nota: città_no_ps si può ricavare da sedi_ps->sedi, ma è comodo averlo già
+ *      calcolato per fare i controlli
+ */
+struct SERVIZI_s{
+    int N, M;
+    float dist_media;
+    int *città_no_ps;
+    int* sol;
+    int* servite;
+};
+
+SERVIZI serviziInit(int N, SEDI sedi_ps){
+    int M = sedi_ps->M;
+    SERVIZI new = malloc(sizeof(struct SERVIZI_s));
+    
+    // inizializza i campi della struct
+    new->N = N; new->M = M; new->dist_media = 9999999.0;
+    // inizializza il vettore delle città servite a 0
+    new->servite = malloc(sizeof(int) * M);
+    for (int i=0; i<M; i++){ new->servite[i] = 0; }
+    // inizializza il vettore sol con -1
+    new->sol = malloc(sizeof(int) * (N-M));
+    for (int i=0; i<N-M; i++){ new->sol[i] = -1; }
+    // inizializza e calcola il vettore delle città senza p.s.
+    new->città_no_ps = getCittàSenzaPS(sedi_ps, N, M);
+    
+    return new;
 }
 
-// return 1 if you can prune, 0 otherwise
-// prune if
-int prunePart(DISTMATR m, SEDI s, int* appartenenza_c_n_ps, int MINS, int MAXD){
-    SERVIZI current_sol = sol_from_appartenenza_c_n_ps(m, s, appartenenza_c_n_ps);
-    int MAXS = m->N - MINS * s->M;
-    for (int i=0 ; i<s->M; i++){
-        if (current_sol->l[i] < MINS || current_sol->l[i] > MAXS){ return 1; }
+SERVIZI copySERVIZI(SERVIZI s, int N, SEDI sedi_ps){
+    SERVIZI new = serviziInit(N, sedi_ps);
+    new->dist_media = s->dist_media;
+    for (int i=0; i<s->N - s->M; i++){
+        new->sol[i] = s->sol[i];
     }
+    return new;
+}
+
+
+
+/*
+ * return 1 if you can prune, 0 otherwise
+ * prune if:
+ * (1) a city with p.s. has more than MAXS cities without p.s. assigned to it
+ * (2) distance greater than MAXD (its enought to check the last assignment
+ *     because prunePart is called recursively)
+ */
+int prunePart(DISTMATR m, SEDI s, SERVIZI current_sol, int MINS, int MAXD, int pos){
+    if (pos == 0){ return 0; }
+    // (1)
+    int MAXS = m->N - s->M - MINS * (s->M - 1);
+    for (int i=0; i<current_sol->M; i++){if (current_sol->servite[i] > MAXS){ return 1; } }
+    // (2)
+    if (m->mat[current_sol->sol[pos-1]][current_sol->città_no_ps[pos-1]] > MAXD){ return 1; }
+
     return 0;
 }
 
-int checkPart(SERVIZI s){
-    return 0;
+
+
+/*
+ * checkPart: ritorna 1 se la soluzione è valida, 0 altrimenti
+ * (1) controlla che a ognuna delle sedi di pronto soccorso si assegnano almeno MINS città.
+ * (2) controlla che ogni città sia a distanza minore di MAXD da almeno una città con p.s.
+ *     (in realtà viene già controllato in prunePart)
+ * (3) calcola la distanza media tra le città con p.s. e le città senza p.s.
+ */
+int checkPart(SERVIZI current_sol, int MINS, DISTMATR m, SEDI sedi){
+    // (1)
+    for (int i=0; i<current_sol->M; i++){ if (current_sol->servite[i] < MINS){ return 0; } }
+    // (3)
+    current_sol->dist_media = 0.0;
+    for (int i=0; i<current_sol->N - current_sol->M; i++){
+        current_sol->dist_media += m->mat[current_sol->città_no_ps[i]][current_sol->sol[i]];
+    }
+    current_sol->dist_media = current_sol->dist_media / (current_sol->N - current_sol->M);
+    return 1;
 }
 
-void bestpart_r(DISTMATR m, SEDI s, int MINS, int MAXD, int pos, SERVIZI* best_sol, int* appartenenza_c_n_ps){
-    if (prunePart(m, s, appartenenza_c_n_ps, MINS, MAXD)){ return; }
+
+
+/*
+ * pos: indice che scorre su tutte N-M le città senza pronto soccorso
+ * best_sol: soluzione migliore trovata finora
+ * current_sol: soluzione corrente
+ */
+void bestPart_r(DISTMATR m, SEDI sedi_ps, int MINS, int MAXD, int pos, SERVIZI* best_sol, SERVIZI current_sol){
+    // pruning
+    if (prunePart(m, sedi_ps, current_sol, MINS, MAXD, pos)){ return; }
     // condizione terminazione
-    if (pos == s->M - m->N){
-        SERVIZI current_sol = sol_from_appartenenza_c_n_ps(m, s, appartenenza_c_n_ps);
-
-        if (checkPart(current_sol) && current_sol->dist_media < (*best_sol)->dist_media){
-        (*best_sol) = current_sol; // doens't work, i should copy everthing, but i dont have time...
+    if (pos == m->N - sedi_ps->M){        
+        if (checkPart(current_sol, MINS, m, sedi_ps) && current_sol->dist_media < (*best_sol)->dist_media){
+            *best_sol = copySERVIZI(current_sol, m->N, sedi_ps);
         }
         return;
     }
-    // per ogni possibile città con p.s. di appartenenza
-    for (int i=0; i<s->M; i++){
-        appartenenza_c_n_ps[pos] = s->sedi[i]; // assegnala ala città senza p.s. indicata da pos
-        bestpart_r(m, s, MINS, MAXD, pos+1, best_sol, appartenenza_c_n_ps);
+    // assegna alla città senza p.s. corrente ogni possibile città con p.s.
+    for (int i=0; i<sedi_ps->M; i++){
+        current_sol->sol[pos] = sedi_ps->sedi[i];
+        current_sol->servite[i]++;
+        bestPart_r(m, sedi_ps, MINS, MAXD, pos+1, best_sol, current_sol);
+        current_sol->servite[i]--;
     }
 }
 
 
-SERVIZI bestpart(ELENCO e, DISTMATR m, SEDI s, int MINS, int MAXD){
-    SERVIZI best_sol = serviziInit(s);
-    int M = s->M; int N = m->N;
-    int* appartenenza_c_n_ps = malloc(sizeof(int) * (N-M));
-    for (int i=0; i<N-M; i++){ appartenenza_c_n_ps[i] = -1; }
-    bestpart_r(m, s, MINS, MAXD, 0, &best_sol, appartenenza_c_n_ps);
+SERVIZI bestPart(DISTMATR m, SEDI sedi_ps, int MINS, int MAXD){
+    SERVIZI best_sol = serviziInit(m->N, sedi_ps);
+    SERVIZI current_sol = serviziInit(m->N, sedi_ps);
+    bestPart_r(m, sedi_ps, MINS, MAXD, 0, &best_sol, current_sol);
     // print bestsol
     return best_sol;
+}
+
+void printSEDI(SEDI s, ELENCO e){
+    printf("Sedi di pronto soccorso:\n");
+    for (int i=0; i<s->M; i++){
+        printf("%s\n", getNome(e, s->sedi[i]));
+    }
+    printf("\n");
+}
+
+void printSERVIZI(SERVIZI s, ELENCO e, SEDI sedi){
+    printf("Assegnazione città con pronto soccorso:\n");
+    for (int i=0; i<s->N - s->M; i++){
+        printf("%s (senza p.s.) assegnata a %s (con p.s.)\n", getNome(e, s->città_no_ps[i]), getNome(e, s->sol[i]));
+    }
+    printf("Distanza media tra città con p.s. e città senza p.s.: %.2f\n", s->dist_media);
 }
