@@ -3,6 +3,7 @@
 - [ADT Heap](#adt-heap)
   - [Implementazione funzioni base](#implementazione-funzioni-base)
   - [HEAPify](#heapify)
+    - [Complessità](#complessità)
   - [HEAPbuild](#heapbuild)
   - [HeapSort](#heapsort)
 - [Code a priorità](#code-a-priorità)
@@ -99,6 +100,9 @@ void HEAPify(Heap h, int i) {
   }
 }
 ```
+
+### Complessità
+La complessità di HEAPify è O(logn) perchè il tempo di esecuzione è proporzionale all'altezza dell'albero.
 
 ## HEAPbuild
 Trasforma un albero binario memorizzato in vettore in uno heap. Le foglie sono già heap, quindi partiamo dal penultimo livello e risaliamo fino alla radice chiamando heapify su ogni nodo. Iterare da n/2-1 a 0 ci garantisce di iniziare dall'ultimo nodo che ha un figlio, e di risalire fino alla radice. è facile capire perchè: ipotizziamo prima che l'albero sia con l'ultimo livello tutto riempito. L'ultimo livello nel vettore corrisponde agli indici da n/2 fino alla fine, quindi tutti gli altri nodi (sui quali noi chiamiamo HEAPify) sono prima. se poi togliamo i due figli dell'ultimo nodo del penultimo livello (che chiamiamo x), n/2 diminuisce di 1 rispetto a prima, e ciò corrispone al fatto che HEAPify non sarà chiamata sul nodo x ma su quello prima.
