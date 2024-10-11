@@ -5,6 +5,7 @@
   - [HEAPify](#heapify)
     - [Complessità](#complessità)
   - [HEAPbuild](#heapbuild)
+    - [Complessità](#complessità-1)
   - [HeapSort](#heapsort)
 - [Code a priorità](#code-a-priorità)
   - [Implementazione con HEAP](#implementazione-con-heap)
@@ -115,7 +116,7 @@ void HEAPbuild (Heap h) {
 }
 ```
 
-Analisi complessità:
+### Complessità
 Intuitivamente si direbbe O(n logn), ma is può fare una stima più precisa:
 $$
 \begin{align*}
@@ -175,8 +176,10 @@ void HEAPsort(Heap h) {
     h->heapsize = j;
 }
 ```
-
 vedi esempio a pag 26-31
+
+### Complessità
+La complessità di HEAPsort è O(nlogn) perchè chiama HEAPify n volte, e HEAPify ha complessità O(logn).
 
 # Code a priorità
 struttura dati PQ per mantenere un set di elementi di tipo Item, ciascuno dei quali include un campo priorità. Si può implementare con

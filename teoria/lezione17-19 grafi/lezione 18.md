@@ -150,22 +150,23 @@ void dfsR(Graph G, Edge e, int *time, int *pre, int *post, int *st){
         // se il vertice non è stato visitato, ricorsione
         if (pre[t->v] == -1){ dfsR(G, EDGEcreate(w, t->v), time, pre, post, st); }
         else { // altrimenti lo etichetto
-        v = t->v;
-        x = EDGEcreate(w, v);
-        // grafi non orientati --- inizio
-        if (pre[w] < pre[v])
-            printf("(%s, %s): B\n", STsearchByIndex(G->tab, x.v), STsearchByIndex(G->tab,x.w)) ;
-        // grafi non orientati --- fine
-        // // grafi orientati --- inizio
-        // if (post[v] == -1) // se questo arco mi porta a un nodo non ancora visitato, B
-        //     printf("(%s, %s): B\n", STsearchByIndex(G->tab, x.v), STsearchByIndex(G->tab, x.w));
-        // else{
-        //     if (pre[v] > pre[w])
-        //         printf("(%s,%s):F\n",STsearchByIndex(G->tab, x.v), STsearchByIndex(G->tab, x.w));
-        //     else
-        //         printf("(%s,%s):C\n",STsearchByIndex(G->tab, x.v), STsearchByIndex(G->tab, x.w));
-        // }
-        // // grafi orientati --- fine
+            v = t->v;
+            x = EDGEcreate(w, v);
+            // grafi non orientati --- inizio
+            if (pre[w] < pre[v])
+                printf("(%s, %s): B\n", STsearchByIndex(G->tab, x.v), STsearchByIndex(G->tab,x.w)) ;
+            // grafi non orientati --- fine
+            // // grafi orientati --- inizio
+            // if (post[v] == -1) // se questo arco mi porta a un nodo non ancora visitato, B
+            //     printf("(%s, %s): B\n", STsearchByIndex(G->tab, x.v), STsearchByIndex(G->tab, x.w));
+            // else{
+            //     if (pre[v] > pre[w])
+            //         printf("(%s,%s):F\n",STsearchByIndex(G->tab, x.v), STsearchByIndex(G->tab, x.w));
+            //     else
+            //         printf("(%s,%s):C\n",STsearchByIndex(G->tab, x.v), STsearchByIndex(G->tab, x.w));
+            // }
+            // // grafi orientati --- fine
+        }
     }
     post[w] = (*time)++;
 }

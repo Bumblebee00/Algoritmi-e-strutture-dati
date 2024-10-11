@@ -167,7 +167,7 @@ Item STACKpop (STACK s) {
 ADT di coda. supporta operazioni di `enqueue` (inserimento in coda), `dequeue` (preleva e cancella dalla testa). è detto FIFO (first in first out) perchè il primo elemento inserito è il primo ad essere estratto. Lo possiamo implementare con un array o con una lista concatenata.
 I vantaggi di vettore e lista sono gli stessi di stack, anche in questo caso la complessità di `enqueue` e `dequeue` è O(1).
 
-Per tutte implementazioni serve un head e un tail. Nel caso div ettore saranno indici, nel caso della lista saranno puntatori.
+Per tutte implementazioni serve un head e un tail. Nel caso di vettore saranno indici, nel caso della lista saranno puntatori.
 
 ### Implementazione con vettore O(n)
 `put` assegna alla prima cella libera, se esiste, in fondo al vettore con complessità O(1). L’indice tail contiene il numero di elementi nella coda. `get` da posizione fissa (head = 0), ma comporta scalare a sinistra tutti gli elementi restanti con costo O(n)
