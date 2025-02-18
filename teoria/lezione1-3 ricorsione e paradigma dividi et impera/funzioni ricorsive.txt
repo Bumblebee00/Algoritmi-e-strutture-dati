@@ -68,5 +68,5 @@ T(n) = O(1)                                  se siamo nel caso elementare
 (dove ricordiamo a = numero di sottoproblemi, b = dimensione dei sottoproblemi)
 
 Nel caso di decrease and conquer T(n) viene espressa come
-T(n) = D(n) + somma[T(n-k) per k che va da 0 a a] + C(n)
+T(n) = D(n) + somma[T(n-k_i) per i che va da 0 a a] + C(n)
 T(n) = O(1)                                  se siamo nel caso elementare

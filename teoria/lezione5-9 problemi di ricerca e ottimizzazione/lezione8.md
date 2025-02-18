@@ -1,5 +1,5 @@
 In questa lezione parliamo di applicazioni/esmpi di algoritmi di ricerca e ordinamento. abbiamo trattato di
-- [Permutazioni ripeute](#permutazioni-ripetute)
+- [Permutazioni ripetute](#permutazioni-ripetute)
 - [Combinazioni semplici](#combinazioni-semplici)
 - [Algoritmo di Er (1987)](#algoritmo-di-er-1987)
 
@@ -83,7 +83,7 @@ Esempio: combinazione di k tra n valori. Dato un insieme di n interi, generare t
 val = {1, 9, 5, 4}
 
 # Algoritmo di Er (1987)
-Prende n oggetti, e calcola tutte le partizioni in osttoinsiemi di lunghezza da 1 a n. la osluzione è memorizzata in un vettore sol di n elemeti. funziona con due ricorsioni
+Prende n oggetti, e calcola tutte le partizioni in sottoinsiemi di lunghezza da 1 a n. la soluzione è memorizzata in un vettore sol di n elemeti. funziona con due ricorsioni
 - si attribuisce l'oggetto corrente alla partizione corrente (tra 0 e m-1) e poi si ricorre all'oggetto successivo
 - si attribuisce l'oggetto corrente al blocco m, e si ricorre sul prossimo oggetto.
 

@@ -1,0 +1,5 @@
+T(n) = Ω(f(n)) => c_1 f(n) < T(n)            for big n
+T(n) = 𝚯(f(n)) => c_1 f(n) < T(n) < c_2 f(n) for big n
+T(n) = O(f(n)) =>            T(n) < c_1 f(n) for big n
+
+c_1, c_2 are constants

@@ -96,7 +96,7 @@ come la versione basic, ma si tiene conto del puntatore al padre e alla dimensio
 ## BSTselect
 Selezione dell'item con la r-esima chiave più piccola (quindi rango r = chiave in posizione r nell'ordinamento, ad esempio se r=0 item con chiave minima). Definiamo t come il numero di nodi del sottoalbero sinistro. Lo pseudocodice della select è:
 - t = r: ritorno la radice del sottoalbero
-- t > r: ricorsione nel sottoalbero sinistro alla ricerca della k-esima chiave più piccola
+- t > r: ricorsione nel sottoalbero sinistro alla ricerca della r-esima chiave più piccola
 - t < r: ricorsione nel sottoalbero destro alla ricerca della (r-t-1)-esima chiave più piccola
 
 complessità O(n) se nel nodo non c'è annotata la dimensione del sottoalbero, O(log n) se c'è

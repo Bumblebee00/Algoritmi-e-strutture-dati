@@ -1,7 +1,7 @@
 [18/12/2023] In questa lezione si parla di algoritmi di visita dei grafi, della visita in profondità e della visita in ampiezza. Il concetto chaive della visita in profondità è: partendo da un vertice, visitare un suo vicino, e da quel vicino un suo vicino, e così via. Quando si finiscono i vicini si torna indietro. La visita in ampiezza invece usa una queue. Partendo da un vertice visita tutti i vicini di un vertice subito, e poi passa algi altri, che intanto ha messo nella queue.
 
 - [Gli algoritmi di visita dei grafi](#gli-algoritmi-di-visita-dei-grafi)
-  - [Visita in profondità](#visita-in-profondità)
+  - [Visita in profondità (dfs)](#visita-in-profondità-dfs)
     - [Versione base](#versione-base)
       - [Strutture dati e algoritmo](#strutture-dati-e-algoritmo)
     - [Versione estesa](#versione-estesa)
@@ -10,7 +10,7 @@
       - [Strutture dati e algoritmo](#strutture-dati-e-algoritmo-2)
     - [Complessità](#complessità)
     - [Flood Fill](#flood-fill)
-  - [Visita in ampiezza](#visita-in-ampiezza)
+  - [Visita in ampiezza (bfs)](#visita-in-ampiezza-bfs)
     - [Strutture dati necesarie](#strutture-dati-necesarie)
     - [Pseudo codice](#pseudo-codice)
     - [Codice](#codice)
@@ -21,7 +21,7 @@
 # Gli algoritmi di visita dei grafi
 Sono algoritmi che partendo da un vertice di un grafo, seguono gli archi con una certa strategia per visitare tutti i vertici del grafo. Questi algoritmi sono utili per esplorare un grafo e per trovare informazioni su di esso. Le due principali strategie di visita sono la visita in profondità (DFS) e la visita in ampiezza (BFS).
 
-## Visita in profondità
+## Visita in profondità (dfs)
 Dato un grafo (connesso o non connesso), a partire da un vertice `s`, visita tutti i vertici del grafo (raggiungibili da s e non). (nota: alcuni libri invece chiamano la visita in profondità quella che da un vertice visita solo i vertici raggiungibili da esso)
 
 ### Versione base
@@ -180,7 +180,7 @@ Con la matrice di adiacenza invece: O(V^2)
 ### Flood Fill
 Un'applicazione della visita in profondità è il flood fill, che è un algoritmo utilizzato per colorare le aree di una immagine. L'idea è quella di partire da un punto e colorare tutti i punti adiacenti a esso con lo stesso colore. Questo algoritmo è utilizzato in molti programmi di grafica per colorare le aree di un'immagine.
 
-## Visita in ampiezza
+## Visita in ampiezza (bfs)
 A partire da un vertice `s` questo tipo di visita determina tutti i vertici raggiungibili da `s`, quindi non visita necessariamente tutti i vertici a differenza della DFS. inoltre calcola la distanza minima (in numero di archi, grafo non pesato) da `s` di tutti i vertici da esso raggiungibili
 
 Il principio base è, dato un vertice, visitare tutti i vertici adiacenti a esso per prima. Questo significa che la visita in ampiezza visita tutti i vertici a distanza 1 da s, poi tutti i vertici a distanza 2 da s, e così via.

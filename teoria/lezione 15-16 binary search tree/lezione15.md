@@ -2,7 +2,7 @@
 
 - [Albero binario](#albero-binario)
   - [Valutazione di espressioni](#valutazione-di-espressioni)
-- [Alberi binari di ricerca](#alberi-binari-di-ricerca)
+- [Alberi binari di ricerca (bst)](#alberi-binari-di-ricerca-bst)
   - [ADT di prima classe](#adt-di-prima-classe)
   - [Implementazione](#implementazione)
     - [BSTsearch](#bstsearch)
@@ -29,6 +29,10 @@ si può visitare l'albero in tre modi:
 - pre-order: prima la radice, poi il figlio sinistro, poi il destro
 - in-order: prima il figlio sinistro, poi la radice, poi il destro
 - post-order: prima il figlio sinistro, poi il destro, poi la radice
+
+Un albero è detto completo se tutti i livelli sono completi tranne l'ulitmo che è completo da sinistra a destra
+
+Un albero è detto bilanciato se la differenza di profondità tra sottoalbero destro e sinsitstro è al massimo 1, per tutti i nodi
 
 Complessità di qualsiasi funzinoe ricorsiva su un albero binario: O(n) (n è il numero di nodi).
 Se l'albero è completo (ogni nodo ha 0 o 2 figli) lo si può vedere come divide and conquer con a = 2 e b = 2
@@ -70,7 +74,7 @@ int eval() {
   return x;
 }
 ```
-# Alberi binari di ricerca
+# Alberi binari di ricerca (bst)
 La sua propritetà è che la radice è maggiroe di tutto cio che c'è nel sottoalbero sinistro e minore di tutto ciò che c'è nel sottoalbero destro.
 
 ## ADT di prima classe

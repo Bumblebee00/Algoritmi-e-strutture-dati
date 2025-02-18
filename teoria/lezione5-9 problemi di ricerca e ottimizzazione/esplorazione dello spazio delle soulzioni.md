@@ -15,17 +15,14 @@
   - [Combinazioni semplici](#combinazioni-semplici)
   - [Combinazioni con ripetizioni](#combinazioni-con-ripetizioni)
   - [Insime delle parti (Powerset)](#insime-delle-parti-powerset)
-    - [Codice Dividi et Impera DA COMPLETARE!!!](#codice-dividi-et-impera-da-completare)
+    - [Codice Dividi et Impera](#codice-dividi-et-impera)
     - [Codice Disposizioni ripetute](#codice-disposizioni-ripetute)
     - [Codice combianzioni semplici](#codice-combianzioni-semplici)
   - [Partizioni di un insieme](#partizioni-di-un-insieme)
-    - [Soluzione ricorsiva](#soluzione-ricorsiva)
-    - [Soluzione iterativa](#soluzione-iterativa)
-- [Esplorazione esaustiva dello spazio delle soluzioni](#esplorazione-esaustiva-dello-spazio-delle-soluzioni)
-  - [Struttura dati per la soluzione](#struttura-dati-per-la-soluzione)
+- [Esplorazione esustiva dello spazio delle soluzioni](#esplorazione-esustiva-dello-spazio-delle-soluzioni)
+  - [Strutture dati per la soluzione](#strutture-dati-per-la-soluzione)
     - [Tipologie di strutture dati per oggetti interi](#tipologie-di-strutture-dati-per-oggetti-interi)
-  - [Come realizzare il principio di moltiplicazione](#come-realizzare-il-principio-di-moltiplicazione)
-    - [Principi base dell'esploarazione](#principi-base-dellesploarazione)
+  - [Principi base dell'esploarazione](#principi-base-dellesploarazione)
 
 Per adesso abbiamo usato la ricorsione solo per risolvere semplici problemi matematici, con un procedimento matematico che porta, senza scelte e con un numero finito di passi, alla soluzione (fattoriale, determinante di una matrice, numeri di Fibonacci, di Catalan, di Bell). Ora affronteremo problemi di ricerca e ottimizzazione.
 ## Problemi di ricerca
@@ -278,9 +275,12 @@ Dato un insieme S, l’insieme delle parti di S è l’insieme di tutti i sottoi
 
 Esempio:
 S = {a, b, c, d}
-P(S) = {{}, {a}, {b}, {c}, {d}, {a,b}, {a,c}, {a,d}, {b,c}, {b,d}, {c,d}, {a,b,c}, {a,b,d}, {a,c,d}, {b,c,d}, {a,b,c,d}}
+P(S) = { {}, {a}, {b}, {c}, {d}, {a,b}, {a,c}, {a,d}, {b,c}, {b,d}, {c,d}, {a,b,c}, {a,b,d}, {a,c,d}, {b,c,d}, {a,b,c,d} }
 
-### Codice Dividi et Impera DA COMPLETARE!!!
+### Codice Dividi et Impera
+S_n = {s_1, s_2, ..., s_n}
+P(S_n) = P(S_{n-1}) U { p_i U {s_n} for all p_i elements of S_{n-1} }
+
 ### Codice Disposizioni ripetute
 Ogni sottoinsieme è rappresentato dal vettore della soluzione sol di n elementi:
 - l’insieme delle scelte possibili per ogni posizione del vettore è {0, 1}, quindi k = 2. Il ciclo for è sostituito da 2 assegnazioni esplicite
@@ -309,7 +309,7 @@ int powerset(int pos,int *val,int *sol,int n,int cnt) {
 
 ### Codice combianzioni semplici
 Si realizza l'insieme delle parti come unione di insieme vuoto e insieme delle parti degli insiemi con j = 1, 2, 3, ...., n elementi.
-  `Powerset(S)= {} U Cs(n,1) U Cs(n,2) U ... U Cs(n,n)`
+`Powerset(S)= {} U Cs(n,1) U Cs(n,2) U ... U Cs(n,n)`
 Trattandosi di insiemi l’ordine non conta. Un wrapper si occupa dell’unione dell’insieme vuoto (non generato dalle combinazioni) e dell’iterare la chiamata alla funzione ricorsiva delle combinazioni.
 
 ```c
