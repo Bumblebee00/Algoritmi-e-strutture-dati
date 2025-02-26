@@ -83,10 +83,11 @@ Esempio: combinazione di k tra n valori. Dato un insieme di n interi, generare t
 val = {1, 9, 5, 4}
 
 # Algoritmo di Er (1987)
-Prende n oggetti, e calcola tutte le partizioni in sottoinsiemi di lunghezza da 1 a n. la soluzione è memorizzata in un vettore sol di n elemeti. funziona con due ricorsioni
-- si attribuisce l'oggetto corrente alla partizione corrente (tra 0 e m-1) e poi si ricorre all'oggetto successivo
-- si attribuisce l'oggetto corrente al blocco m, e si ricorre sul prossimo oggetto.
+Prende n oggetti, e calcola tutte le partizioni in m sottoinsiemi, per m=1..n. la soluzione è memorizzata in un vettore sol di n elemeti. funziona con due ricorsioni.
+- si attribuisce l'oggetto corrente alla partizione corrente (tra 0 e m-1 dove m è il numero di blocchi che si sta prendendo in considerazione ed è da 1 a n) e poi si ricorre all'oggetto successivo
+- dopo aver fatto ciò si attribuisce l'oggetto corrente al blocco m, e si ricorre sul prossimo oggetto considerando m+1 blocchi.
 
+Nota: il vettore sol nell' i-esima posizione contiene a quale blocco appartiene l'i-esimo oggetto 
 ```c
 int main(){
   int i, n, *val, *sol;

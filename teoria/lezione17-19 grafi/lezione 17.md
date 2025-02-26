@@ -336,7 +336,7 @@ Guarda l'esempio pag 53-58
 ???
 
 ## Cammino di Hamilton
-Dato un grafo non orientato G =(V, E) e 2 suoi vertici v e w, se esiste un cammino semplice che li connette visitando ogni vertice una e una sola volta, questo si dice cammino di Hamilton. (se v = w si dice ciclo di Hamilton).
+Dato un grafo non orientato G=(V, E) e 2 suoi vertici v e w, se esiste un cammino semplice che li connette visitando ogni vertice una e una sola volta, questo si dice cammino di Hamilton. (se v = w si dice ciclo di Hamilton).
 
 Esmepio di ciclo di Hamilton:
 ![](<esempio ciclo di hamilton.png>)

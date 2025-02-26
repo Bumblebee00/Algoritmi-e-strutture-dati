@@ -157,6 +157,7 @@ T(n) &= \sum_{i=0}^{log_2(n)} 2^i log_2(\frac{n}{2^i}) \\
 &= O(n)
 \end{align*}
 $$
+Questo si può capire intuitivamente perchè metà delle chiamate heapif sono fatte su sottoalberi con un solo figlio, un quarto con sottoalberi con due figli... e così via solo due sono fatte su sottoalberi con n/2 figli e una è fatta sul sottoalbero intero.
 
 ## HeapSort
 HeapSort è un algoritmo di ordinamento (di vettori, non di heap, non c'è un heap disordiato e uno ordinato) basato su heap. L'idea è di costruire uno heap con i dati da ordinare (HEAPbuild), e poi sfruttare la proprietà che l'elemento massimo è nella radice, e il minimo nella foglia più bassa. Una volta realizzato l'heap, si scambia la radice con l'ultimo elemento, si decrementa la dimensione dell'heap (in modo da far agire HEAPify solo sugli altri elementi, e non toccare la radice che abbiamo estratto), e si chiama HEAPify sulla radice. Si ripete finchè l'heap non ha lunghezza 0. Il vettore risultante è ordinato in modo crescente.
@@ -179,13 +180,13 @@ void HEAPsort(Heap h) {
 vedi esempio a pag 26-31
 
 ### Complessità
-La complessità di HEAPsort è O(nlogn) perchè chiama HEAPify n volte, e HEAPify ha complessità O(logn).
+La complessità di HEAPsort è O(nlogn) perchè chiama HEAPify n volte, e HEAPify ha complessità O(logn). Il trucco che fa diminuire la compelssità di heapbuild, qui non si può applicare, in questo caso metà degli heapify sono fatti su un sottoalbero di altezza log2(n), un quarto su uno di altezza log2(n/2), ..., solo due su un sottoalbero di altezza 2 e solo una su un sottoalbero di altezza 1.
 
 # Code a priorità
 struttura dati PQ per mantenere un set di elementi di tipo Item, ciascuno dei quali include un campo priorità. Si può implementare con
 - vettore/lista (oridnato/a)/(non ordinato/a)
 - heap
-
+ 
 Complessità:
 | | PQinsert | PQshowMax| PQextractMax |
 |---|---|---|---|
@@ -325,7 +326,7 @@ void PQchange (PQ pq, Item val) {
 
 È possibile migliorare da O(n) a O(logn)? Si basta sapere già dove si trova l'item di Signor Rossi. ma come si fa?
 - ?
-- ?
+- L'item è un indice o ha tra i vari campi valori l'indice della sua posizione nel vettore
 - ?
 
 # Coda prioritaria di indici

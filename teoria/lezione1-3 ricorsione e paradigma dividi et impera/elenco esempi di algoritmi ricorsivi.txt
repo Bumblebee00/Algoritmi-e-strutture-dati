@@ -152,7 +152,7 @@ D(n) = C(n) = O(1)
 T(n) = T(n/2) + O(1)
 T(n/2) = T(n/4) + O(1)
 
-T(n) = 1 + 1 + T(n/8) = Somma(1, 0, log2n) = O(log n)
+T(n) = 1 + 1 + T(n/8) = Somma(1, 0, log2n) = O(log2 n)
 
 ===Stampa di stringa in ordine inverso (senza conoscere la lunghezza)
     void reverse_print(char *s) {

@@ -127,13 +127,18 @@ In più si etichettano anche gli archi. In un grafo non orientato li marchiamo c
 
 Perchè si chiamano Back? bè perchè se non sono nell'albero, vuol dire che collegano un nodo w a un nodo v già scoperto prima (un antenato nell'albero di visita in profondità). Alla fine della ricorsione su v quindi l'etichetta di terminazione di v, il time, sarà maggiore della terminazione di w. L'etichetta di scoperta di v sarà minore della terminazione di w (sempre, anche prima di terminare il nodo v).
 
-
 E se il grafo è orientato ci sono due nove classificazioni: **F (forward)** e **C (cross)**. Potrebbe succedere che l'arco considerato prima, che collega w e un suo antenato v, punti dall'antenato v a w. In questo caso si chiama nodo forward. Se un nodo non è nessuna delle 4 precedenti, si chiama nodo cross.
 
 ![](arcoF.png)
 ![](arcoC.png)
 
 vedi gli esempi a pag 34-48 delle slide
+
+ecco un riassunto delle condizioni da controllare per etichettare un arco da nodo A a nodo B:
+- il tempo di inizio elaborazione di B non è ancora stato assegnato: arco Tree
+- il tempo di inizio elaborazione di B è stato assegnato ma quello di fine non ancora: arco Back
+- entrambi sono stati assegnati e il tempo di inizio elaborazione di B è maggiore del inizio elaborazione di A: arco Forward
+- entrambi sono stati assegnati e il tempo di inizio elaborazione di B è minore del inizio elaborazione di A: arco Forward
 
 #### Strutture dati e algoritmo
 la funzione wrapper rimane la stessa, cambia solo la funzione ricorsiva

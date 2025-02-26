@@ -107,9 +107,11 @@ void GRAPHspD(Graph G, int id) {
 ```
 
 ## Complessità
-estrarre u da Q: O(logV)
+costruire la pq: O(V)
+estrarre u dalla pq: O(log2(V))
 insierire u in S: O(1)
-rilassare(u,v): O(E)
+rilassare(u,v) = cambiare priorità nella pq = O(log2(V))
+(bisonga rilassare E archi)
 
 Quindi la complessità totale è O((V + E) log V)
 # Algoritmo di Bellman-Ford

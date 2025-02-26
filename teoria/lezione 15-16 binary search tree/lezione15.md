@@ -77,6 +77,8 @@ int eval() {
 # Alberi binari di ricerca (bst)
 La sua propritetà è che la radice è maggiroe di tutto cio che c'è nel sottoalbero sinistro e minore di tutto ciò che c'è nel sottoalbero destro.
 
+Nota: la visita in order di un BST da numeri in ordine crescente
+
 ## ADT di prima classe
 ```c
 typedef struct  binarysearchtree *BST;

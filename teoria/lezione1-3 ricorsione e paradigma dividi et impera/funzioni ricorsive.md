@@ -18,12 +18,13 @@ bonus: eleganza matematica e poche righe di codice
 
 Ma quindi come si finisce questo ciclo infinito? ci deve essere una condizione termine
 
-===Paradigma dividi et impera più nel dettaglio:
+## Paradigma dividi et impera più nel dettaglio:
 Divide: 1 problema di dimensione n in più sottoproblemi (a in numero) di dimensione n'<n, indipendenti tra loro. cioè io non ho memoria di questi sottoprobelmi e se me ne se presenta uno uguale a un altro lo risolvo ancora
 Impera: arrivo a sottoproblemi semplici con soluzioni elementari
 Combina: ricostruzione di soluzione complessiva combinando le soluzioni parziali
 
 Pseudo codice:
+```
 risolvi(problema){
 	se (è un problema elementare) {
 		return soluzione = risolvi_prob_banale(problema)
@@ -35,6 +36,7 @@ risolvi(problema){
 		return soluzione = Combina(sottosoluzioni)
 	}
 }
+```
 
 Valori di a:
 a=1: ricorsione lineare
@@ -54,7 +56,7 @@ Esempio:
 determinare un massimo di un vettore di n=2^k elementi. non sono capace di farlo, allora provo a vedere se sono capace di trovare il massimo del sottovettore destro e sinistro, e poi li confronto.
 (vedi 01max_array.c)
 
-===Analisi di complessità
+## Analisi di complessità
 Utilizzeremo il formalismo delle equazioni alle ricorrenze (la complessita si può scrivere come tempo, spazio o . spazio non ci interessa. vediamo tempo)
 In ogni caso gli elementi importanti sono:
 - D(n) tempo della divisione
@@ -65,7 +67,7 @@ In ogni caso gli elementi importanti sono:
 Nel caso di divide and conquer T(n) viene espressa come:
 T(n) = D(n) + aT(n/b) + C(n)                 se non siamo nel caso elementare
 T(n) = O(1)                                  se siamo nel caso elementare
-(dove ricordiamo a = numero di sottoproblemi, b = dimensione dei sottoproblemi)
+(dove ricordiamo a = numero di sottoproblemi, n/b = dimensione dei sottoproblemi)
 
 Nel caso di decrease and conquer T(n) viene espressa come
 T(n) = D(n) + somma[T(n-k_i) per i che va da 0 a a] + C(n)

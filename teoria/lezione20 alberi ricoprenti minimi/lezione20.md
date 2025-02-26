@@ -68,10 +68,10 @@ su questo teorema si basa l'algoritmo di Prim.
 Dati:
 - un grafo G=(V,E) non orientato, pesato e connesso
 - un sottoinsieme di archi A di G che è contenuto in un albero ricoprente minimo di G
-- un albero C di G che fa parte di una foresta di alberi di G
-- un arco (u,v) di G che collega un vertice di C ad un vertice di un albero diverso da C
+- un albero C appartenente a G_A, cioè un sottografo di G contenente solo gli archi appartenenti ad A. è di solito una foresta di alberi perchè in A mancano alcuni archi di E
+- un arco leggero (u,v) di G che collega un vertice di C ad un vertice di un albero diverso da C
 
-Allora esiste un arco sicuro per A che collega un vertice di C ad un vertice di un albero diverso da C.
+Allora l’arco (u,v) è sicuro per A.
 
 su questo corollario si basa l'algoritmo di Kruskal.
 
