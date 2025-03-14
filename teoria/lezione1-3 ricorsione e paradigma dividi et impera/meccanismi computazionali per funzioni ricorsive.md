@@ -1,4 +1,7 @@
 [17/10/2023]
+- [Descrizione di Stack dal punto di vista software](#descrizione-di-stack-dal-punto-di-vista-software)
+  - [Utilizzo dello stack sulle funzioni ricorsive](#utilizzo-dello-stack-sulle-funzioni-ricorsive)
+- [Funzioni tail recursive](#funzioni-tail-recursive)
 
 Chiamata a funzione: quando si chiama una funzione:
 - si crea una nuova istanza della funzione chiamata

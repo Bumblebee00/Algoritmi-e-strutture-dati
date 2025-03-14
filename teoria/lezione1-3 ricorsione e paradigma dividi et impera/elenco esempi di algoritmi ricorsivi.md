@@ -1,3 +1,22 @@
+- [Calcolo del Fattoriale](#calcolo-del-fattoriale)
+  - [Analisi complessità:](#analisi-complessità)
+- [Numeri di fibonacci](#numeri-di-fibonacci)
+  - [Analisi complessità:](#analisi-complessità-1)
+- [Massimo comune divisore](#massimo-comune-divisore)
+  - [Algoritmo di Euclide(IV sec. aC):](#algoritmo-di-euclideiv-sec-ac)
+  - [Algoritmo di Euclide-Lamé (1844)-Dijkstra (1976):](#algoritmo-di-euclide-lamé-1844-dijkstra-1976)
+    - [Analisi complessità:](#analisi-complessità-2)
+- [Massimo di un vettore](#massimo-di-un-vettore)
+- [Prodotto di due Numeri](#prodotto-di-due-numeri)
+  - [Analisi di complessità](#analisi-di-complessità)
+- [Ricerca binaria (dicotomica)](#ricerca-binaria-dicotomica)
+  - [Analisi di complessità](#analisi-di-complessità-1)
+- [Stampa di stringa in ordine inverso (senza conoscere la lunghezza)](#stampa-di-stringa-in-ordine-inverso-senza-conoscere-la-lunghezza)
+- [Torre di Hanoi](#torre-di-hanoi)
+  - [Analisi di complessità:](#analisi-di-complessità-2)
+- [Il righello](#il-righello)
+
+
 Mostriamo adesso alcuni esempi di algoritmi ricorsivi semplici
 # Calcolo del Fattoriale
 n! = n * (n-1)!
@@ -208,7 +227,7 @@ T(n-2) = 2T(n-3) + 1
 T(n) = 1 + 2 + 4 + 8T(n-3) = Somma(2^i, 0, n-1) = 2^n - 1 = O(2^n)
 
 # Il righello
-```
+```c
 void mark(int m, int h) {
     int i;
     printf("%d \t", m);
