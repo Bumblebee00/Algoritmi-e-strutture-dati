@@ -1,7 +1,0 @@
-Kosaraju - trova componenti fortemente connesse
-Dijkistra - trova cammino minimo da un vertice a tutti gli altri
-Karatsuba - moltiplicazione n in tre moltiplicazioni n/2
-Kruskal - trova mst in un grafo
-
-Prim - trova mst in un grafo
-Bellman Ford - trova cammino minimo da un vertice a tutti gli altri

@@ -1,0 +1,24 @@
+Disposizioni semplici:
+quanti numeri da 4 cifre con cifre distinte
+10*9*8*7
+
+Disposizioni con ripetizione:
+quanti numeri da 4 cifre
+10^4
+
+Permutazioni semplici:
+quanti modi di mettere in linea 6 biglie diverse
+6!
+
+Permutazioni con ripetizione:
+quanti modi di mettere in linea 6 biglie, di cui 3 sono uguali tra loro e altre 2 sono uguali tra loro
+6! / ( 3! * 2! )
+
+Combinazioni semplici:
+Quanti gruppi di 4 persone si possono formare da un gruppo di 10 persone
+coeff binomiale n, k = 10! / (4! * (10-4)! )
+
+powerset si fa con:
+- divide et impera
+- comb semplici iterando su tutti i k
+- disp con ripe con k=2 cioè elemento appartiene o no al membro del powerset.

@@ -325,9 +325,8 @@ void PQchange (PQ pq, Item val) {
 ```
 
 È possibile migliorare da O(n) a O(logn)? Si basta sapere già dove si trova l'item di Signor Rossi. ma come si fa?
-- ?
 - L'item è un indice o ha tra i vari campi valori l'indice della sua posizione nel vettore
-- ?
+- Se la chiave dell'item è univoca, la si può usare come chiave di una tabella di hash (o bst bilanciato= che contiene la posizione dell'item nella pq.
 
 # Coda prioritaria di indici
 Non si inseriscono in coda gli item ma coppie (indice, priorità), quindi si adotta la versione di «chiave affiancata al dato» (la priorità è un parametro aggiuntivo) invece che «chiave parte del dato».

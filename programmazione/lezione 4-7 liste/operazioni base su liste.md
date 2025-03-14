@@ -79,7 +79,7 @@ con separazione tra typedef e dichiarazione della struct node
             node_t *next;
     };
 ##### Tipologia 5
-    typedef struct node *link, node_t;
+    typedef struct node *link;
     struct node {
         Item val;
         link next;

@@ -177,10 +177,11 @@ void dfsR(Graph G, Edge e, int *time, int *pre, int *post, int *st){
 }
 ```
 ### Complessità
+Se il grafo è implementato con liste di adiacenza, scorro tutte le liste di adiacenza, quindi un totale di E passaggi. Inoltre inizializzo dei vettori pre, post e st di lunghezza V
 Inizializzazione: O(V)
 Ricorsione: O(E)
 Totale: O(V+E)
-Con la matrice di adiacenza invece: O(V^2)
+Con la matrice di adiacenza invece devo per ogni vertice scorrere tutta la colonna corrispondente nella matadj, quindi O(V^2)
 
 ### Flood Fill
 Un'applicazione della visita in profondità è il flood fill, che è un algoritmo utilizzato per colorare le aree di una immagine. L'idea è quella di partire da un punto e colorare tutti i punti adiacenti a esso con lo stesso colore. Questo algoritmo è utilizzato in molti programmi di grafica per colorare le aree di un'immagine.
@@ -254,7 +255,9 @@ void GRAPHbfs(Graph G, int id) {
 ```
 
 ### Complessità
-O(V+E) con la matrice di adiacenza, O(V^2) con la lista delle adiacenze
+O(V+E) con le liste di adiacenza, O(V^2) con la matrice di adiacenza
+
+come la dfs
 
 ### Numeri di Erdos
 Paul Erdos è stato un matematico ungherese che ha lavorato in molti campi della matematica, tra cui la teoria dei grafi. Ha scritto più di 1500 articoli, collaborando con più di 500 coautori. Per questo motivo, si è pensato di assegnare un numero di Erdos a tutti i matematici che hanno scritto un articolo con lui, e di assegnare un numero di Erdos a tutti gli altri matematici che hanno scritto un articolo con uno di questi matematici, e così via. Il numero di Erdos di Erdos è 0, il numero di Erdos di un matematico che ha scritto un articolo con Erdos è 1, il numero di Erdos di un matematico che ha scritto un articolo con un matematico che ha scritto un articolo con Erdos è 2, e così via. Il numero di Erdos di un matematico che non ha scritto un articolo con nessuno di questi matematici è infinito.

@@ -199,7 +199,24 @@ P(4) = 4! = 24
 
 ### Codice
 ```c
-// DA AGGIUNGERE!!!
+int perm_sempl(int pos, int *val, int *sol, int *mark, int n,  int count) {
+  int i;
+  if (pos >= n) {
+    for (i=0; i<n; i++)
+      printf("%d ", sol[i]);
+    printf("\n");
+    return count+1;
+  }
+
+  for (i=0; i<n; i++)
+    if (mark[i] == 0) {
+      mark[i] = 1;
+      sol[pos] = val[i];
+      count = perm_sempl(pos+1, val, sol, mark, n,  count);
+      mark[i] = 0;
+    }
+  return count;
+}
 ```
 
 ## Permutazioni con ripetizioni
@@ -280,6 +297,25 @@ P(S) = { {}, {a}, {b}, {c}, {d}, {a,b}, {a,c}, {a,d}, {b,c}, {b,d}, {c,d}, {a,b,
 ### Codice Dividi et Impera
 S_n = {s_1, s_2, ..., s_n}
 P(S_n) = P(S_{n-1}) U { p_i U {s_n} for all p_i elements of S_{n-1} }
+
+```c
+int powerset_div_conq(int pos, int *val, int *sol, int n, int start, int count) {
+  int i;
+  if (start >= n) {
+    printf("{ ");
+      for (i = 0; i < pos; i++)
+        printf("%d ", sol[i]);
+    printf("} \n");
+    return count+1;
+  }
+  for (i = start; i < n; i++) {
+    sol[pos] = val[i];
+    count = powerset_div_conq(pos+1, val, sol, n, i+1, count);
+  }
+  count = powerset_div_conq(pos, val, sol, n, n, count);
+  return count;
+}
+```
 
 ### Codice Disposizioni ripetute
 Ogni sottoinsieme è rappresentato dal vettore della soluzione sol di n elementi:

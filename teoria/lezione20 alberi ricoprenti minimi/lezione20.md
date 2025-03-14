@@ -83,8 +83,10 @@ se un arco connette due alberi diversi, i due alberi diventano uno solo connessi
 se un arco connette due vertici dello stesso albero, si scarta l'arco perchè creerebbe un ciclo
 quando tutti i vertici sono rinuiti in un solo albero, l'algoritmo termina e l'albero è l'MST.
 
-### Struttura dati
-Useremo l'adt di prima classe Union Find, struttura dati per memorizzare una collezione di insiemi disgiunti, ad esempio la partizione di un insieme in più sottoinsiemi (disgiunti per definizione di partizione). Questa struttura ha due operazioni: union (fonde 2 sottoinsiemi) e find (verifica se due elementi sono nello stesso sottoinsieme). È implementata con un vettore `id` che contiene per ogni elemento l'indice dell'elemento che lo rappresenta, e un vettore `sz` che contiene per ogni elemento la dimensione del sottoinsieme di cui fa parte.
+### Struttura dati Union Find
+Useremo l'adt di prima classe Union Find, struttura dati per memorizzare una collezione di insiemi disgiunti, ad esempio la partizione di un insieme in più sottoinsiemi (disgiunti per definizione di partizione). Questa struttura ha due operazioni: union (fonde 2 sottoinsiemi) e find (verifica se due elementi sono nello stesso sottoinsieme). Ogni sottoinsieme è rappresentato come un albero e in un vettore `id` è salvato l'indice del suo padre nell'albero. C'è anche un vettore `sz` che contiene per ogni elemento la dimensione del sottoinsieme di cui fa parte.
+
+![](<esempio unionfind.png>)
 
 ```c
 // UF.h
@@ -107,6 +109,7 @@ void UFinit(int N) {
     }
 }
 
+// trova la radice dell'albero
 static int find(int x) {
     int i = x;
     while (i!= id[i]) i = id[i];
@@ -118,6 +121,7 @@ int UFfind(int p, int q) { return(find(p) == find(q)); }
 void UFunion(int p, int q) {
     int i = find(p), j = find(q);
     if (i == j) return;
+    // attacca la radice dell'albero più piccolo alla radice di quello iù grance
     if (sz[i] < sz[j]) {
         id[i] = j; sz[j] += sz[i];
     }
@@ -174,13 +178,27 @@ vedi esempio pag 36-46
 
 ### Strutture dati
 - Grafo rappresentato come matrice delle adiacenze dove l’assenza di un arco si indica con maxWT (anziché 0)
-- vettore `st` di G->V elementi per registrare per ogni vertice che appartiene alla soluzione (a S) il padre
-- vettore `fringe` di G->V elementi per registrare per ogni vertice che non appartiene alla soluzione (a V\S) qual'è il vertice di S più vicino
-- vettore `wt` di G->V+1 elementi per registrare per ogni vertice:
+- vettore `st` di G->V elementi per registrare per ogni vertice che appartiene alla soluzione (a S) il padre, per quelli che non appartengono -1. Da st si può costruire l'albero
+- vettore `fringe` di G->V elementi per registrare per ogni vertice che non appartiene alla soluzione qual'è il vertice di S più vicino (e se non sono collegati alla soluzione il vertice stesso)
+- vettore `wt` di G->V+1 elementi per registrare per ogni vertice w:
   - se fa parte della soluzione, il peso dell'arco che lo collega al padre
-  - se non fa parte della soluzione, il peso dell'arco leggero che lo collega al padre
+  - se non fa parte della soluzione, il peso dell'arco leggero che lo collega al padre (quello che va da fringe[w] a w)
+  - se non fa parte della soluzione e non è direttamente collegato a essa, maxWT
 - variabile `min` per il vertice in V\S più vicino a S
 
+### Pseudocodice
+Ciclo esterno sui vertici prendendo di volta in volta quello a minima distanza (identificato da min) e aggiungendolo a S. Inizialmente min è il vertice 0. Notare che nel ciclo for non si incrementa min, ma viene assegnato opportunamente nel corpo del ciclo
+```c
+for (min=0; min!=G->V; ) {
+    v=min; st[min]=fr[min];
+```
+
+ciclo interno sui vertici w non ancora in S (st[w]==-1):
+- se l’arco (v,w) migliora la stima in wt la si aggiorna e si indica che il vertice in S più vicino a w è v (nel vettore fringe)
+
+se w è diventato il vertice più vicino a S si aggiorna min
+
+### Codice
 ```c
 void mstV(Graph G, int *st, int *wt) {
     int v, w, min, *fr = malloc(G->V*sizeof(int));
@@ -190,12 +208,13 @@ void mstV(Graph G, int *st, int *wt) {
     st[0] = 0;   wt[0] = 0;   wt[G->V] = maxWT;
     for (min = 0; min != G->V; ) {
         v = min;  st[min] = fr[min];
-        for (w = 0, min = G->V; w < G->V; w++)
-        if (st[w] == -1) {
-            if (G->madj[v][w] < wt[w]) {
-                wt[w] = G->madj[v][w]; fr[w] = v;
+        for (w = 0, min = G->V; w < G->V; w++){
+            if (st[w] == -1) {
+                if (G->madj[v][w] < wt[w]) {
+                    wt[w] = G->madj[v][w]; fr[w] = v;
+                }
+                if (wt[w] < wt[min]) min = w;
             }
-            if (wt[w] < wt[min]) min = w;
         }
     }
 }
